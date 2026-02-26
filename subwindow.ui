@@ -1,0 +1,2624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SubWindowClass</class>
+ <widget class="QWidget" name="SubWindowClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1282</width>
+    <height>646</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1100</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>SubWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(5, 5, 5);</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_19">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>相机A</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_10">
+      <item row="0" column="0">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_31">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>相机A连接状态：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="CameraConnectState">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>unconnected</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="labelCameraIP">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>95</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>相机A-IP：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="editCameraIP">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>192.168.1.102</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QPushButton" name="btnConnectCamera">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+            </property>
+            <property name="text">
+             <string>连接相机A</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnDisConnectCamera">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+            </property>
+            <property name="text">
+             <string>断开相机A</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>相机B</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_18">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_12">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label_33">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>相机B连接状态：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="CameraConnectState_B">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>unconnected</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="labelCameraIP_4">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>95</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>相机B-IP：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="editCameraIP_B">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>192.168.2.102</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QPushButton" name="btnConnectCamera_B">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+            </property>
+            <property name="text">
+             <string>连接相机B</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnDisConnectCamera_B">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+            </property>
+            <property name="text">
+             <string>断开相机B</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>PLC</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_17">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_16">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_32">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>PLC连接状态：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="PLCConnectState">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>unconnected</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QGridLayout" name="gridLayout_15">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_13">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelCameraIP_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>90</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>IP：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="editPLCIP">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>192.168.3.5</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="1">
+         <layout class="QGridLayout" name="gridLayout_14">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelCameraIP_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>95</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Port：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="editPLCPort">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>9600</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0">
+       <layout class="QGridLayout" name="gridLayout_9">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnConnectPLC">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+          </property>
+          <property name="text">
+           <string>连接PLC</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="btnDisConnectPLC">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+          </property>
+          <property name="text">
+           <string>断开PLC</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
+    <layout class="QGridLayout" name="gridLayout_8">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox_6">
+       <property name="font">
+        <font>
+         <family>微软雅黑</family>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="title">
+        <string>工作输出路径</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="1" column="0">
+         <layout class="QGridLayout" name="gridLayout_11">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_34">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>B面点云输出路径：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="editOutPath_Result">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="btnOutPutDirectory_Result">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+            </property>
+            <property name="text">
+             <string>浏览</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <item>
+           <widget class="QLabel" name="label_30">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>A面点云输出路径：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="editOutPath">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnOutPutDirectory">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+            </property>
+            <property name="text">
+             <string>浏览</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QGroupBox" name="groupBox_9">
+       <property name="font">
+        <font>
+         <family>微软雅黑</family>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="title">
+        <string>控制输出</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnStartCollectPoint">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+          </property>
+          <property name="text">
+           <string>开始采集</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="btnStopCollectPoint">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+          </property>
+          <property name="text">
+           <string>停止采集</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnSavePoint">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+          </property>
+          <property name="text">
+           <string>保存点云</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="btnParamSave">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+          </property>
+          <property name="text">
+           <string>保存参数</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="font">
+        <font>
+         <family>微软雅黑</family>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="title">
+        <string>算法检测测试控件</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>左肩点斜率控制&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editRadius">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>175</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>右肩点斜率控制&lt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editTorlance">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>10</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_19">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>A面槽深系数</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="edit_Depth_A_Coefficient">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>2</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_20">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>A面槽宽系数</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="edit_Width_A_Coefficient">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>2</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_24">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>B面槽深系数</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="edit_Depth_B_Coefficient">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>2</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_25">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>B面槽宽系数</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="edit_Width_B_Coefficient">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>2</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="font">
+        <font>
+         <family>微软雅黑</family>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="title">
+        <string>测试参数</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="minimumSize">
+           <size>
+            <width>155</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>155</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>底点位置阈值(%)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editEdge">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>0.01</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_47">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>识别角度(°)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QLineEdit" name="editSlope">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>20</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editRANSAC">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>0.2</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="minimumSize">
+           <size>
+            <width>165</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>162</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>最小宽度阈值(mm)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="editCheckThreshold">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>2</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editAngle">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>60</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="editMaxWidth">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>1</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_48">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>距离阈值(mm)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>扫描行数差值</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>遍历肩点的点数</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QGroupBox" name="groupBox_7">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>微软雅黑</family>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="title">
+        <string>算法参数设置</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <property name="topMargin">
+         <number>12</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>8</number>
+        </property>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="editPingHuaData">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>1</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>点云平滑系数</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_21">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>ROI焦点位置(%)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>高度差阈值(mm)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>点云间距(um)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLineEdit" name="editCloudShowDis">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>3</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>槽间距(mm)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="editbottom">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>0.009</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="QLineEdit" name="editCloudShowDis_2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>1.5</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editROI">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>15</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editROI_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>50</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>ROI相对宽度(%)：</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QGroupBox" name="groupBox_8">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>微软雅黑</family>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="title">
+        <string>算法参数设置</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_23">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>18</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>深度阈值Min(um)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editDetectedDepthMin">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>10</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>深度阈值Max(um)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editDetectedDepthMax">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>20</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_22">
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>180</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>宽度阈值Min(um)：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editDetectedWidthMin">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>80</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="editDetectedWidthMax">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>120</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>宽度阈值Max(um)：</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DataExcelClass</class>
+ <widget class="QWidget" name="DataExcelClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1047</width>
+    <height>590</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>DataExcel</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(5, 5, 5);</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> 
+color: rgb(135, 163, 255);</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>A面</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QTableWidget" name="tableWidgetExcel_A">
+           <property name="styleSheet">
+            <string notr="true">QTableWidget {
+    background-color: #2a2a2a;
+    color: white;
+    gridline-color: #3a3a3a;
+    border: 1px solid #404040;
+    selection-color: white;
+    alternate-background-color: #333333;
+    selection-background-color: #555555;
+    font-size: 12px;
+}
+
+QTableWidget::item {
+    padding: 6px 10px;
+    border: none;
+}
+
+/* 选中状态，无论是否有焦点，都使用深灰背景 */
+QTableWidget::item:selected,
+QTableWidget::item:selected:focus,
+QTableWidget::item:selected:!focus {
+    background-color: #555555 !important;
+    color: white !important;
+}
+
+/* 鼠标悬停时高亮 */
+QTableWidget::item:hover {
+    background-color:rgb(160, 185, 217);
+}
+
+/* 表头样式 */
+QHeaderView::section {
+    background-color: #f0f0f0;
+    color: #3a3a3a;
+    padding: 6px 10px;
+    border: 1px solid #cccccc;
+    font-weight: bold;
+}
+</string>
+           </property>
+           <column>
+            <property name="text">
+             <string>序号</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>日期</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>A面槽深均值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>A面槽深最大值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>A面槽深最小值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>A面槽深结果</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>A面槽宽均值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>A面槽宽最大值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>A面槽宽最小值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>A面槽宽结果</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="btnInput_A">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+             </property>
+             <property name="text">
+              <string>导出</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>导出路径：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editPath_A"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnBrowse_A">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+             </property>
+             <property name="text">
+              <string>浏览</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>单位：um</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTabWidget" name="tabWidget_2">
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> 
+color: rgb(135, 13, 255);</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>B面</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QTableWidget" name="tableWidgetExcel_B">
+           <property name="styleSheet">
+            <string notr="true">QTableWidget {
+    background-color: #2a2a2a;
+    color: white;
+    gridline-color: #3a3a3a;
+    border: 1px solid #404040;
+    selection-color: white;
+    alternate-background-color: #333333;
+    selection-background-color: #555555;
+    font-size: 12px;
+}
+
+QTableWidget::item {
+    padding: 6px 10px;
+    border: none;
+}
+
+/* 选中状态，无论是否有焦点，都使用深灰背景 */
+QTableWidget::item:selected,
+QTableWidget::item:selected:focus,
+QTableWidget::item:selected:!focus {
+    background-color: #555555 !important;
+    color: white !important;
+}
+
+/* 鼠标悬停时高亮 */
+QTableWidget::item:hover {
+    background-color:rgb(160, 185, 217);
+}
+
+/* 表头样式 */
+QHeaderView::section {
+    background-color: #f0f0f0;
+    color: #3a3a3a;
+    padding: 6px 10px;
+    border: 1px solid #cccccc;
+    font-weight: bold;
+}
+</string>
+           </property>
+           <column>
+            <property name="text">
+             <string>序号</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>日期</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>B面槽深均值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>B面槽深最大值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>B面槽深最小值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>B面槽深结果</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>B面槽宽均值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>B面槽宽最大值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>B面槽宽最小值</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>B面槽宽结果</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QPushButton" name="btnInput_B">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+             </property>
+             <property name="text">
+              <string>导出</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>导出路径：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editPath_B"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnBrowse_B">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 240, 240);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+             </property>
+             <property name="text">
+              <string>浏览</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>单位：um</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
