@@ -278,49 +278,52 @@ bool CallOneTimes::connectPLC(const QString& ip, quint16 port)
 	//if (m_sock->bytesAvailable() < 16) return false;
 	//QByteArray ack = m_sock->read(16);
 	//return ack == QByteArray(16, 0);
-	m_sock->connectToHost(ip, port);
-	if (!m_sock->waitForConnected(5000)) return false;
+	 m_sock->connectToHost(ip, port);
+	 connect(m_sock, &QTcpSocket::connected,  this, [this]() {
+		 return true;
+		 });
+	//if (!m_sock->waitForConnected(5000)) return false;
 
-	m_sock->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+	//m_sock->setSocketOption(QAbstractSocket::LowDelayOption, 1);
 
-	/* 第一次握手：16 字节全 0 */
-	if (m_sock->write(QByteArray(16, 0)) != 16) return false;
-	if (!m_sock->waitForBytesWritten()) return false;
+	///* 第一次握手：16 字节全 0 */
+	//if (m_sock->write(QByteArray(16, 0)) != 16) return false;
+	//if (!m_sock->waitForBytesWritten()) return false;
 
-	/* 收 16 字节 */
-	if (!recvExact(16)) return false;
-	QByteArray ack = m_sock->read(16);
-	if (ack != QByteArray(16, 0)) return false;
+	///* 收 16 字节 */
+	//if (!recvExact(16)) return false;
+	//QByteArray ack = m_sock->read(16);
+	//if (ack != QByteArray(16, 0)) return false;
 
-	/* 第二次握手：Command Frame */
-	struct {
-		uchar  header[4] = { 0x46,0x49,0x4E,0x53 }; // "FINS"
-		uint32_t len = qToBigEndian(quint32(12)); // 后面 12 字节
-		uint32_t cmd = qToBigEndian(quint32(0x00000000)); // Client connect
-		uint32_t err = qToBigEndian(quint32(0x00000000));
-		uint32_t clientNA = qToBigEndian(quint32(0x00000000)); // 可先填 0，让 PLC 分配
-	} cmdFrame;
+	///* 第二次握手：Command Frame */
+	//struct {
+	//	uchar  header[4] = { 0x46,0x49,0x4E,0x53 }; // "FINS"
+	//	uint32_t len = qToBigEndian(quint32(12)); // 后面 12 字节
+	//	uint32_t cmd = qToBigEndian(quint32(0x00000000)); // Client connect
+	//	uint32_t err = qToBigEndian(quint32(0x00000000));
+	//	uint32_t clientNA = qToBigEndian(quint32(0x00000000)); // 可先填 0，让 PLC 分配
+	//} cmdFrame;
 
-	if (m_sock->write(reinterpret_cast<const char*>(&cmdFrame), sizeof(cmdFrame)) != sizeof(cmdFrame))
-		return false;
-	if (!m_sock->waitForBytesWritten()) return false;
+	//if (m_sock->write(reinterpret_cast<const char*>(&cmdFrame), sizeof(cmdFrame)) != sizeof(cmdFrame))
+	//	return false;
+	//if (!m_sock->waitForBytesWritten()) return false;
 
-	/* 收 16 字节 Response Header */
-	if (!recvExact(16)) return false;
-	QByteArray respHdr = m_sock->read(16);
-	uint32_t respLen = qFromBigEndian<uint32_t>(reinterpret_cast<const uchar*>(respHdr.constData() + 4));
-	uint32_t respErr = qFromBigEndian<uint32_t>(reinterpret_cast<const uchar*>(respHdr.constData() + 8));
-	if (respErr != 0) {
-		qDebug() << "FINS/TCP connect error code" << Qt::hex << respErr;
-		return false;
-	}
+	///* 收 16 字节 Response Header */
+	//if (!recvExact(16)) return false;
+	//QByteArray respHdr = m_sock->read(16);
+	//uint32_t respLen = qFromBigEndian<uint32_t>(reinterpret_cast<const uchar*>(respHdr.constData() + 4));
+	//uint32_t respErr = qFromBigEndian<uint32_t>(reinterpret_cast<const uchar*>(respHdr.constData() + 8));
+	//if (respErr != 0) {
+	//	qDebug() << "FINS/TCP connect error code" << Qt::hex << respErr;
+	//	return false;
+	//}
 
-	/* 后面可能还有 12 字节 body，继续收 */
-	if (!recvExact(respLen - 4)) return false;
-	QByteArray respBody = m_sock->read(respLen - 4);
+	///* 后面可能还有 12 字节 body，继续收 */
+	//if (!recvExact(respLen - 4)) return false;
+	//QByteArray respBody = m_sock->read(respLen - 4);
 	/* 解析 respBody 里的 clientNA 等，略 */
 
-	return true;
+	return false;
 }
 bool CallOneTimes::disconnectPLC()
 {

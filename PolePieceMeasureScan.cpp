@@ -909,7 +909,7 @@ void PolePieceMeasureWin::on_btnDisConnectPLC_clicked()//PLC 断开
   bool s =  _callOneTimes->disconnectPLC();
   if (s)
   {
-     // ui->PLCConnectState->setText(QStringLiteral("unConnected")); 
+      ParamUi->PLCConnectState->setText(QStringLiteral("unConnected")); 
       InfoPLC.PLCConnectState = QStringLiteral("unConnected");
   }
   else
@@ -922,19 +922,19 @@ void PolePieceMeasureWin::on_btnConnectPLC_clicked()//PLC 连接
 {
     QString plcip = InfoPLC.PLC_IP; //ui->editPLCIP->text();
     int plcport = InfoPLC.PLC_PORT.toInt();
-    bool state = _callOneTimes->connectPLC(plcip, plcport);
-    if (state)
-    {
-        InfoPLC.PLCConnectState = QStringLiteral("Connected");
-        //ui->PLCConnectState->setText(QStringLiteral("Connected"));
-        _callOneTimes->m_timer->start(400);   // 500 ms 周期
-    }
-    else
-    {
-        //ui->PLCConnectState->setText(QStringLiteral("unConnected"));
-        InfoPLC.PLCConnectState = QStringLiteral("unConnected");
+    bool state = false;
+    if (_callOneTimes->m_sock == nullptr)
+        _callOneTimes->m_sock=new QTcpSocket(this);
+        _callOneTimes->m_sock->connectToHost(plcip, plcport);
 
-    }
+        connect(_callOneTimes->m_sock, &QTcpSocket::connected, this, [this]() {
+            InfoPLC.PLCConnectState = QStringLiteral("Connected"); 
+            ParamUi->PLCConnectState->setText(QStringLiteral("Connected"));
+              });
+        connect(_callOneTimes->m_sock, &QTcpSocket::disconnected, this, [this]() {
+            ParamUi->PLCConnectState->setText(QStringLiteral("unConnected"));
+            InfoPLC.PLCConnectState = QStringLiteral("unConnected"); 
+              }); 
 }
 void PolePieceMeasureWin::on_btnWriteReister_clicked()//写入值
 {

@@ -168,7 +168,7 @@ public:
     /* 写 DM 区 */
     bool writeDM(int start, const QVector<quint16>& values);
     QTimer*  m_timer;
- private:
+ public:
     QByteArray makeHeader(int finsLen);
     QByteArray makeReadFrame(int start, int words);
     QByteArray makeWriteFrame(int start, const QVector<quint16>& values);
