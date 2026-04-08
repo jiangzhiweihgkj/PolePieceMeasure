@@ -371,6 +371,8 @@ private:
          QString editAngle;//识别角度(°)：
          QString editEdge;//底点位置阈值(%)：
          QString editCheckThreshold;//底点位置阈值(%)：
+         QString editRadius;//左肩点斜率控制：
+         QString editTorlance;//右肩点斜率控制：
          
          QString edit_Depth_A_Coefficient;//A面槽深系数
          QString edit_Width_A_Coefficient;//A面槽宽系数

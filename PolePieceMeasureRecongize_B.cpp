@@ -220,8 +220,8 @@ PolePieceMeasureWin::ThreePoint  PolePieceMeasureWin::singleRecongize_B(std::vec
 			//屏蔽掉  后面会算一遍   粗定位先不算了
 			double width_B = pointDistance(single_threePoint_B.leftShoulder, single_threePoint_B.rightShoulder);
 			double depth_B = pointToLineDistance3D(single_threePoint_B.leftShoulder, single_threePoint_B.rightShoulder, single_threePoint_B.downShoulder);
-			width_B =1000 * width_B * InfoSuanFa.edit_Width_B_Coefficient.toFloat();
-			depth_B = 1000 * depth_B * InfoSuanFa.edit_Depth_B_Coefficient.toFloat();
+			width_B =1000 * width_B + InfoSuanFa.edit_Width_B_Coefficient.toFloat();
+			depth_B = 1000 * depth_B + InfoSuanFa.edit_Depth_B_Coefficient.toFloat();
 			Calucate_Width_Depth_B.m_width.push_back(width_B);
 			Calucate_Width_Depth_B.m_depth.push_back(depth_B);
 			_callOneTimes->success_B = true;

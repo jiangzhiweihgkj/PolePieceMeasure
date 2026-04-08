@@ -901,6 +901,8 @@ void PolePieceMeasureWin::initIniSettingParam()//加载设置参数
     ParamUi->edit_Depth_B_Coefficient->setText(ini.value(QStringLiteral("SettingParam/edit_Depth_B_Coefficient")).toString());
     ParamUi->edit_Width_B_Coefficient->setText(ini.value(QStringLiteral("SettingParam/edit_Width_B_Coefficient")).toString());
     ParamUi->editCloudShowDis->setText(ini.value(QStringLiteral("SettingParam/editCloudShowDis")).toString());
+    ParamUi->editRadius->setText(ini.value(QStringLiteral("SettingParam/editRadius")).toString());//左肩点斜率控制
+    ParamUi->editTorlance->setText(ini.value(QStringLiteral("SettingParam/editTorlance")).toString());//右肩点斜率控制
 
     DataExcelUi->editPath_A->setText(ini.value(QStringLiteral("SettingParam/editPath_A")).toString());
     DataExcelUi->editPath_B->setText(ini.value(QStringLiteral("SettingParam/editPath_B")).toString());
@@ -972,6 +974,11 @@ void PolePieceMeasureWin::destroySettingParam()//保存设置参数
     ini.setValue(QStringLiteral("SettingParam/editCloudShowDis"), ParamUi->editCloudShowDis->text());
     ini.setValue(QStringLiteral("SettingParam/editPath_A"), DataExcelUi->editPath_A->text());
     ini.setValue(QStringLiteral("SettingParam/editPath_B"), DataExcelUi->editPath_B->text());
+    ini.setValue(QStringLiteral("SettingParam/editRadius"), ParamUi->editRadius->text());//左肩点斜率
+    ini.setValue(QStringLiteral("SettingParam/editTorlance"), ParamUi->editTorlance->text());//右肩点斜率
+
+    InfoSuanFa.editRadius = ParamUi->editRadius->text();
+    InfoSuanFa.editTorlance = ParamUi->editTorlance->text();
 
     InfoCamera.Camra_A_IP = ParamUi->editCameraIP->text();
     InfoCamera.Camra_B_IP = ParamUi->editCameraIP_B->text();

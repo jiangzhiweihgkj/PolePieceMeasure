@@ -990,8 +990,8 @@ PolePieceMeasureWin::ThreePoint PolePieceMeasureWin::singleRecongize(std::vector
 			//屏蔽掉  后面会算一遍   粗定位先不算了
 			double width = pointDistance1(single_threePoint.leftShoulder, single_threePoint.rightShoulder);
 			double depth = pointToLineDistance3D1(single_threePoint.leftShoulder, single_threePoint.rightShoulder, single_threePoint.downShoulder);
-			width=1000* width*InfoSuanFa.edit_Width_A_Coefficient.toFloat();
-			depth =1000* depth* InfoSuanFa.edit_Depth_A_Coefficient.toFloat();
+			width=1000* width+InfoSuanFa.edit_Width_A_Coefficient.toFloat();
+			depth =1000* depth+ InfoSuanFa.edit_Depth_A_Coefficient.toFloat();
  			Calucate_Width_Depth.m_width.push_back(width);
 			Calucate_Width_Depth.m_depth.push_back(depth);
 			_callOneTimes->success = true;

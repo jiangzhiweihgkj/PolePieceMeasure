@@ -7,6 +7,9 @@
 
     QString text;
     switch (type) {
+    case QtInfoMsg:
+        text = QString("Info:");
+        break;
         if (type!= QtInfoMsg)
         {
     default:
@@ -24,9 +27,7 @@
     case QtFatalMsg:
         text = QString("Fatal:");
         break;*/
-    case QtInfoMsg:
-        text = QString("Info:");
-        break;
+   
     }
     // QString context_info = context.line;
     QString current_date_time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm ddd");
@@ -60,8 +61,6 @@ PolePieceMeasureWin::PolePieceMeasureWin(QWidget *parent)
 {
     ui->setupUi(this);
     InitScanTab(); initIniSettingParam(); iniSettingParam(); 
-    
-
     {
       QString fileName1 = QCoreApplication::applicationDirPath() + "/icon/ctrl.png";
       ui->btnCameraA->setIcon(QIcon(fileName1));   // 注意冒号+前缀
