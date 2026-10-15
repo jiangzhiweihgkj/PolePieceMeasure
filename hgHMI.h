@@ -794,6 +794,98 @@ private:
     void erasePoints(const QPointF& pos);
 };
 
+// ********** hgHMI_labelLED 控件（圆形指示灯控件） **********
+class hgHMI_labelLED : public QLabel
+{
+    Q_OBJECT
+        Q_PROPERTY(QColor ledColor READ ledColor WRITE setLedColor)
+        Q_PROPERTY(int ledSize READ ledSize WRITE setLedSize)
+        Q_PROPERTY(bool ledOn READ isLedOn WRITE setLedOn)
+
+public:
+    explicit hgHMI_labelLED(QWidget* parent = nullptr);
+    explicit hgHMI_labelLED(const QColor& color, int size = 16, QWidget* parent = nullptr);
+    explicit hgHMI_labelLED(const QString& colorName, int size = 16, QWidget* parent = nullptr);
+    ~hgHMI_labelLED() = default;
+
+    // 设置指示灯颜色
+    void setLedColor(const QColor& color);
+    void setLedColor(const QString& colorName);
+    QColor ledColor() const { return m_color; }
+
+    // 设置指示灯大小
+    void setLedSize(int size);
+    int ledSize() const { return m_size; }
+
+    // 设置开关状态
+    void setLedOn(bool on);
+    bool isLedOn() const { return m_isOn; }
+
+    // 切换开关状态
+    void toggle();
+
+    // 设置亮起和熄灭颜色
+    void setOnColor(const QColor& color);
+    void setOffColor(const QColor& color);
+    QColor onColor() const { return m_onColor; }
+    QColor offColor() const { return m_offColor; }
+
+    // 设置边框
+    void setBorderEnabled(bool enabled);
+    void setBorderWidth(int width);
+    void setBorderColor(const QColor& color);
+    void setAutoBorderColor(bool autoColor);  // 新增：是否自动根据LED颜色设置边框颜色
+
+    // 设置阴影效果
+    void setShadowEnabled(bool enabled);
+
+    // 设置闪烁效果
+    void setBlinking(bool blinking, int intervalMs = 500);
+    bool isBlinking() const { return m_blinking; }
+
+    // 设置透明度
+    void setOpacity(qreal opacity);
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+
+private Q_SLOTS:
+    void onBlinkTimeout();
+
+private:
+    void updateStyleSheet();
+    void generateStyleSheet();
+    void startBlinkTimer();
+    void stopBlinkTimer();
+    void updateBorderColor();  // 新增：更新边框颜色
+
+private:
+    QColor m_color;           // 当前显示颜色
+    QColor m_onColor;         // 亮起颜色
+    QColor m_offColor;        // 熄灭颜色
+    int m_size;               // 指示灯直径
+    bool m_isOn;              // 当前状态
+    bool m_ledState;          // LED 显示状态（用于闪烁）
+
+    // 边框设置
+    bool m_borderEnabled;
+    int m_borderWidth;
+    QColor m_borderColor;
+    bool m_autoBorderColor;   // 新增：是否自动根据LED颜色设置边框
+
+    // 阴影效果
+    bool m_shadowEnabled;
+
+    // 闪烁效果
+    bool m_blinking;
+    int m_blinkInterval;
+    QTimer* m_blinkTimer;
+
+    // 缓存的样式表
+    QString m_cachedStyleSheet;
+};
+
 // ********** hgHMI_PointCloud2DView 控件（点云XZ平面视图显示控件） **********
 struct CustomPoint {
     QPointF pos;

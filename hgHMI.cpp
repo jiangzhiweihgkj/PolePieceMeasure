@@ -4571,3 +4571,332 @@ void hgHMI_PointCloud2DView::mouseReleaseEvent(QMouseEvent* event)
 }
 
  
+//////////////////////////////////////////////////////////////
+/// hgHMI_labelLED
+/// 圆形指示灯控件，支持颜色设置、闪烁、边框、阴影等效果
+///
+/// 特点：
+/// - 圆形 LED 指示灯效果
+/// - 支持亮起和熄灭两种颜色
+/// - 支持闪烁动画效果
+/// - 支持边框自动跟随LED颜色
+/// - 支持阴影和透明度
+///
+/// 使用方法：
+/// 1. 直接创建或通过提升方式使用
+/// 2. setLedColor() 设置颜色
+/// 3. setLedOn() 控制亮灭
+/// 4. setBlinking() 开启闪烁
+/// 5. setAutoBorderColor(true) 启用边框自动跟随颜色
+///
+/// 示例：
+// hgHMI_labelLED* led = new hgHMI_labelLED(this);
+// led->setOnColor(Qt::green);
+// led->setOffColor(Qt::red);
+// led->setLedSize(20);
+// led->setBorderEnabled(true);
+// led->setAutoBorderColor(true);  // 边框自动匹配LED颜色
+// led->setLedOn(true);  // 绿色灯+绿色边框
+// led->setLedOn(false); // 红色灯+红色边框
+///
+//////////////////////////////////////////////////////////////
+hgHMI_labelLED::hgHMI_labelLED(QWidget* parent)
+    : QLabel(parent)
+    , m_onColor(Qt::green)
+    , m_offColor(QColor(120, 120, 120))
+    , m_size(16)
+    , m_isOn(true)
+    , m_ledState(true)
+    , m_borderEnabled(false)
+    , m_borderWidth(1)
+    , m_borderColor(QColor(80, 80, 80))
+    , m_autoBorderColor(false)  // 默认不自动匹配
+    , m_shadowEnabled(false)
+    , m_blinking(false)
+    , m_blinkInterval(500)
+    , m_blinkTimer(nullptr)
+{
+    setFixedSize(m_size, m_size);
+    setAlignment(Qt::AlignCenter);
+    setText(QStringLiteral(""));
+
+    m_color = m_onColor;
+    updateStyleSheet();
+}
+
+hgHMI_labelLED::hgHMI_labelLED(const QColor& color, int size, QWidget* parent)
+    : hgHMI_labelLED(parent)
+{
+    m_onColor = color;
+    m_offColor = color.darker(150);
+    m_size = size;
+    setFixedSize(m_size, m_size);
+    m_color = m_onColor;
+    updateStyleSheet();
+}
+
+hgHMI_labelLED::hgHMI_labelLED(const QString& colorName, int size, QWidget* parent)
+    : hgHMI_labelLED(QColor(colorName), size, parent)
+{
+}
+
+void hgHMI_labelLED::setLedColor(const QColor& color)
+{
+    m_onColor = color;
+    if (m_isOn && !m_blinking) {
+        m_color = m_onColor;
+        updateStyleSheet();
+        if (m_autoBorderColor) updateBorderColor();
+    }
+}
+
+void hgHMI_labelLED::setLedColor(const QString& colorName)
+{
+    setLedColor(QColor(colorName));
+}
+
+void hgHMI_labelLED::setLedSize(int size)
+{
+    if (size <= 0) return;
+    m_size = size;
+    setFixedSize(m_size, m_size);
+    updateStyleSheet();
+}
+
+void hgHMI_labelLED::setLedOn(bool on)
+{
+    if (m_isOn == on) return;
+    m_isOn = on;
+    m_ledState = on;
+
+    if (!m_blinking) {
+        m_color = m_isOn ? m_onColor : m_offColor;
+        updateStyleSheet();
+        if (m_autoBorderColor) updateBorderColor();
+    }
+}
+
+void hgHMI_labelLED::toggle()
+{
+    setLedOn(!m_isOn);
+}
+
+void hgHMI_labelLED::setOnColor(const QColor& color)
+{
+    m_onColor = color;
+    if (m_isOn && !m_blinking) {
+        m_color = m_onColor;
+        updateStyleSheet();
+        if (m_autoBorderColor) updateBorderColor();
+    }
+}
+
+void hgHMI_labelLED::setOffColor(const QColor& color)
+{
+    m_offColor = color;
+    if (!m_isOn && !m_blinking) {
+        m_color = m_offColor;
+        updateStyleSheet();
+        if (m_autoBorderColor) updateBorderColor();
+    }
+}
+
+void hgHMI_labelLED::setBorderEnabled(bool enabled)
+{
+    m_borderEnabled = enabled;
+    updateStyleSheet();
+}
+
+void hgHMI_labelLED::setBorderWidth(int width)
+{
+    if (width < 0) return;
+    m_borderWidth = width;
+    updateStyleSheet();
+}
+
+void hgHMI_labelLED::setBorderColor(const QColor& color)
+{
+    m_borderColor = color;
+    m_autoBorderColor = false;  // 手动设置边框颜色时，关闭自动匹配
+    updateStyleSheet();
+}
+
+void hgHMI_labelLED::setAutoBorderColor(bool autoColor)
+{
+    m_autoBorderColor = autoColor;
+    if (m_autoBorderColor) {
+        updateBorderColor();
+    }
+}
+
+void hgHMI_labelLED::setShadowEnabled(bool enabled)
+{
+    m_shadowEnabled = enabled;
+    update();
+}
+
+void hgHMI_labelLED::setBlinking(bool blinking, int intervalMs)
+{
+    if (m_blinking == blinking && m_blinkInterval == intervalMs) return;
+
+    m_blinking = blinking;
+    m_blinkInterval = intervalMs;
+
+    if (m_blinking) {
+        startBlinkTimer();
+    }
+    else {
+        stopBlinkTimer();
+        m_ledState = m_isOn;
+        m_color = m_isOn ? m_onColor : m_offColor;
+        update();
+        if (m_autoBorderColor) updateBorderColor();
+    }
+}
+
+void hgHMI_labelLED::setOpacity(qreal opacity)
+{
+    QGraphicsOpacityEffect* effect = new QGraphicsOpacityEffect(this);
+    effect->setOpacity(opacity);
+    setGraphicsEffect(effect);
+}
+
+void hgHMI_labelLED::paintEvent(QPaintEvent* event)
+{
+    Q_UNUSED(event)
+        QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QRectF rect(0, 0, width(), height());
+    QRectF innerRect = rect.adjusted(m_borderWidth, m_borderWidth, -m_borderWidth, -m_borderWidth);
+
+    // 确保内圈有效
+    if (innerRect.width() <= 0 || innerRect.height() <= 0) {
+        innerRect = rect;
+    }
+
+    // 绘制阴影
+    if (m_shadowEnabled && !m_blinking) {
+        painter.save();
+        QRectF shadowRect = rect.adjusted(1, 1, 1, 1);
+        painter.setBrush(QColor(0, 0, 0, 50));
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(shadowRect);
+        painter.restore();
+    }
+
+    // 绘制边框（如果启用自动边框，边框颜色已经通过 updateBorderColor 更新）
+    if (m_borderEnabled) {
+        QPen pen(m_borderColor);
+        pen.setWidth(m_borderWidth);
+        painter.setPen(pen);
+    }
+    else {
+        painter.setPen(Qt::NoPen);
+    }
+
+    // 绘制指示灯主体
+    painter.setBrush(m_color);
+    painter.drawEllipse(innerRect);
+
+    // 添加高光效果（只在 LED 实际点亮时）
+    if (m_ledState) {
+        painter.save();
+        // 高光区域：圆心偏左上方的亮斑
+        QPointF highlightCenter = innerRect.center() - QPointF(innerRect.width() / 6, innerRect.height() / 6);
+        QRadialGradient gradient(highlightCenter, innerRect.width() / 3);
+        gradient.setColorAt(0, QColor(255, 255, 255, 120));
+        gradient.setColorAt(0.5, QColor(255, 255, 255, 40));
+        gradient.setColorAt(1, QColor(255, 255, 255, 0));
+        painter.setBrush(gradient);
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(innerRect);
+        painter.restore();
+    }
+}
+
+void hgHMI_labelLED::resizeEvent(QResizeEvent* event)
+{
+    QLabel::resizeEvent(event);
+    updateStyleSheet();
+}
+
+void hgHMI_labelLED::onBlinkTimeout()
+{
+    if (!m_blinking) return;
+
+    m_ledState = !m_ledState;
+    m_color = m_ledState ? m_onColor : m_offColor;
+    update();
+
+    // 闪烁时自动更新边框颜色
+    if (m_autoBorderColor) {
+        updateBorderColor();
+    }
+}
+
+void hgHMI_labelLED::updateStyleSheet()
+{
+    generateStyleSheet();
+    setStyleSheet(m_cachedStyleSheet);
+}
+
+void hgHMI_labelLED::generateStyleSheet()
+{
+    int radius = m_size / 2;
+
+    QString borderStyle;
+    if (m_borderEnabled) {
+        borderStyle = QStringLiteral("border: %1px solid %2;")
+            .arg(m_borderWidth)
+            .arg(m_borderColor.name());
+    }
+    else {
+        borderStyle = QStringLiteral("border: none;");
+    }
+
+    m_cachedStyleSheet = QStringLiteral(
+        "background-color: %1;"
+        "border-radius: %2px;"
+        "%3"
+    ).arg(m_color.name())
+        .arg(radius)
+        .arg(borderStyle);
+}
+
+void hgHMI_labelLED::startBlinkTimer()
+{
+    if (m_blinkTimer) {
+        m_blinkTimer->stop();
+        delete m_blinkTimer;
+        m_blinkTimer = nullptr;
+    }
+
+    m_blinkTimer = new QTimer(this);
+    connect(m_blinkTimer, &QTimer::timeout, this, &hgHMI_labelLED::onBlinkTimeout);
+    m_blinkTimer->start(m_blinkInterval);
+}
+
+void hgHMI_labelLED::stopBlinkTimer()
+{
+    if (m_blinkTimer) {
+        m_blinkTimer->stop();
+        delete m_blinkTimer;
+        m_blinkTimer = nullptr;
+    }
+}
+
+void hgHMI_labelLED::updateBorderColor()
+{
+    if (!m_autoBorderColor) return;
+
+    // 根据当前 LED 颜色设置边框颜色
+    // 边框颜色比 LED 颜色稍暗，增加立体感
+    QColor borderColor = m_color.darker(120);
+    m_borderColor = borderColor;
+
+    // 重新生成样式表
+    if (m_borderEnabled) {
+        updateStyleSheet();
+    }
+}

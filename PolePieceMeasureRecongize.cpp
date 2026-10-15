@@ -37,7 +37,7 @@ void PolePieceMeasureWin::on_btnLoadCloud_clicked()
 	// 检查文件加载是否成功
 	if (result != 0)
 	{
-		QMessageBox::critical(this, tr("Error"), tr("无法打开点云文件（路径需要全英文）"));
+		QMessageBox::critical(this, QStringLiteral("Error"), QStringLiteral("无法打开点云文件（路径需要全英文）"));
 		return;
 	}
 	source_cloud = cloud;
@@ -58,12 +58,16 @@ void PolePieceMeasureWin::on_btnLoadCloud_clicked()
 	ui->tableFrame->setRowCount(0);    // 设置为0行，彻底清空内容，表头依然会显示
 	if (ui->checkbox_roi->isChecked())
 	{
-		updateViewer(roi_cloud); 
+		ui->openGLWidget_Result->showPointCloud(roi_cloud);
+		//updateViewer(roi_cloud); 
 	}
 	else
 	{
-		updateViewer(source_cloud);
+		//updateViewer(source_cloud);
+		ui->openGLWidget_Result->showPointCloud(source_cloud);
 	}
+	source_separate_clouds = separateCloud(source_cloud);
+
 	if (ui->checkBox_auto->isChecked())
 	{
 		on_btnebug_clicked();
@@ -84,11 +88,13 @@ void  PolePieceMeasureWin::onslotReceiveCloud()
 	Init_Clear();
 	source_cloud.reset(new pcl::PointCloud<pcl::PointXYZ>);
 	source_cloud->clear(); separate_clouds.clear();
+	 source_separate_clouds.clear();
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
 	cloud = _callOneTimes->cloudsResultDeal;
 	source_cloud = cloud;
 	separate_clouds = separateCloud(source_cloud);
+	source_separate_clouds = separateCloud(source_cloud);
 	 
 	roi_cloud = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>);
 	 
@@ -103,9 +109,11 @@ void  PolePieceMeasureWin::onslotReceiveCloud()
 
 void PolePieceMeasureWin::on_btnebug_clicked()//debug
 {
+	/* ui->openGLWidget_Result->setCameraUpVector(0, 1, 0);;
+	return;*/
 	if (source_cloud->points.empty())
 	{
-		QMessageBox::warning(this, tr("Warning"), tr("Please load a point cloud A."));
+		QMessageBox::warning(this, QStringLiteral("Warning"), QStringLiteral("请加载点云A"));
 		return;
 	}
 	iniSettingParam();
@@ -988,12 +996,12 @@ PolePieceMeasureWin::ThreePoint PolePieceMeasureWin::singleRecongize(std::vector
 		{
 			vectorThreePoints = single_threePoint;
 			//屏蔽掉  后面会算一遍   粗定位先不算了
-			double width = pointDistance1(single_threePoint.leftShoulder, single_threePoint.rightShoulder);
+			/*double width = pointDistance1(single_threePoint.leftShoulder, single_threePoint.rightShoulder);
 			double depth = pointToLineDistance3D1(single_threePoint.leftShoulder, single_threePoint.rightShoulder, single_threePoint.downShoulder);
 			width=1000* width+InfoSuanFa.edit_Width_A_Coefficient.toFloat();
 			depth =1000* depth+ InfoSuanFa.edit_Depth_A_Coefficient.toFloat();
  			Calucate_Width_Depth.m_width.push_back(width);
-			Calucate_Width_Depth.m_depth.push_back(depth);
+			Calucate_Width_Depth.m_depth.push_back(depth);*/
 			_callOneTimes->success = true;
 			break; //找到了就跳出循环
 		}
@@ -1102,13 +1110,19 @@ std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> PolePieceMeasureWin::separateCl
 		pinghua_cloud->height = 1;
 		pinghua_cloud->is_dense = true;
 		nihe_cloud = nihe_Roate(pinghua_cloud);*/
-		std::vector< pcl::PointCloud<pcl::PointXYZ>::Ptr> nine_jie;
+		std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> nine_jie;
 		nine_jie.clear();
-		nine_jie = NineJie(multifyCloud[i]);//一帧分9块
-		 PolePieceMeasureWin::ThreePoint single_threePoint = singleRecongize(nine_jie, pinghuaxishu);//单帧识别
+		nine_jie = NineJie(multifyCloud[i]);//一帧分3块
+		 
+		 //PolePieceMeasureWin::ThreePoint single_threePoint = singleRecongize(nine_jie, pinghuaxishu);//单帧识别
+		 // 原错误代码：
+// PolePieceMeasureWin::ThreePoint single_threePoint = singleRecongize(multifyCloud[i], pinghuaxishu);//单帧识别
+
+// 修正方式：将 multifyCloud[i] 包装为 vector 传递
+		 PolePieceMeasureWin::ThreePoint single_threePoint = singleRecongize(std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr>{multifyCloud[i]}, pinghuaxishu);//单帧识别
 		 if (_callOneTimes->success) 
 		 { 
-			 //if (i == 118)
+			 //if (i == 118)//D:\project\PolePieceMeasure\PolePieceMeasureWin\x64\Debug\ply\HG260114163130\pointCloud
 			// {
 			//	 int a = 2;
 			// }
@@ -1229,7 +1243,12 @@ std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> PolePieceMeasureWin::separateCl
 			single_threePoint.rightShoulder = separate_clouds[i]->points[min_right_index];
 			single_threePoint.downShoulder = single_threePoint.downShoulder;
 			vectorThreePoints.push_back(single_threePoint);
-
+			double width = pointDistance(single_threePoint.leftShoulder, single_threePoint.rightShoulder);
+			double depth = pointToLineDistance3D(single_threePoint.leftShoulder, single_threePoint.rightShoulder, single_threePoint.downShoulder);
+			width = 1000 * width + InfoSuanFa.edit_Width_A_Coefficient.toFloat();
+			depth = 1000 * depth + InfoSuanFa.edit_Depth_A_Coefficient.toFloat();
+			Calucate_Width_Depth.m_width.push_back(width);
+			Calucate_Width_Depth.m_depth.push_back(depth);
 			//double width = pointDistance(single_threePoint.leftShoulder, single_threePoint.rightShoulder);
 			//double depth = pointToLineDistance3D(single_threePoint.leftShoulder, single_threePoint.rightShoulder, single_threePoint.downShoulder);
 
@@ -1468,11 +1487,23 @@ void PolePieceMeasureWin::Result_A_Show()//结果显示
 	{
 		ui->Result_A->setText("OK"); 
 		ui->Result_A->setStyleSheet("color: rgb(0,255,0);");     // 绿色
+		QString path = CreateOkNgTimeDir(ParamUi->editOutPath->text(), true) + "/OK.ply";
+		int result = pcl::io::savePLYFileBinary(path.toStdString(), *source_cloud);
+		if (result != 0)
+		{
+			RecordData(QStringLiteral("OK点云保存失败"), 2);
+		}
 	}
 	else
 	{ 
 		ui->Result_A->setText("NG"); 
 		ui->Result_A->setStyleSheet("color: rgb(255,0,0);");          // 红色 
+		QString path = CreateOkNgTimeDir(ParamUi->editOutPath->text(), false)+"/NG.ply";//创建 年月日/OK|NG/时刻 目录;//创建 年月日/OK|NG/时刻 目录
+		int result = pcl::io::savePLYFileBinary(path.toStdString(), *source_cloud);
+		if (result != 0)
+		{
+			RecordData(QStringLiteral("NG点云保存失败"), 2);
+		}
 	}
 	//// 添加自定义点，颜色绿色，半径8
 	//QVector<QPointF> customPts;
@@ -1497,7 +1528,7 @@ void PolePieceMeasureWin::Result_A_Show()//结果显示
 	slice->height = 1;
 	slice->is_dense = separate_clouds[ID_SELECT[idx_max]]->is_dense;
 	ui->Single_A_PointShow->addCustomPoints(customPts, Qt::green, 5);
-	ui->Single_A_PointShow->addCustomPoints(customPts_bottom, Qt::red, 5); 
+	ui->Single_A_PointShow->addCustomPoints(customPts_bottom, Qt::red, 5);
 	ui->Single_A_PointShow->setPointCloud(slice);
 	//ui->Single_A_PointShow->setPointCloud(showResultPoint[0]);
 }

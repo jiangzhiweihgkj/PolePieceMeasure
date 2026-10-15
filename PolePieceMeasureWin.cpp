@@ -285,15 +285,128 @@ PolePieceMeasureWin::PolePieceMeasureWin(QWidget *parent)
      ui->openGLWidget_Result_B->setAxesShowLabels(true);
      viewer = ui->openGLWidget_Result->m_viewer; 
      viewer_B = ui->openGLWidget_Result_B->m_viewer; 
- 
+
+     // 设置hgHMI_PCLViewerWidget的点拾取回调
+     ui->openGLWidget_Result->setPointPickCallback([this](double x, double y, double z) {
+
+         if (!std::isnan(x) && !std::isnan(y) && !std::isnan(z))
+         {
+             ui->openGLWidget_Result->setPickSphereSize(true, 0.001);
+             QString msg = QStringLiteral("A拾取点坐标: x=%1, y=%2, z=%3")
+                 .arg(x, 0, 'f', 6)
+                 .arg(y, 0, 'f', 6)
+                 .arg(z, 0, 'f', 6);
+             RecordData(msg);
+         }
+         else { // 点击外部空白区域，清空拾取球
+             ui->openGLWidget_Result->setPickSphereSize(true, 0.0);// 隐藏左键拾取球
+             ui->openGLWidget_Result->setPickSphereSize(false, 0.0);// 隐藏右键拾取球
+             RecordData(QStringLiteral("清除A拾取球显示"));
+         }
+         });
+     ui->openGLWidget_Result->setDistancePickCallback([this](double x1, double y1, double z1,
+         double x2, double y2, double z2,
+         double dist) {
+             if (!std::isnan(dist)) {
+                 ui->openGLWidget_Result->setPickSphereSize(false, 0.001);
+                 RecordData(QStringLiteral("A两点距离为: %1 mm").arg(dist));
+             }
+         });
+     // 设置hgHMI_PCLViewerWidget_B的点拾取回调
+     ui->openGLWidget_Result_B->setPointPickCallback([this](double x, double y, double z) {
+
+         if (!std::isnan(x) && !std::isnan(y) && !std::isnan(z))
+         {
+             ui->openGLWidget_Result_B->setPickSphereSize(true, 0.001);
+             QString msg = QStringLiteral("B拾取点坐标: x=%1, y=%2, z=%3")
+                 .arg(x, 0, 'f', 6)
+                 .arg(y, 0, 'f', 6)
+                 .arg(z, 0, 'f', 6);
+             RecordData(msg);
+         }
+         else { // 点击外部空白区域，清空拾取球
+             ui->openGLWidget_Result_B->setPickSphereSize(true, 0.0);// 隐藏左键拾取球
+             ui->openGLWidget_Result_B->setPickSphereSize(false, 0.0);// 隐藏右键拾取球
+             RecordData(QStringLiteral("清除B拾取球显示"));
+         }
+         });
+     ui->openGLWidget_Result_B->setDistancePickCallback([this](double x1, double y1, double z1,
+         double x2, double y2, double z2,
+         double dist) {
+             if (!std::isnan(dist)) {
+                 ui->openGLWidget_Result_B->setPickSphereSize(false, 0.001);
+                 RecordData(QStringLiteral("B两点距离为: %1 mm").arg(dist));
+             }
+         }); 
+     // 设置状态栏样式
+     statusBar()->setStyleSheet(QStringLiteral("QStatusBar::item {border: none;}"));
+
+     // 创建左侧状态容器
+     QWidget* leftContainer = new QWidget(this);
+     QHBoxLayout* leftLayout = new QHBoxLayout(leftContainer);
+     leftLayout->setContentsMargins(0, 0, 0, 0);
+     leftLayout->setSpacing(15);
+
+     // 添加相机标签和指示灯
+     leftLayout->addWidget(new QLabel(QStringLiteral("  相机A"), this));
+     labelledCAM_A = new hgHMI_labelLED(this);
+     labelledCAM_A->setOnColor(Qt::green);
+     labelledCAM_A->setOffColor(Qt::red);
+     labelledCAM_A->setLedSize(16);
+     labelledCAM_A->setBorderEnabled(true);
+     labelledCAM_A->setBorderWidth(2);
+     labelledCAM_A->setAutoBorderColor(true);
+     labelledCAM_A->setLedOn(false);
+     leftLayout->addWidget(labelledCAM_A);
+     // 添加相机标签和指示灯
+     leftLayout->addWidget(new QLabel(QStringLiteral("  相机B"), this));
+     labelledCAM_B = new hgHMI_labelLED(this);
+     labelledCAM_B->setOnColor(Qt::green);
+     labelledCAM_B->setOffColor(Qt::red);
+     labelledCAM_B->setLedSize(16);
+     labelledCAM_B->setBorderEnabled(true);
+     labelledCAM_B->setBorderWidth(2);
+     labelledCAM_B->setAutoBorderColor(true);
+     labelledCAM_B->setLedOn(false);
+     leftLayout->addWidget(labelledCAM_B);
+
+     // 添加HMI标签和指示灯
+     leftLayout->addWidget(new QLabel(QStringLiteral("HMI"), this));
+     labelledHMI = new hgHMI_labelLED(this);
+     labelledHMI->setOnColor(Qt::green);
+     labelledHMI->setOffColor(Qt::red);
+     labelledHMI->setLedSize(16);
+     labelledHMI->setBorderEnabled(true);
+     labelledHMI->setBorderWidth(2);
+     labelledHMI->setAutoBorderColor(true);
+     labelledHMI->setLedOn(false);
+     leftLayout->addWidget(labelledHMI); 
+     // 添加HMI标签和指示灯
+     leftLayout->addWidget(new QLabel(QStringLiteral("PLC"), this));
+     labelledPLC = new hgHMI_labelLED(this);
+     labelledPLC->setOnColor(Qt::green);
+     labelledPLC->setOffColor(Qt::red);
+     labelledPLC->setLedSize(16);
+     labelledPLC->setBorderEnabled(true);
+     labelledPLC->setBorderWidth(2);
+     labelledPLC->setAutoBorderColor(true);
+     labelledPLC->setLedOn(false);
+     leftLayout->addWidget(labelledPLC); 
+     // 添加到状态栏左侧
+     statusBar()->addPermanentWidget(leftContainer); 
+     // 添加弹簧（推动右侧内容）
+     statusBar()->addPermanentWidget(new QWidget(), 1);
+
+     deleteOldDateDir(ParamUi->editOutPath->text(), SaveCloudDays);//删除主文件夹下超过保存天数的年月日文件夹
+     deleteOldDateDir(ParamUi->editOutPath_Result->text(), SaveCloudDays_B);//删除主文件夹下超过保存天数的年月日文件夹->text(),SaveCloudDays);//删除主文件夹下超过保存天数的年月日文件夹
+
      }
 void PolePieceMeasureWin::closeEvent(QCloseEvent* event)
 {
     //日志初始化
-    auto temp = QMessageBox::information(this, "tooltip", tr("Save parameters upon closing?").toUtf8().constData(),
+    auto temp = QMessageBox::information(this, "tooltip", QStringLiteral("关闭软件是否保存已修改参数?"),
         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
     if (temp == QMessageBox::Yes) {
-
         DestroyScanTab();
         destroySettingParam();//保存设置参数
         event->accept();
@@ -423,6 +536,7 @@ void PolePieceMeasureWin::updateViewer(
     viewer->getRenderWindow()->Render(); 
 
 }
+
 void PolePieceMeasureWin::new_A_updateTable()
 {
     ui->tableFrame->clearContents();//清除内容但保留表头
@@ -444,150 +558,169 @@ void PolePieceMeasureWin::new_A_updateTable()
     }
     InitLineChartShow();
     num_measure_A++;
-    depth_data1.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_mean_depth, 'f', 4).toFloat()));
-    depth_data1_min.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_min_depth, 'f', 4).toFloat()));
-    depth_data1_max.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_max_depth, 'f', 4).toFloat()));
-    /*QVector<QPointF> depth_data1 = {
-         {1,QString::number(1.000*Calucate_Width_Depth.m_mean_depth, 'f', 2).toFloat()}, 
-         {2,QString::number(1.000 * Calucate_Width_Depth.m_depth[ID_SELECT[0]], 'f', 2).toFloat()},
-         {3,QString::number(1.000 * Calucate_Width_Depth.m_depth[ID_SELECT[1]], 'f', 2).toFloat()}, 
-         {4,QString::number(1.000 * Calucate_Width_Depth.m_depth[ID_SELECT[2]], 'f', 2).toFloat()}, 
-         {5,QString::number(1.000 * Calucate_Width_Depth.m_depth[ID_SELECT[3]], 'f', 2).toFloat()}
-    };*/
-    //计算CPK
-   
-    if (depth_data1.size() >=4)
-    {
-        double sx = 0, sy = 0;
-        for (const QPointF& p : depth_data1) { sx += p.x(); sy += p.y(); }
-        double n = depth_data1.size();
-        QPointF avg = QPointF(sx / n, sy / n);
+    //原始
+    //depth_data1.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_mean_depth, 'f', 4).toFloat()));
+    //depth_data1_min.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_min_depth, 'f', 4).toFloat()));
+    //depth_data1_max.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_max_depth, 'f', 4).toFloat()));  
+    ////计算CPK   
+    //if (depth_data1.size() >=4)
+    //{
+    //    double sx = 0, sy = 0;
+    //    for (const QPointF& p : depth_data1) { sx += p.x(); sy += p.y(); }
+    //    double n = depth_data1.size();
+    //    QPointF avg = QPointF(sx / n, sy / n);
+    //    SelectedData.meanDepth = avg.y();
+    //    // 一行 lambda 求 y 的标准差
+    //    SelectedData.standardDeviationDepth = [&] {
+    //        const int n = depth_data1.size();
+    //        if (n < 2) return 1000000.0;
+    //        double m = 0;
+    //        for (auto& p : depth_data1) m += p.y();
+    //        m /= n;
+    //        double var = 0;
+    //        for (auto& p : depth_data1)
+    //        {
+    //            double d = p.y() - m;
+    //            var += d * d;
+    //        }
+    //        return qSqrt(var / (n - 1));
+    //        }();
+    //    // 设置上下限值
+    //    double upperLimit = InfoSuanFa.editDetectedDepthMax.toDouble();
+    //    double lowerLimit = InfoSuanFa.editDetectedDepthMin.toDouble();
+    //    double cpu = (upperLimit - SelectedData.meanDepth) / (3 * SelectedData.standardDeviationDepth);
+    //    double cpl = (SelectedData.meanDepth - lowerLimit) / (3 * SelectedData.standardDeviationDepth);
+    //    auto min2_2dec = [](double a, double b) -> double {
+    //        return qRound(qMin(a, b) * 100) / 100.0;
+    //        };
+    //    SelectedData.Cpk_Depth = min2_2dec(cpu, cpl); // v == 2.72  
+    //    cpk_depth_data1.append(QPointF(num_measure_A, SelectedData.Cpk_Depth));
+    //}
+    //else
+    //{
+    //    cpk_depth_data1.clear();
+    //}
+    //if (cpk_depth_data1.size() > 4) {
+    //    cpk_depth_data1.removeFirst();          // 头部移除，O(n) 会移动数据
+    //}
+    //if (depth_data1.size() > 4) {
+    //    depth_data1.removeFirst();          // 头部移除，O(n) 会移动数据
+    //}
+    //if (depth_data1_min.size() > 4) {
+    //    depth_data1_min.removeFirst();          // 头部移除，O(n) 会移动数据
+    //}
+    //if (depth_data1_max.size() > 4) {
+    //    depth_data1_max.removeFirst();          // 头部移除，O(n) 会移动数据
+    //}  
+    //show_A_Depth_Line_Chart(depth_data1, cpk_depth_data1, depth_data1_min, depth_data1_max);
+    //width_data1.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_mean_width, 'f', 4).toFloat()));
+    //width_data1_min.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_min_width, 'f', 4).toFloat()));
+    //width_data1_max.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_max_width, 'f', 4).toFloat()));
+    //
+    //if (width_data1.size() >= 4)
+    //{
+    //    double sx = 0, sy = 0;
+    //    for (const QPointF& p : width_data1) { sx += p.x(); sy += p.y(); }
+    //    double n = width_data1.size();
+    //    QPointF avg = QPointF(sx / n, sy / n);
+    //    SelectedData.meanWidth = avg.y();
+    //    // 一行 lambda 求 y 的标准差
+    //    SelectedData.standardDeviationWidth = [&] {
+    //        const int n = width_data1.size();
+    //        if (n < 2) return 1000000.0;
+    //        double m = 0;
+    //        for (auto& p : width_data1) m += p.y();
+    //        m /= n;
+    //        double var = 0;
+    //        for (auto& p : width_data1)
+    //        {
+    //            double d = p.y() - m;
+    //            var += d * d;
+    //        }
+    //        return qSqrt(var / (n - 1));
+    //        }();
+    //    // 设置上下限值
+    //    double upperLimit = InfoSuanFa.editDetectedWidthMax.toDouble();
+    //    double lowerLimit = InfoSuanFa.editDetectedWidthMin.toDouble();
+    //    double cpu = (upperLimit - SelectedData.meanWidth) / (3 * SelectedData.standardDeviationWidth);
+    //    double cpl = (SelectedData.meanWidth - lowerLimit) / (3 * SelectedData.standardDeviationWidth);
+    //    auto min2_2dec = [](double a, double b) -> double {
+    //        return qRound(qMin(a, b) * 100) / 100.0;
+    //        };
+    //    SelectedData.Cpk_Width = min2_2dec(cpu, cpl); // v == 2.72  
+    //    cpk_width_data1.append(QPointF(num_measure_A, SelectedData.Cpk_Width));
+    //}
+    //else
+    //{
+    //    cpk_width_data1.clear();
+    //}
+    //if (cpk_width_data1.size() > 4) {
+    //    cpk_width_data1.removeFirst();          // 头部移除，O(n) 会移动数据
+    //}
+    //if (width_data1.size() > 4) {
+    //    width_data1.removeFirst();          // 头部移除，O(n) 会移动数据
+    //}
+    //if (width_data1_min.size() > 4) {
+    //    width_data1_min.removeFirst();          // 头部移除，O(n) 会移动数据
+    //}
+    //if (width_data1_max.size() > 4) {
+    //    width_data1_max.removeFirst();          // 头部移除，O(n) 会移动数据
+    //}  
+    //show_A_Width_Line_Chart(width_data1, cpk_width_data1, width_data1_min, width_data1_max);
+//替换
+// ============ 计算 CPK（深度） ============
+depth_data1.append(QPointF(num_measure_A,
+    QString::number(1.0 * Calucate_Width_Depth.m_mean_depth, 'f', 4).toFloat()));
+depth_data1_min.append(QPointF(num_measure_A,
+    QString::number(1.0 * Calucate_Width_Depth.m_min_depth, 'f', 4).toFloat()));
+depth_data1_max.append(QPointF(num_measure_A,
+    QString::number(1.0 * Calucate_Width_Depth.m_max_depth, 'f', 4).toFloat()));
 
-        SelectedData.meanDepth = avg.y();
+if (depth_data1.size() > CPK_STATS_MAX) depth_data1.removeFirst();
+if (depth_data1_min.size() > CPK_STATS_MAX) depth_data1_min.removeFirst();
+if (depth_data1_max.size() > CPK_STATS_MAX) depth_data1_max.removeFirst();
 
-        // 一行 lambda 求 y 的标准差
-        SelectedData.standardDeviationDepth = [&] {
-            const int n = depth_data1.size();
-            if (n < 2) return 1000000.0;
-            double m = 0;
-            for (auto& p : depth_data1) m += p.y();
-            m /= n;
-            double var = 0;
-            for (auto& p : depth_data1)
-            {
-                double d = p.y() - m;
-                var += d * d;
-            }
-            return qSqrt(var / (n - 1));
-            }();
+double usl_d = InfoSuanFa.editDetectedDepthMax.toDouble();   // 或 toDouble()
+double lsl_d = InfoSuanFa.editDetectedDepthMin.toDouble();
+double dMean = 0, dSig = 0, dCpk = 0;
+if (calcCpk(depth_data1, usl_d, lsl_d, dMean, dSig, dCpk)) {
+    SelectedData.meanDepth = dMean;
+    SelectedData.standardDeviationDepth = dSig;
+    SelectedData.Cpk_Depth = dCpk;
+    cpk_depth_data1.append(QPointF(num_measure_A, dCpk));
+}
+if (cpk_depth_data1.size() > CPK_STATS_MAX) cpk_depth_data1.removeFirst();
+show_A_Depth_Line_Chart(lastWindow(depth_data1), lastWindow(cpk_depth_data1),
+    lastWindow(depth_data1_min), lastWindow(depth_data1_max));
 
-        // 设置上下限值
-        double upperLimit = InfoSuanFa.editDetectedDepthMax.toDouble();
-        double lowerLimit = InfoSuanFa.editDetectedDepthMin.toDouble();
-        double cpu = (upperLimit - SelectedData.meanDepth) / (3 * SelectedData.standardDeviationDepth);
-        double cpl = (SelectedData.meanDepth - lowerLimit) / (3 * SelectedData.standardDeviationDepth);
-        auto min2_2dec = [](double a, double b) -> double {
-            return qRound(qMin(a, b) * 100) / 100.0;
-            };
+// ============ 计算 CPK（宽度） ============
+width_data1.append(QPointF(num_measure_A,
+    QString::number(1.0 * Calucate_Width_Depth.m_mean_width, 'f', 4).toFloat()));
+width_data1_min.append(QPointF(num_measure_A,
+    QString::number(1.0 * Calucate_Width_Depth.m_min_width, 'f', 4).toFloat()));
+width_data1_max.append(QPointF(num_measure_A,
+    QString::number(1.0 * Calucate_Width_Depth.m_max_width, 'f', 4).toFloat()));
 
-        SelectedData.Cpk_Depth = min2_2dec(cpu, cpl); // v == 2.72  
-        cpk_depth_data1.append(QPointF(num_measure_A, SelectedData.Cpk_Depth));
-    }
-    else
-    {
-        cpk_depth_data1.clear();
-    }
-    if (cpk_depth_data1.size() > 4) {
-        cpk_depth_data1.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (depth_data1.size() > 4) {
-        depth_data1.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (depth_data1_min.size() > 4) {
-        depth_data1_min.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (depth_data1_max.size() > 4) {
-        depth_data1_max.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
+if (width_data1.size() > CPK_STATS_MAX) width_data1.removeFirst();
+if (width_data1_min.size() > CPK_STATS_MAX) width_data1_min.removeFirst();
+if (width_data1_max.size() > CPK_STATS_MAX) width_data1_max.removeFirst();
 
-     //计算CPK
-   // depth_data1.append(QPointF(num_measure_A, QString::number(1000 * Calucate_Width_Depth.m_mean_depth, 'f', 4).toFloat()));
-    
-    /*QVector<QPointF> depth_data11 = {
-        {1,QString::number(1000 * Calucate_Width_Depth.m_mean_depth, 'f', 2).toFloat()},
-        {2,QString::number(1000 * Calucate_Width_Depth.m_depth[ID_SELECT[0]], 'f', 2).toFloat()},
-        {3,QString::number(1000 * Calucate_Width_Depth.m_depth[ID_SELECT[1]], 'f', 2).toFloat()},
-        {4,QString::number(1000 * Calucate_Width_Depth.m_depth[ID_SELECT[2]], 'f', 2).toFloat()},
-        {5,QString::number(1000 * Calucate_Width_Depth.m_depth[ID_SELECT[3]], 'f', 2).toFloat()}
-   };*/
-    show_A_Depth_Line_Chart(depth_data1, cpk_depth_data1, depth_data1_min, depth_data1_max);
+double usl_w = InfoSuanFa.editDetectedWidthMax.toDouble();   // 或 toDouble()();
+double lsl_w = InfoSuanFa.editDetectedWidthMin.toDouble();
+double wMean = 0, wSig = 0, wCpk = 0;
+if (calcCpk(width_data1, usl_w, lsl_w, wMean, wSig, wCpk)) {
+    SelectedData.meanWidth = wMean;
+    SelectedData.standardDeviationWidth = wSig;
+    SelectedData.Cpk_Width = wCpk;
+    cpk_width_data1.append(QPointF(num_measure_A, wCpk));
+}
+if (cpk_width_data1.size() > CPK_STATS_MAX) cpk_width_data1.removeFirst();
+show_A_Width_Line_Chart(lastWindow(width_data1), lastWindow(cpk_width_data1),
+    lastWindow(width_data1_min), lastWindow(width_data1_max));
 
-    width_data1.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_mean_width, 'f', 4).toFloat()));
-    width_data1_min.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_min_width, 'f', 4).toFloat()));
-    width_data1_max.append(QPointF(num_measure_A, QString::number(1.000 * Calucate_Width_Depth.m_max_width, 'f', 4).toFloat()));
-    
-    if (width_data1.size() >= 4)
-    {
-        double sx = 0, sy = 0;
-        for (const QPointF& p : width_data1) { sx += p.x(); sy += p.y(); }
-        double n = width_data1.size();
-        QPointF avg = QPointF(sx / n, sy / n);
 
-        SelectedData.meanWidth = avg.y();
 
-        // 一行 lambda 求 y 的标准差
-        SelectedData.standardDeviationWidth = [&] {
-            const int n = width_data1.size();
-            if (n < 2) return 1000000.0;
-            double m = 0;
-            for (auto& p : width_data1) m += p.y();
-            m /= n;
-            double var = 0;
-            for (auto& p : width_data1)
-            {
-                double d = p.y() - m;
-                var += d * d;
-            }
-            return qSqrt(var / (n - 1));
-            }();
 
-        // 设置上下限值
-        double upperLimit = InfoSuanFa.editDetectedWidthMax.toDouble();
-        double lowerLimit = InfoSuanFa.editDetectedWidthMin.toDouble();
-        double cpu = (upperLimit - SelectedData.meanWidth) / (3 * SelectedData.standardDeviationWidth);
-        double cpl = (SelectedData.meanWidth - lowerLimit) / (3 * SelectedData.standardDeviationWidth);
-        auto min2_2dec = [](double a, double b) -> double {
-            return qRound(qMin(a, b) * 100) / 100.0;
-            };
-
-        SelectedData.Cpk_Width = min2_2dec(cpu, cpl); // v == 2.72  
-        cpk_width_data1.append(QPointF(num_measure_A, SelectedData.Cpk_Width));
-    }
-    else
-    {
-        cpk_width_data1.clear();
-    }
-    if (cpk_width_data1.size() > 4) {
-        cpk_width_data1.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (width_data1.size() > 4) {
-        width_data1.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (width_data1_min.size() > 4) {
-        width_data1_min.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (width_data1_max.size() > 4) {
-        width_data1_max.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-
-    /*{
-         {1,QString::number(1000*Calucate_Width_Depth.m_mean_width, 'f', 2).toFloat()},
-         {2,QString::number(1000 * Calucate_Width_Depth.m_width[ID_SELECT[0]], 'f', 2).toFloat()}, 
-         {3,QString::number(1000 * Calucate_Width_Depth.m_width[ID_SELECT[1]], 'f', 2).toFloat()}, 
-         {4,QString::number(1000 * Calucate_Width_Depth.m_width[ID_SELECT[2]], 'f', 2).toFloat()}, 
-         {5,QString::number(1000 * Calucate_Width_Depth.m_width[ID_SELECT[3]], 'f', 2).toFloat()}
-    };*/ 
-    show_A_Width_Line_Chart(width_data1, cpk_width_data1, width_data1_min, width_data1_max);
 
     ui->tableFrame->setRowCount(rowCount);
     ui->tableFrame->setColumnCount(4);
@@ -681,118 +814,48 @@ void  PolePieceMeasureWin::new_B_updateTable()//更新表格显示
          {5,QString::number(1000 * Calucate_Width_Depth.m_depth[ID_SELECT[3]], 'f', 2).toFloat()}
     };*/
     //计算CPK
-     if (depth_data1_B.size() >= 4)
-    {
-    double sx = 0, sy = 0;
-    for (const QPointF& p : depth_data1_B) { sx += p.x(); sy += p.y(); }
-    double n = depth_data1_B.size();
-    QPointF avg = QPointF(sx / n, sy / n);
+    if (depth_data1_B.size() > CPK_STATS_MAX) depth_data1_B.removeFirst();
+    if (depth_data1_B_min.size() > CPK_STATS_MAX) depth_data1_B_min.removeFirst();
+    if (depth_data1_B_max.size() > CPK_STATS_MAX) depth_data1_B_max.removeFirst();
 
-    SelectedData_B.meanDepth = avg.y();
+    double usl_d_B = InfoSuanFa.editDetectedDepthMax.toDouble();
+    double lsl_d_B = InfoSuanFa.editDetectedDepthMin.toDouble();
+    double dMean_B = 0, dSig_B = 0, dCpk_B = 0;
+    if (calcCpk(depth_data1_B, usl_d_B, lsl_d_B, dMean_B, dSig_B, dCpk_B)) {
+        SelectedData_B.meanDepth = dMean_B;
+        SelectedData_B.standardDeviationDepth = dSig_B;
+        SelectedData_B.Cpk_Depth = dCpk_B;
+        cpk_depth_data1_B.append(QPointF(num_measure_B, dCpk_B));
+    }
+    if (cpk_depth_data1_B.size() > CPK_STATS_MAX) cpk_depth_data1_B.removeFirst();
 
-    // 一行 lambda 求 y 的标准差
-    SelectedData_B.standardDeviationDepth = [&] {
-        const int n = depth_data1_B.size();
-        if (n < 2) return 1000000.0;
-        double m = 0;
-        for (auto& p : depth_data1_B) m += p.y();
-        m /= n;
-        double var = 0;
-        for (auto& p : depth_data1_B)
-        {
-            double d = p.y() - m;
-            var += d * d;
-        }
-        return qSqrt(var / (n - 1));
-        }();
-
-    // 设置上下限值
-    double upperLimit = InfoSuanFa.editDetectedDepthMax.toDouble();
-    double lowerLimit = InfoSuanFa.editDetectedDepthMin.toDouble();
-    double cpu = (upperLimit - SelectedData_B.meanDepth) / (3 * SelectedData_B.standardDeviationDepth);
-    double cpl = (SelectedData_B.meanDepth - lowerLimit) / (3 * SelectedData_B.standardDeviationDepth);
-    auto min2_2dec = [](double a, double b) -> double {
-        return qRound(qMin(a, b) * 100) / 100.0;
-        };
-
-        SelectedData_B.Cpk_Depth = min2_2dec(cpu, cpl); // v == 2.72   
-        cpk_depth_data1_B.append(QPointF(num_measure_B, SelectedData_B.Cpk_Depth));
-     }
-     else
-     {
-         cpk_depth_data1_B.clear();
-     } 
-     if (cpk_depth_data1_B.size() > 4) {
-         cpk_depth_data1_B.removeFirst();          // 头部移除，O(n) 会移动数据
-     }
-     if (depth_data1_B.size() > 4) {
-         depth_data1_B.removeFirst();          // 头部移除，O(n) 会移动数据
-     }
-     if (depth_data1_B_min.size() > 4) {
-         depth_data1_B_min.removeFirst();          // 头部移除，O(n) 会移动数据
-     }
-     if (depth_data1_B_max.size() > 4) {
-         depth_data1_B_max.removeFirst();          // 头部移除，O(n) 会移动数据
-     }
-     //显示B深度曲线
-    show_B_Depth_Line_Chart(depth_data1_B, cpk_depth_data1_B, depth_data1_B_min, depth_data1_B_max);
+    //显示B深度曲线
+    show_B_Depth_Line_Chart(lastWindow(depth_data1_B), lastWindow(cpk_depth_data1_B),
+        lastWindow(depth_data1_B_min), lastWindow(depth_data1_B_max));
 
     width_data1_B.append(QPointF(num_measure_B, QString::number(1.000 * Calucate_Width_Depth_B.m_mean_width, 'f', 4).toFloat()));
     width_data1_B_min.append(QPointF(num_measure_B, QString::number(1.000 * Calucate_Width_Depth_B.m_min_width, 'f', 4).toFloat()));
     width_data1_B_max.append(QPointF(num_measure_B, QString::number(1.000 * Calucate_Width_Depth_B.m_max_width, 'f', 4).toFloat())); 
 
 
-    if (width_data1_B.size() >= 4)
-    {
-        double sx = 0, sy = 0;
-        for (const QPointF& p : width_data1_B) { sx += p.x(); sy += p.y(); }
-        double n = width_data1_B.size();
-        QPointF avg = QPointF(sx / n, sy / n);
+    if (width_data1_B.size() > CPK_STATS_MAX) width_data1_B.removeFirst();
+    if (width_data1_B_min.size() > CPK_STATS_MAX) width_data1_B_min.removeFirst();
+    if (width_data1_B_max.size() > CPK_STATS_MAX) width_data1_B_max.removeFirst();
 
-        SelectedData_B.meanWidth = avg.y();
+    double usl_w_B = InfoSuanFa.editDetectedWidthMax.toDouble();
+    double lsl_w_B = InfoSuanFa.editDetectedWidthMin.toDouble();
+    double wMean_B = 0, wSig_B = 0, wCpk_B = 0;
+    if (calcCpk(width_data1_B, usl_w_B, lsl_w_B, wMean_B, wSig_B, wCpk_B)) {
+        SelectedData_B.meanWidth = wMean_B;
+        SelectedData_B.standardDeviationWidth = wSig_B;
+        SelectedData_B.Cpk_Width = wCpk_B;
+        cpk_width_data1_B.append(QPointF(num_measure_B, wCpk_B));
+    }
+    if (cpk_width_data1_B.size() > CPK_STATS_MAX) cpk_width_data1_B.removeFirst();
 
-        // 一行 lambda 求 y 的标准差
-        SelectedData_B.standardDeviationWidth = [&] {
-            const int n = width_data1_B.size();
-            if (n < 2) return 1000000.0;
-            double m = 0;
-            for (auto& p : width_data1_B) m += p.y();
-            m /= n;
-            double var = 0;
-            for (auto& p : width_data1_B)
-            {
-                double d = p.y() - m;
-                var += d * d;
-            }
-            return qSqrt(var / (n - 1));
-            }();
-
-        // 设置上下限值
-        double upperLimit = InfoSuanFa.editDetectedWidthMax.toDouble();
-        double lowerLimit = InfoSuanFa.editDetectedWidthMin.toDouble();
-        double cpu = (upperLimit - SelectedData_B.meanWidth) / (3 * SelectedData_B.standardDeviationWidth);
-        double cpl = (SelectedData_B.meanWidth - lowerLimit) / (3 * SelectedData_B.standardDeviationWidth);
-        auto min2_2dec = [](double a, double b) -> double {
-            return qRound(qMin(a, b) * 100) / 100.0;
-            };
-
-        SelectedData_B.Cpk_Width = min2_2dec(cpu, cpl); // v == 2.72   
-        cpk_width_data1_B.append(QPointF(num_measure_B, SelectedData_B.Cpk_Width));
-    }
-    if (cpk_width_data1_B.size() > 4) {
-        cpk_width_data1_B.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (width_data1_B.size() > 4) {
-        width_data1_B.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (width_data1_B_min.size() > 4) {
-        width_data1_B_min.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
-    if (width_data1_B_max.size() > 4) {
-        width_data1_B_max.removeFirst();          // 头部移除，O(n) 会移动数据
-    }
     //显示B宽度曲线
-    show_B_Width_Line_Chart(width_data1_B, cpk_width_data1_B, width_data1_B_min, width_data1_B_max);
+    show_B_Width_Line_Chart(lastWindow(width_data1_B), lastWindow(cpk_width_data1_B),
+        lastWindow(width_data1_B_min), lastWindow(width_data1_B_max));
 
     ui->tableFrame_B->setRowCount(rowCount);
     ui->tableFrame_B->setColumnCount(4);
@@ -1042,6 +1105,8 @@ void PolePieceMeasureWin::new_B_slotTableSelectionChanged()
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr show_down(new pcl::PointCloud<pcl::PointXYZRGB>);
     QVector<double> widths, depths;
 
+    // 根据idValue查找对应数据索引
+    int dataIndex = -1;
     for (const QModelIndex& idx : selection)
     {
         int row = idx.row();
@@ -1053,8 +1118,6 @@ void PolePieceMeasureWin::new_B_slotTableSelectionChanged()
 
         int idValue = idItem->text().toInt();
 
-        // 根据idValue查找对应数据索引
-        int dataIndex = -1;
         for (int i = 0; i < ID_NEW_B.size(); ++i)
         {
             if (ID_NEW_B[i] == idValue)
@@ -1216,7 +1279,33 @@ void PolePieceMeasureWin::new_B_slotTableSelectionChanged()
     // 先判断宽度和深度是否超阈值
     bool widthExceeded = (width_avg > detectedWidthValue);
     bool depthExceeded = (depth_avg > detectedDepthValue);
-
+    TableFrame_Action_B(dataIndex);
+}
+void  PolePieceMeasureWin::TableFrame_Action_B(int idx_max)
+{
+    ui->Single_B_PointShow->clearCustomPoints();
+    customPts_B.clear();
+    customPts_bottom_B.clear();
+    customPts_B << QPointF(_multifyRecognize_B[ID_SELECT_B[idx_max]].leftShoulder.x, _multifyRecognize_B[ID_SELECT_B[idx_max]].leftShoulder.z)
+        << QPointF(_multifyRecognize_B[ID_SELECT_B[idx_max]].rightShoulder.x, _multifyRecognize_B[ID_SELECT_B[idx_max]].rightShoulder.z);
+    customPts_bottom_B << QPointF(_multifyRecognize_B[ID_SELECT_B[idx_max]].downShoulder.x, _multifyRecognize_B[ID_SELECT_B[idx_max]].downShoulder.z);
+    //显示单帧的时候先找到最低点那个位置的X值，然后将可以映射回原来的点云的序列号，然后根据序列号来截取ROI来进行显示；//separate_clouds
+    int index = qRound(_multifyRecognize_B[ID_SELECT_B[idx_max]].downShoulder.x / 0.003);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr slice(new pcl::PointCloud<pcl::PointXYZ>);
+    /*for (int i = index - 440; i < index + 440;++i)
+    {
+        roi_show->points.push_back(	separate_clouds[ID_SELECT[0]]->points[i]);
+    }*/
+    std::size_t start = index - 45;
+    std::size_t end = index + 45;
+    slice->points.assign(source_separate_clouds_B[ID_SELECT_B[idx_max]]->points.begin() + start,
+        source_separate_clouds_B[ID_SELECT_B[idx_max]]->points.begin() + end);
+    slice->width = slice->points.size();
+    slice->height = 1;
+    slice->is_dense = source_separate_clouds_B[ID_SELECT_B[idx_max]]->is_dense;
+    ui->Single_B_PointShow->addCustomPoints(customPts_B, Qt::green, 5);
+    ui->Single_B_PointShow->addCustomPoints(customPts_bottom_B, Qt::red, 5);
+    ui->Single_B_PointShow->setPointCloud(slice);
 }
 
 void PolePieceMeasureWin::new_slotTableSelectionChanged()
@@ -1289,7 +1378,8 @@ void PolePieceMeasureWin::new_slotTableSelectionChanged()
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr show_right(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr show_down(new pcl::PointCloud<pcl::PointXYZRGB>);
     QVector<double> widths, depths;
-
+    // 根据idValue查找对应数据索引
+    int dataIndex = -1;
     for (const QModelIndex& idx : selection)
     {
         int row = idx.row();
@@ -1301,8 +1391,7 @@ void PolePieceMeasureWin::new_slotTableSelectionChanged()
 
         int idValue = idItem->text().toInt();
 
-        // 根据idValue查找对应数据索引
-        int dataIndex = -1;
+       
         for (int i = 0; i < ID_NEW.size(); ++i)
         {
             if (ID_NEW[i] == idValue)
@@ -1461,6 +1550,35 @@ void PolePieceMeasureWin::new_slotTableSelectionChanged()
     bool widthExceeded = (width_avg > detectedWidthValue);
     bool depthExceeded = (depth_avg > detectedDepthValue);
 
+    //将tableframe的显示跟随表格点击事件一起变化
+    TableFrame_Action(dataIndex);
+
+}
+void  PolePieceMeasureWin::TableFrame_Action(int idx_max)
+{
+    ui->Single_A_PointShow->clearCustomPoints();
+    customPts.clear();
+    customPts_bottom.clear();
+    customPts << QPointF(_multifyRecognize[ID_SELECT[idx_max]].leftShoulder.x, _multifyRecognize[ID_SELECT[idx_max]].leftShoulder.z) << QPointF(_multifyRecognize[ID_SELECT[idx_max]].rightShoulder.x, _multifyRecognize[ID_SELECT[idx_max]].rightShoulder.z);
+    customPts_bottom << QPointF(_multifyRecognize[ID_SELECT[idx_max]].downShoulder.x, _multifyRecognize[ID_SELECT[idx_max]].downShoulder.z);
+    //显示单帧的时候先找到最低点那个位置的X值，然后将可以映射回原来的点云的序列号，然后根据序列号来截取ROI来进行显示；//separate_clouds
+    //int index = qRound(_multifyRecognize[ID_SELECT[idx_max]].downShoulder.x / 0.003);JZW
+    int index = qRound(_multifyRecognize[ID_SELECT[idx_max]].downShoulder.x / (0.001 * InfoSuanFa.editCloudShowDis.toFloat()));
+    pcl::PointCloud<pcl::PointXYZ>::Ptr slice(new pcl::PointCloud<pcl::PointXYZ>);
+    /*for (int i = index - 440; i < index + 440;++i)
+    {
+        roi_show->points.push_back(	separate_clouds[ID_SELECT[0]]->points[i]);
+    }*/
+    std::size_t start = index - 45;
+    std::size_t end = index + 45;
+    slice->points.assign(source_separate_clouds[ID_SELECT[idx_max]]->points.begin() + start,
+        source_separate_clouds[ID_SELECT[idx_max]]->points.begin() + end);
+    slice->width = slice->points.size();
+    slice->height = 1;
+    slice->is_dense = source_separate_clouds[ID_SELECT[idx_max]]->is_dense;
+    ui->Single_A_PointShow->addCustomPoints(customPts, Qt::green, 5);
+    ui->Single_A_PointShow->addCustomPoints(customPts_bottom, Qt::red, 5);
+    ui->Single_A_PointShow->setPointCloud(slice);
 }
 
 
@@ -1714,3 +1832,131 @@ void PolePieceMeasureWin::exportToCSV()
     file.close();
     QMessageBox::information(this, tr("成功"), tr("导出成功！可用Excel打开"));
 }
+
+#pragma region Socket客户端通信
+bool PolePieceMeasureWin::connectSocketServer(const QString& ip, quint16 port, int timeoutMs)
+{
+    socketLastIp = ip;
+    socketLastPort = port;
+    socketAutoReconnect = true;//主动连接时恢复自动重连
+     if (socketClient == nullptr)
+    {
+        socketClient = new QTcpSocket(this);
+        connect(socketClient, &QTcpSocket::readyRead, this, &PolePieceMeasureWin::onSocketReadyRead);
+        connect(socketClient, &QTcpSocket::disconnected, this, &PolePieceMeasureWin::onSocketDisconnected);
+        connect(socketClient, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error),
+            this, &PolePieceMeasureWin::onSocketError);
+    }
+    if (socketClient->state() != QAbstractSocket::UnconnectedState)
+    {
+        socketClient->abort();
+    }
+    socketClient->connectToHost(ip, port);
+    if (!socketClient->waitForConnected(timeoutMs))
+    {
+        RecordData(QStringLiteral("Socket连接服务器失败：%1:%2").arg(ip).arg(port), 2);
+        startSocketReconnect();
+        return false;
+    }
+    if (socketReconnectTimer != nullptr)
+    {
+        socketReconnectTimer->stop();
+    }
+    RecordData(QStringLiteral("Socket连接服务器成功：%1:%2").arg(ip).arg(port), 0);
+    return true;
+}
+
+void PolePieceMeasureWin::startSocketReconnect()//启动自动重连
+{
+    if (!socketAutoReconnect || socketLastIp.isEmpty() || socketLastPort == 0)
+    {
+        return;
+    }
+    if (socketReconnectTimer == nullptr)
+    {
+        socketReconnectTimer = new QTimer(this);
+        connect(socketReconnectTimer, &QTimer::timeout, this, &PolePieceMeasureWin::onSocketReconnectTimeout);
+    }
+    if (!socketReconnectTimer->isActive())
+    {
+        socketReconnectTimer->start(SOCKET_RECONNECT_INTERVAL);
+        RecordData(QStringLiteral("Socket将在%1秒后自动重连").arg(SOCKET_RECONNECT_INTERVAL / 1000), 1);
+    }
+}
+
+void PolePieceMeasureWin::onSocketReconnectTimeout()//socket自动重连
+{
+    if (socketClient == nullptr)
+    {
+        return;
+    }
+    if (socketClient->state() != QAbstractSocket::UnconnectedState)
+    {
+        socketReconnectTimer->stop();
+        return;
+    }
+    RecordData(QStringLiteral("Socket尝试自动重连：%1:%2").arg(socketLastIp).arg(socketLastPort), 1);
+    if (connectSocketServer(socketLastIp, socketLastPort, 1000))
+    {
+        if (CommunicateUi != nullptr)
+        {
+            CommunicateUi->labelHMIConnectState->setText(QStringLiteral("connected"));
+        }
+        RecordData(QStringLiteral("Socket自动重连成功"), 0);
+    }
+}
+
+void PolePieceMeasureWin::onSocketReadyRead()//接收socket服务器消息
+{
+    if (socketClient == nullptr)
+    {
+        return;
+    }
+    QByteArray recvData = socketClient->readAll();
+    if (recvData.isEmpty())
+    {
+        return;
+    }
+    RecordData(QStringLiteral("接收Socket服务器消息：%1").arg(QString::fromLocal8Bit(recvData)));
+}
+
+bool PolePieceMeasureWin::writeSocketServerData(const QByteArray& data)//给socket服务器写入数据
+{
+    if (socketClient == nullptr || socketClient->state() != QAbstractSocket::ConnectedState)
+    {
+        RecordData(QStringLiteral("Socket未连接服务器，写入数据失败"), 2);
+        return false;
+    }
+    if (socketClient->write(data) == -1)
+    {
+        RecordData(QStringLiteral("Socket写入数据失败：%1").arg(socketClient->errorString()), 2);
+        return false;
+    }
+    socketClient->flush();
+    return true;
+}
+
+void PolePieceMeasureWin::onSocketDisconnected()//socket与服务器断开连接
+{
+    RecordData(QStringLiteral("Socket与服务器断开连接"), 1);
+    if (CommunicateUi != nullptr)
+    {
+        CommunicateUi->labelHMIConnectState->setText(QStringLiteral("unconnected"));
+    }
+    startSocketReconnect();
+}
+
+void PolePieceMeasureWin::onSocketError(QAbstractSocket::SocketError error)//socket错误
+{
+    Q_UNUSED(error);
+    if (socketClient == nullptr)
+    {
+        return;
+    }
+    RecordData(QStringLiteral("Socket错误：%1").arg(socketClient->errorString()), 2);
+    if (socketClient->state() == QAbstractSocket::UnconnectedState)
+    {
+        startSocketReconnect();
+    }
+}
+#pragma endregion

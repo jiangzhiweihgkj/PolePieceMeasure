@@ -220,10 +220,10 @@ PolePieceMeasureWin::ThreePoint  PolePieceMeasureWin::singleRecongize_B(std::vec
 			//屏蔽掉  后面会算一遍   粗定位先不算了
 			double width_B = pointDistance(single_threePoint_B.leftShoulder, single_threePoint_B.rightShoulder);
 			double depth_B = pointToLineDistance3D(single_threePoint_B.leftShoulder, single_threePoint_B.rightShoulder, single_threePoint_B.downShoulder);
-			width_B =1000 * width_B + InfoSuanFa.edit_Width_B_Coefficient.toFloat();
-			depth_B = 1000 * depth_B + InfoSuanFa.edit_Depth_B_Coefficient.toFloat();
-			Calucate_Width_Depth_B.m_width.push_back(width_B);
-			Calucate_Width_Depth_B.m_depth.push_back(depth_B);
+			//width_B =1000 * width_B + InfoSuanFa.edit_Width_B_Coefficient.toFloat();
+			//depth_B = 1000 * depth_B + InfoSuanFa.edit_Depth_B_Coefficient.toFloat();
+			//Calucate_Width_Depth_B.m_width.push_back(width_B);
+			//Calucate_Width_Depth_B.m_depth.push_back(depth_B);//
 			_callOneTimes->success_B = true;
 			break; //找到了就跳出循环
 		}
@@ -256,7 +256,9 @@ bool PolePieceMeasureWin::multifyRecognize_B(std::vector< pcl::PointCloud<pcl::P
 		std::vector< pcl::PointCloud<pcl::PointXYZ>::Ptr> san_jie;
 		san_jie.clear();
 		san_jie = NineJie(multifyCloud[i]);//一帧分9块
-		PolePieceMeasureWin::ThreePoint single_threePoint = singleRecongize_B(san_jie, pinghuaxishu);//单帧识别
+		//PolePieceMeasureWin::ThreePoint single_threePoint = singleRecongize_B(san_jie, pinghuaxishu);//单帧识别
+		PolePieceMeasureWin::ThreePoint single_threePoint = singleRecongize_B(std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr>{multifyCloud[i]}, pinghuaxishu);//单帧识别
+
 		if (_callOneTimes->success_B)
 		{
 			ID_SELECT_B.push_back(i);
@@ -373,7 +375,12 @@ bool PolePieceMeasureWin::multifyRecognize_B(std::vector< pcl::PointCloud<pcl::P
 			single_threePoint.rightShoulder = separate_clouds_B[i]->points[min_right_index];
 			single_threePoint.downShoulder = single_threePoint.downShoulder; 
 			vectorThreePoints_B.push_back(single_threePoint);
-
+			double width = pointDistance(single_threePoint.leftShoulder, single_threePoint.rightShoulder);
+			double depth = pointToLineDistance3D(single_threePoint.leftShoulder, single_threePoint.rightShoulder, single_threePoint.downShoulder);
+			width = 1000 * width + InfoSuanFa.edit_Width_B_Coefficient.toFloat();
+			depth = 1000 * depth + InfoSuanFa.edit_Depth_B_Coefficient.toFloat();
+			Calucate_Width_Depth_B.m_width.push_back(width);
+			Calucate_Width_Depth_B.m_depth.push_back(depth);
 		} 
 	}
 	if (vectorThreePoints_B.empty())
@@ -431,7 +438,7 @@ void PolePieceMeasureWin::on_btnRecoCloud_clicked()//导入点云B
 	// 检查文件加载是否成功
 	if (result != 0)
 	{
-		QMessageBox::critical(this, tr("Error"), tr("无法打开点云文件（路径需要全英文）"));
+		QMessageBox::critical(this, QStringLiteral("Error"), QStringLiteral("无法打开点云文件（路径需要全英文）"));
 		return;
 	}
 	source_cloud_B = cloud; 
@@ -444,15 +451,17 @@ void PolePieceMeasureWin::on_btnRecoCloud_clicked()//导入点云B
 	if (ui->checkbox_roi->isChecked())
 	{
 		//ui->openGLWidget_Result_B->setCameraUpVector(0,1,0);
-	//	ui->openGLWidget_Result_B->showPointCloud(roi_cloud_B);
-		updateViewer_B(roi_cloud_B);
+	 	ui->openGLWidget_Result_B->showPointCloud(roi_cloud_B);
+		//updateViewer_B(roi_cloud_B);
 	}
 	else
 	{
 		//ui->openGLWidget_Result_B->setCameraUpVector(0, 1, 0);
-		//ui->openGLWidget_Result_B->showPointCloud(source_cloud_B);
-		updateViewer_B(source_cloud_B);
+		ui->openGLWidget_Result_B->showPointCloud(source_cloud_B);
+		//updateViewer_B(source_cloud_B);
 	}
+	source_separate_clouds_B = separateCloud(source_cloud_B);  
+	//分离后的点云集
 	if (ui->checkBox_auto->isChecked())
 	{
 		on_btnTestShow_clicked();
@@ -466,7 +475,7 @@ void PolePieceMeasureWin::on_btnTestShow_clicked()//识别
    //  Point_Show();
 	if (source_cloud_B->points.empty())
 	{
-		QMessageBox::warning(this, tr("Warning"), tr("Please load a point cloud B."));
+		QMessageBox::warning(this, QStringLiteral("Warning"), QStringLiteral("请加载点云B"));
 		return;
 	}
 	iniSettingParam();
@@ -942,6 +951,7 @@ void  PolePieceMeasureWin::onslotReceiveCloud_B()
 	cloud = _callOneTimes_B->cloudsResultDeal;
 	source_cloud_B = cloud;
 	separate_clouds_B = separateCloud(source_cloud_B);
+	source_separate_clouds_B = separateCloud(source_cloud_B);
 	//std::sort(cloud->points.begin(), cloud->points.end(),
 	//    [](const pcl::PointXYZ& a, const pcl::PointXYZ& b)
 	//    { return a.x < b.x; });

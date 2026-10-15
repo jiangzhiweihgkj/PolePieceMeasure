@@ -3,6 +3,8 @@
 void  PolePieceMeasureWin::InitScanTab()
 {
     QSettings ini(iniPath, QSettings::IniFormat);
+    if (plc == nullptr)
+        plc = new Communication();
 
     if (_callOneTimes == nullptr)
         _callOneTimes = new CallOneTimes();
@@ -12,9 +14,11 @@ void  PolePieceMeasureWin::InitScanTab()
         _callOneTimes_B = new CallOneTimes_B();
     _callOneTimes_B->start();
     _callOneTimes_B->ThreadStatus = CallOneTimes::SYS_NOWORK;
-    connect(_callOneTimes, SIGNAL(onsendStatus(QString)), this, SLOT(onReceiveStatus(QString))); 
-    connect(_callOneTimes_B, SIGNAL(onsendStatus(QString)), this, SLOT(onReceiveStatus_B(QString))); 
- }
+    connect(_callOneTimes, SIGNAL(onsendStatus(QString)), this, SLOT(onReceiveStatus(QString)));
+    connect(_callOneTimes_B, SIGNAL(onsendStatus(QString)), this, SLOT(onReceiveStatus_B(QString)));
+    connect(plc, &Communication::sendCommunicateMessage, this, &PolePieceMeasureWin::receiveCommunicateMessage, Qt::UniqueConnection);
+    
+}
 void PolePieceMeasureWin::DestroyScanTab()
 {
     QSettings ini(iniPath, QSettings::IniFormat);
@@ -187,6 +191,10 @@ void  PolePieceMeasureWin::onReceiveStatus(QString content)
 }
 void PolePieceMeasureWin::on_btnStartCollectPoint_clicked()//开始采集
 {
+    //QString path = CreateOkNgTimeDir(ParamUi->editOutPath->text(), true);//创建 年月日/OK|NG/时刻 目录
+
+
+    //return;
     if (ParamUi->CameraConnectState->text() != QStringLiteral("connected"))
     {
         QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("A相机未连接"));
@@ -220,6 +228,57 @@ void PolePieceMeasureWin::CreateWorkDir(QString mainDir)
     }
     dir.mkpath(pointDir);
     _callOneTimes->SavePath = pointDir;
+}
+QString PolePieceMeasureWin::CreateOkNgTimeDir(const QString& mainPath,bool isOK)
+{
+    QDir dir;
+    if (!dir.exists(mainPath)) {
+        dir.mkpath(mainPath);//主文件夹不存在则创建
+    }
+    QDateTime now = QDateTime::currentDateTime();
+    QString dateDir = mainPath + QStringLiteral("/") + now.toString(QStringLiteral("yyyy-MM-dd"));//大文件夹：年月日
+    if (!dir.exists(dateDir)) {
+        dir.mkpath(dateDir);//大文件夹不存在则创建
+    }
+    QString timeName = now.toString(QStringLiteral("HHmmss"));//小文件夹：当前时刻
+    QString fullPath;
+    if(isOK)
+    {
+        fullPath = dateDir + QStringLiteral("/OK/") + timeName;
+        dir.mkpath(fullPath);
+    }
+    else
+    {
+        fullPath = dateDir + QStringLiteral("/NG/") + timeName;
+        dir.mkpath(fullPath);
+    }
+    return fullPath;
+}
+void PolePieceMeasureWin::deleteOldDateDir(const QString& mainPath, int daysToKeep)
+{
+    QDir dir(mainPath);
+    if (!dir.exists()) return;
+
+    // 设置过滤器：只匹配 yyyy-MM-dd 的年月日文件夹
+    dir.setNameFilters(QStringList() << "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]");
+    dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+
+    QDate cutoffDate = QDate::currentDate().addDays(-daysToKeep);//保存天数范围外的截止日期
+    QRegularExpression re("^(\\d{4})-(\\d{2})-(\\d{2})$");
+
+    foreach(QString folderName, dir.entryList()) {
+        QRegularExpressionMatch match = re.match(folderName);
+        if (!match.hasMatch()) continue;
+
+        // 解析文件夹名中的年月日
+        QDate folderDate(match.captured(1).toInt(), match.captured(2).toInt(), match.captured(3).toInt());
+        if (!folderDate.isValid()) continue;
+
+        if (folderDate < cutoffDate) {
+            QDir oldDir(dir.absoluteFilePath(folderName));
+            oldDir.removeRecursively();//删除超过保存天数的文件夹
+        }
+    }
 }
 void PolePieceMeasureWin::deleteOldFolders(const QString& basePath, int daysToKeep)
 {
@@ -278,6 +337,10 @@ void PolePieceMeasureWin::deleteOldFolders(const QString& basePath, int daysToKe
 
 void PolePieceMeasureWin::on_btnStopCollectPoint_clicked()//停止采集
 {
+
+    //deleteOldDateDir(ParamUi->editOutPath->text(), 10);
+
+    //return;
     if (ParamUi->CameraConnectState->text() != QStringLiteral("connected"))
     {
         QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("A相机未连接"));
@@ -320,20 +383,6 @@ void PolePieceMeasureWin::on_btnSavePoint_clicked()//先暂时换成信息导入
 
     connect(DataExcelUi->btnBrowse_B, &QPushButton::clicked, this, &PolePieceMeasureWin::on_btnBrowse_B_clicked, Qt::UniqueConnection);
          
-
-
-
-    //connect(DataExcelUi->btnBrowse_A, &QPushButton::clicked, [this]() {
-    //    on_btnBrowse_A_clicked();
-    //    });//浏览A
-    //
-    //connect(DataExcelUi->btnInput_B, &QPushButton::clicked, [this]() {
-    //    on_btnInput_B_clicked();
-    //    });//导入B
-    //
-    //connect(DataExcelUi->btnBrowse_B, &QPushButton::clicked, [this]() {
-    //    on_btnBrowse_B_clicked();
-    //    });//浏览B
     //执行对话框，结束后自动释放内存
     if (excelDialog->exec() == QDialog::Accepted) {
         // 可扩展登录成功后的逻辑
@@ -372,6 +421,7 @@ void PolePieceMeasureWin::on_btnConnectCamera_B_clicked()//连接轮廓仪B
         ParamUi->CameraConnectState_B->setText(QStringLiteral("unconnected"));
         QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("B相机连接失败")); 
         RecordData(QStringLiteral("B相机连接失败"),2);
+        labelledCAM_B->setLedOn(false); 
         return;
     }
     // create connection to GoSensor object
@@ -381,6 +431,8 @@ void PolePieceMeasureWin::on_btnConnectCamera_B_clicked()//连接轮廓仪B
         ParamUi->CameraConnectState_B->setText(QStringLiteral("connected"));
         InfoCamera.CameraConnectState_B = QStringLiteral("connected");
         RecordData(QStringLiteral("B相机连接成功"));
+        labelledCAM_B->setLedOn(true);
+
     }
     else
     {
@@ -388,6 +440,7 @@ void PolePieceMeasureWin::on_btnConnectCamera_B_clicked()//连接轮廓仪B
         ParamUi->CameraConnectState_B->setText(QStringLiteral("unconnected"));
         InfoCamera.CameraConnectState_B = QStringLiteral("unconnected");
         RecordData(QStringLiteral("B相机连接失败"));
+        labelledCAM_B->setLedOn(false); 
     }
     // enable sensor data channel
     if ((_callOneTimes_B->status = GoSystem_EnableData(_callOneTimes_B->system, kTRUE)) != kOK)
@@ -598,12 +651,17 @@ void PolePieceMeasureWin::on_btnDisConnectCamera_B_clicked()//断开轮廓仪B
 }
 void PolePieceMeasureWin::on_btnDisConnectCamera_clicked()
 {
+    if (_callOneTimes==nullptr)
+    {
+		_callOneTimes = new CallOneTimes();
+    }
  int nRet = GoSensor_Disconnect(_callOneTimes->sensor); //MV3D_LP_CloseDevice(&_callOneTimes->handle);
  if (kOK ==nRet)
  { 
      InfoCamera.CameraConnectState_A = QStringLiteral("unconnected");
      ParamUi->CameraConnectState->setText(QStringLiteral("unconnected"));
      _callOneTimes->CameraConnectFlag = kOK - 1;
+     labelledCAM_A->setLedOn(false); 
  }
  else
  {
@@ -639,8 +697,9 @@ void PolePieceMeasureWin::on_btnConnectCamera_clicked()
     {
         ParamUi->CameraConnectState->setText(QStringLiteral("unconnected")); 
         QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("A相机连接失败"));
+        labelledCAM_A->setLedOn(false); 
 
-        RecordData(QStringLiteral("A相机连接失败")); 
+        RecordData(QStringLiteral("A相机连接失败"),2); 
         return;
     }
     // create connection to GoSensor object
@@ -650,6 +709,8 @@ void PolePieceMeasureWin::on_btnConnectCamera_clicked()
        ParamUi->CameraConnectState->setText(QStringLiteral("connected"));
        InfoCamera.CameraConnectState_A = QStringLiteral("connected"); 
        RecordData(QStringLiteral("A相机连接成功")); 
+       labelledCAM_A->setLedOn(true);
+
    }
    else
    {
@@ -657,6 +718,8 @@ void PolePieceMeasureWin::on_btnConnectCamera_clicked()
        ParamUi->CameraConnectState->setText(QStringLiteral("unconnected"));
        InfoCamera.CameraConnectState_A = QStringLiteral("unconnected"); 
        RecordData(QStringLiteral("A相机连接失败")); 
+       labelledCAM_A->setLedOn(false);
+
    }
     // enable sensor data channel
     if ((_callOneTimes->status = GoSystem_EnableData(_callOneTimes->system, kTRUE)) != kOK)
@@ -906,53 +969,62 @@ void PolePieceMeasureWin::RecordData(QString _str, int level)
 //PLC
 void PolePieceMeasureWin::on_btnDisConnectPLC_clicked()//PLC 断开
 {
-  bool s =  _callOneTimes->disconnectPLC();
-  if (s)
-  {
-      ParamUi->PLCConnectState->setText(QStringLiteral("unConnected")); 
-      InfoPLC.PLCConnectState = QStringLiteral("unConnected");
-  }
-  else
-  {
-      return;
-  }
-
+    if (plc)
+    {
+        plc->disconnectPLC();
+    }
+    ParamUi->PLCConnectState->setText(QStringLiteral("unconnected"));
+    ParamUi->PLCConnectState->setStyleSheet("color: red;");
+    InfoPLC.PLCConnectState = QStringLiteral("unconnected");
+    RecordData(QStringLiteral("PLC断开连接成功")); //记录日志
+    labelledPLC->setLedOn(false); //指示灯灭
 }
 void PolePieceMeasureWin::on_btnConnectPLC_clicked()//PLC 连接
 {
     QString plcip = InfoPLC.PLC_IP; //ui->editPLCIP->text();
     int plcport = InfoPLC.PLC_PORT.toInt();
-    bool state = false;
-    if (_callOneTimes->m_sock == nullptr)
-        _callOneTimes->m_sock=new QTcpSocket(this);
-        _callOneTimes->m_sock->connectToHost(plcip, plcport);
-
-        connect(_callOneTimes->m_sock, &QTcpSocket::connected, this, [this]() {
-            InfoPLC.PLCConnectState = QStringLiteral("Connected"); 
-            ParamUi->PLCConnectState->setText(QStringLiteral("Connected"));
-              });
-        connect(_callOneTimes->m_sock, &QTcpSocket::disconnected, this, [this]() {
-            ParamUi->PLCConnectState->setText(QStringLiteral("unConnected"));
-            InfoPLC.PLCConnectState = QStringLiteral("unConnected"); 
-              }); 
-}
-void PolePieceMeasureWin::on_btnWriteReister_clicked()//写入值
-{
-    //bool CallOneTimes::writeDM(int start, const QVector<quint16>& values)
-
-}
-void PolePieceMeasureWin::on_btnReadReister_clicked()//读取值
-{
-    /* /* 读 DM 区，返回 true 表示收到有效帧 */
-   // bool readDM(int start, int words, QByteArray & data); */
-    /*qint16 ReadAdress = ui->editReadAdress->text().toInt();
-    int words = 1;
-    QByteArray Receivedata;
-    if (_callOneTimes->readDM(ReadAdress,words,Receivedata))
+    if (!plc)
     {
-        quint16 v = (Receivedata[0] & 0xFF) << 8 | (Receivedata[1] & 0xFF);
-        ui->editReadAdress->setText(QString::number(v));
-    }*/
+        plc = new Communication();
+        //connect(plc, &Communication::sendCommunicateMessage, this, &PolePieceMeasureWin::receiveCommunicateMessage, Qt::UniqueConnection);
+    }
+    plc->getConnectInfo(plcip, quint16(plcport)); //获取连接信息
+    bool state = plc->connectPLC(plcip, quint16(plcport));
+    if (state)
+    {
+        InfoPLC.PLCConnectState = QStringLiteral("connected");
+        ParamUi->PLCConnectState->setText(QStringLiteral("connected"));
+        ParamUi->PLCConnectState->setStyleSheet("color: green;"); //指示灯亮
+
+        RecordData(QStringLiteral("PLC连接成功")); //记录日志
+        labelledPLC->setLedOn(true); //指示灯亮
+		//plc->start(); //启动线程
+    }
+    else
+    {
+        ParamUi->PLCConnectState->setText(QStringLiteral("unconnected"));
+        ParamUi->PLCConnectState->setStyleSheet("color: red;"); //指示灯灭
+        InfoPLC.PLCConnectState = QStringLiteral("unconnected");
+        RecordData(QStringLiteral("PLC连接失败"), 2); //记录日志
+        labelledPLC->setLedOn(false); //指示灯灭
+    }
+}
+void PolePieceMeasureWin::receiveCommunicateMessage(QString& msg)
+{
+    RecordData(msg);
+}
+
+void PolePieceMeasureWin::on_btnWritePLCReister_clicked()//写入值
+{
+    plc->writeValue(Communication::AreaDM, 0x0000, 0x0001); //写入寄存器::Area0, 0x0000, 0x0001); //写入寄存器
+
+
+}
+void PolePieceMeasureWin::on_btnReadPLCReister_clicked()//读取值
+{
+    quint16 value;
+    plc->readValue(Communication::AreaDM, 0x0000, value); //读取寄存器::Area0, 0x0000, 0x0001); //读取寄存器
+    RecordData(QString("读取寄存器值：%1").arg(value)); //记录日志
 }
 void PolePieceMeasureWin::slotReceiveOuMoRon(QVector<quint16> val)
 {

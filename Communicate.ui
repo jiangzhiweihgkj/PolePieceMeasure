@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>898</width>
-    <height>601</height>
+    <width>1329</width>
+    <height>733</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,11 @@
    <string notr="true">background-color: rgb(21, 21, 21);
 color: rgb(255, 255, 255);</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_6">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox_8">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -46,7 +46,7 @@ color: rgb(255, 255, 255);</string>
      <property name="title">
       <string>多保持寄存器读</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_15">
+     <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <widget class="QLabel" name="label_29">
         <property name="minimumSize">
@@ -64,7 +64,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>       线扫故障26</string>
+         <string>相机1触发信号</string>
         </property>
        </widget>
       </item>
@@ -83,6 +83,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2300(REAL)</string>
         </property>
        </widget>
       </item>
@@ -103,7 +106,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>运动速度34</string>
+         <string>心跳信号</string>
         </property>
        </widget>
       </item>
@@ -122,6 +125,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2312(REAL)</string>
         </property>
        </widget>
       </item>
@@ -181,7 +187,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>       开始扫描27</string>
+         <string>相机2触发信号</string>
         </property>
        </widget>
       </item>
@@ -200,6 +206,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2302(REAL)</string>
         </property>
        </widget>
       </item>
@@ -220,7 +229,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>零件高度35</string>
+         <string>相机1启动信号</string>
         </property>
        </widget>
       </item>
@@ -239,6 +248,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2314(REAL)</string>
         </property>
        </widget>
       </item>
@@ -298,7 +310,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>开始扫描反馈28</string>
+         <string>相机1完成信号</string>
         </property>
        </widget>
       </item>
@@ -317,6 +329,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2304(REAL)</string>
         </property>
        </widget>
       </item>
@@ -337,7 +352,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>零件直径36</string>
+         <string>相机1结果信号</string>
         </property>
        </widget>
       </item>
@@ -356,6 +371,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2316(REAL)</string>
         </property>
        </widget>
       </item>
@@ -415,7 +433,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>       停止扫描29</string>
+         <string>相机2完成信号</string>
         </property>
        </widget>
       </item>
@@ -434,6 +452,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2306(REAL)</string>
         </property>
        </widget>
       </item>
@@ -454,7 +475,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>最大深度37</string>
+         <string>相机2启动信号</string>
         </property>
        </widget>
       </item>
@@ -473,6 +494,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2318(REAL)</string>
         </property>
        </widget>
       </item>
@@ -532,7 +556,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>停止扫描反馈30</string>
+         <string>产品型号</string>
         </property>
        </widget>
       </item>
@@ -551,6 +575,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D10000(String）</string>
         </property>
        </widget>
       </item>
@@ -571,7 +598,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>最小深度38</string>
+         <string>相机2启动信号</string>
         </property>
        </widget>
       </item>
@@ -590,6 +617,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2318(REAL)</string>
         </property>
        </widget>
       </item>
@@ -649,7 +679,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>深度比较阈值31</string>
+         <string>缓存位1实时编码值</string>
         </property>
        </widget>
       </item>
@@ -668,6 +698,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2330(REAL)</string>
         </property>
        </widget>
       </item>
@@ -688,7 +721,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>平均深度39</string>
+         <string>相机2结果信号</string>
         </property>
        </widget>
       </item>
@@ -707,6 +740,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2320(REAL)</string>
         </property>
        </widget>
       </item>
@@ -766,7 +802,7 @@ color: rgb(255, 255, 255);</string>
          </font>
         </property>
         <property name="text">
-         <string>宽度比较阈值32</string>
+         <string>缓存位2实时编码值</string>
         </property>
        </widget>
       </item>
@@ -785,6 +821,9 @@ color: rgb(255, 255, 255);</string>
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="text">
+         <string>D2332(REAL)</string>
         </property>
        </widget>
       </item>
@@ -983,6 +1022,77 @@ color: rgb(255, 255, 255);</string>
         </property>
        </widget>
       </item>
+      <item row="8" column="0">
+       <widget class="QPushButton" name="btnWriteReister">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    color: rgb(240, 240, 240);
+    background-color: rgb(15, 15, 15);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+        </property>
+        <property name="text">
+         <string>写入</string>
+        </property>
+       </widget>
+      </item>
       <item row="8" column="2">
        <widget class="QLabel" name="label_12">
         <property name="minimumSize">
@@ -1064,6 +1174,77 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QPushButton" name="btnReadReister">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    color: rgb(240, 240, 240);
+    background-color: rgb(15, 15, 15);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+        </property>
+        <property name="text">
+         <string>读取</string>
         </property>
        </widget>
       </item>
@@ -1164,23 +1345,34 @@ color: rgb(255, 255, 255);</string>
         </property>
        </spacer>
       </item>
-      <item row="8" column="0" colspan="2">
-       <widget class="QPushButton" name="btnWriteReister">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>HMI</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnConnectServer">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
     color: rgb(240, 240, 240);
     background-color: rgb(15, 15, 15);
     border-radius: 4px;
@@ -1229,29 +1421,113 @@ QPushButton:disabled {
     color: #A0A6AC;
     border: 1px solid rgba(150, 150, 150, 0.6);
 }</string>
-        </property>
-        <property name="text">
-         <string>写入</string>
-        </property>
-       </widget>
+          </property>
+          <property name="text">
+           <string>连接服务器</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="btnDisConnectServer">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    color: rgb(240, 240, 240);
+    background-color: rgb(15, 15, 15);
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 14px;
+    /* 双层边框实现立体效果 */
+    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
+    border-top: 4px solid rgba(120, 120, 120, 0.9);
+    border-left: 4px solid rgba(120, 120, 120, 0.9);
+    /* 内层边框效果 */
+    background-clip: padding-box;
+    position: relative;
+}
+
+QPushButton::before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid rgba(30, 30, 30, 0.9);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(162, 162, 162);
+    border-color: rgba(100, 100, 100, 0.9);
+    border-top-color: rgba(140, 140, 140, 0.9);
+    border-left-color: rgba(140, 140, 140, 0.9);
+}
+
+QPushButton:pressed {
+    background-color: #252A32;
+    color: #C8CDD1;
+    /* 按下时反转边框明暗 */
+    border: 1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color: rgba(100, 100, 100, 0.9);
+    border-right-color: rgba(100, 100, 100, 0.9);
+}
+
+QPushButton:disabled {
+    background-color: #E3E7EB;
+    color: #A0A6AC;
+    border: 1px solid rgba(150, 150, 150, 0.6);
+}</string>
+          </property>
+          <property name="text">
+           <string>断开服务器</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelHMIConnectState">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>15</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>None</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="9" column="0" colspan="2">
-       <widget class="QPushButton" name="btnReadReister">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
+      <item row="0" column="1" rowspan="2">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnSendMessage">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
     color: rgb(240, 240, 240);
     background-color: rgb(15, 15, 15);
     border-radius: 4px;
@@ -1300,11 +1576,115 @@ QPushButton:disabled {
     color: #A0A6AC;
     border: 1px solid rgba(150, 150, 150, 0.6);
 }</string>
-        </property>
-        <property name="text">
-         <string>读取</string>
-        </property>
-       </widget>
+          </property>
+          <property name="text">
+           <string>发送消息</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>15</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>通信文本测试：</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="2" rowspan="2">
+       <widget class="QTextEdit" name="txtEditContentTest"/>
+      </item>
+      <item row="1" column="0">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_16">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>15</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>IP:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editServerIP">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>15</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_18">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>15</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Port:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLineEdit" name="editServerPort">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>15</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

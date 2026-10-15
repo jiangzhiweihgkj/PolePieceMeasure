@@ -120,11 +120,11 @@ void PolePieceMeasureWin::Show_CurrentAB_Table_Show()
     DataExcelUi->tableWidgetExcel_A->setItem(index_A, 8, new QTableWidgetItem(A_Min_Width));//A面槽宽最小值
     if (InfoSuanFa.editDetectedWidthMin.toDouble() >  Calucate_Width_Depth.m_mean_width || Calucate_Width_Depth.m_mean_width > InfoSuanFa.editDetectedWidthMax.toDouble())
     {
-        DataExcelUi->tableWidgetExcel_A->setItem(index_A, 9, new QTableWidgetItem(QStringLiteral("NG")));//A面槽宽结果
+        DataExcelUi->tableWidgetExcel_A->setItem(index_A, 9, new QTableWidgetItem(QStringLiteral("NG")));//A面槽宽结果 
     }
     else
     {
-        DataExcelUi->tableWidgetExcel_A->setItem(index_A, 9, new QTableWidgetItem(QStringLiteral("OK")));//A面槽宽结果 
+        DataExcelUi->tableWidgetExcel_A->setItem(index_A, 9, new QTableWidgetItem(QStringLiteral("OK")));//A面槽宽结果  
     }
 
  
@@ -398,6 +398,22 @@ void PolePieceMeasureWin::show_A_Depth_Line_Chart(QVector<QPointF> data1, QVecto
     chart->addSeries(upperLimitSeries);
     chart->addSeries(lowerLimitSeries);
     chart->createDefaultAxes();
+
+    // 给Y轴上下各留出10%的边距，避免数据点贴住图表的上下边缘
+    const auto allAxes = chart->axes();
+    for (auto* axis : allAxes) {
+        QValueAxis* valueAxis = qobject_cast<QValueAxis*>(axis);
+        if (valueAxis == nullptr)
+            continue;
+        if (valueAxis->alignment().testFlag(Qt::AlignLeft) || valueAxis->alignment().testFlag(Qt::AlignRight)) {
+            double span = valueAxis->max() - valueAxis->min();
+            if (span <= 0)
+                span = 1.0;
+            double margin = span * 0.1;
+            valueAxis->setRange(valueAxis->min() - margin, valueAxis->max() + margin);
+        }
+    }
+
     chart->setTitle(QStringLiteral("A面槽深结果显示"));
     chart->legend()->setAlignment(Qt::AlignBottom); // 想放底部用 Qt::AlignBottom
     // 1. 标题
@@ -423,6 +439,10 @@ void PolePieceMeasureWin::show_A_Depth_Line_Chart(QVector<QPointF> data1, QVecto
     
     m_chartView_A_Depth = new ZoomChartView(chart);  
     ly->addWidget(m_chartView_A_Depth); // 注意，这里是 addWidget，不是 addLayout
+    /*lowerLimitSeries->deleteLater();
+    upperLimitSeries->deleteLater();
+    m_headerText->deleteLater();
+    chart->deleteLater();*/
 }
 
 void PolePieceMeasureWin::show_A_Width_Line_Chart(QVector<QPointF> data1, QVector<QPointF> data2, QVector<QPointF> width_min, QVector<QPointF> width_max)
@@ -528,6 +548,22 @@ void PolePieceMeasureWin::show_A_Width_Line_Chart(QVector<QPointF> data1, QVecto
     chart->addSeries(upperLimitSeries);
     chart->addSeries(lowerLimitSeries);
     chart->createDefaultAxes();
+
+    // 给Y轴上下各留出10%的边距，避免数据点贴住图表的上下边缘
+    const auto allAxes = chart->axes();
+    for (auto* axis : allAxes) {
+        QValueAxis* valueAxis = qobject_cast<QValueAxis*>(axis);
+        if (valueAxis == nullptr)
+            continue;
+        if (valueAxis->alignment().testFlag(Qt::AlignLeft) || valueAxis->alignment().testFlag(Qt::AlignRight)) {
+            double span = valueAxis->max() - valueAxis->min();
+            if (span <= 0)
+                span = 1.0;
+            double margin = span * 0.1;
+            valueAxis->setRange(valueAxis->min() - margin, valueAxis->max() + margin);
+        }
+    }
+
     chart->setTitle(QStringLiteral("A面槽宽结果显示"));
     chart->legend()->setAlignment(Qt::AlignBottom); // 想放底部用 Qt::AlignBottom
     // 新建 scatter series 并设置其 marker size
@@ -554,8 +590,12 @@ void PolePieceMeasureWin::show_A_Width_Line_Chart(QVector<QPointF> data1, QVecto
     m_chartView_A_Width = new ZoomChartView(chart); 
     // 3. 塞进容器
     ly->addWidget(m_chartView_A_Width); // 注意，这里是 addWidget，不是 addLayout
-     
+    /*lowerLimitSeries->deleteLater();
+    upperLimitSeries->deleteLater();
+    m_headerText->deleteLater();
+    chart->deleteLater();*/
 }
+ 
 
 void PolePieceMeasureWin::show_B_Depth_Line_Chart(QVector<QPointF> data1, QVector<QPointF> data2, QVector<QPointF> depth_min, QVector<QPointF> depth_max)
 { 
@@ -676,6 +716,22 @@ void PolePieceMeasureWin::show_B_Depth_Line_Chart(QVector<QPointF> data1, QVecto
     chart->addSeries(upperLimitSeries);
     chart->addSeries(lowerLimitSeries);
     chart->createDefaultAxes();
+
+    // 给Y轴上下各留出10%的边距，避免数据点贴住图表的上下边缘
+    const auto allAxes = chart->axes();
+    for (auto* axis : allAxes) {
+        QValueAxis* valueAxis = qobject_cast<QValueAxis*>(axis);
+        if (valueAxis == nullptr)
+            continue;
+        if (valueAxis->alignment().testFlag(Qt::AlignLeft) || valueAxis->alignment().testFlag(Qt::AlignRight)) {
+            double span = valueAxis->max() - valueAxis->min();
+            if (span <= 0)
+                span = 1.0;
+            double margin = span * 0.1;
+            valueAxis->setRange(valueAxis->min() - margin, valueAxis->max() + margin);
+        }
+    }
+
     chart->setTitle(QStringLiteral("B面槽深结果显示"));
     chart->legend()->setAlignment(Qt::AlignBottom); // 想放底部用 Qt::AlignBottom
     // 1. 标题
@@ -699,6 +755,11 @@ void PolePieceMeasureWin::show_B_Depth_Line_Chart(QVector<QPointF> data1, QVecto
     chart->setPlotAreaBackgroundVisible(true); 
     m_chartView_B_Depth = new ZoomChartView(chart); 
     ly->addWidget(m_chartView_B_Depth); // 注意，这里是 addWidget，不是 addLayout 
+
+    /*lowerLimitSeries->deleteLater();
+    upperLimitSeries->deleteLater();
+    m_headerText->deleteLater();
+    chart->deleteLater();*/
 }
  
 void PolePieceMeasureWin::show_B_Width_Line_Chart(QVector<QPointF> data1, QVector<QPointF> data2, QVector<QPointF> width_min, QVector<QPointF> width_max)
@@ -755,10 +816,10 @@ void PolePieceMeasureWin::show_B_Width_Line_Chart(QVector<QPointF> data1, QVecto
         // 横坐标固定 i+1（1,2,3,4），纵坐标是实际宽度
         series_B_Width_Signma->append(i + 1, data2[i].y());
     }
-   // series_B_Width_Mean->replace(data1);
-  //  series_B_Width_Signma->replace(data2);
-    //显示上下限虚线
-// 创建上限虚线
+    // series_B_Width_Mean->replace(data1);
+   //  series_B_Width_Signma->replace(data2);
+     //显示上下限虚线
+ // 创建上限虚线
     QLineSeries* upperLimitSeries = new QLineSeries();
     upperLimitSeries->setName(QStringLiteral("规格上限"));
     upperLimitSeries->setPen(QPen(Qt::red, 1, Qt::DashLine));
@@ -792,7 +853,7 @@ void PolePieceMeasureWin::show_B_Width_Line_Chart(QVector<QPointF> data1, QVecto
         Sigma = QStringLiteral("Cpk = ") + QString::number(data2[data2.size() - 1].y(), 'f', 2);
     }
     data << mean_depth
-        << Sigma; 
+        << Sigma;
     setHeaderText(m_headerText, data);
     chart->addSeries(series_B_Width_Mean);
     chart->addSeries(series_B_Width_Min);
@@ -801,6 +862,22 @@ void PolePieceMeasureWin::show_B_Width_Line_Chart(QVector<QPointF> data1, QVecto
     chart->addSeries(upperLimitSeries);
     chart->addSeries(lowerLimitSeries);
     chart->createDefaultAxes();
+
+    // 给Y轴上下各留出10%的边距，避免数据点贴住图表的上下边缘
+    const auto allAxes = chart->axes();
+    for (auto* axis : allAxes) {
+        QValueAxis* valueAxis = qobject_cast<QValueAxis*>(axis);
+        if (valueAxis == nullptr)
+            continue;
+        if (valueAxis->alignment().testFlag(Qt::AlignLeft) || valueAxis->alignment().testFlag(Qt::AlignRight)) {
+            double span = valueAxis->max() - valueAxis->min();
+            if (span <= 0)
+                span = 1.0;
+            double margin = span * 0.1;
+            valueAxis->setRange(valueAxis->min() - margin, valueAxis->max() + margin);
+        }
+    }
+
     chart->setTitle(QStringLiteral("B面槽宽结果显示"));
     chart->legend()->setAlignment(Qt::AlignBottom); // 想放底部用 Qt::AlignBottom
     // 新建 scatter series 并设置其 marker size
@@ -822,10 +899,15 @@ void PolePieceMeasureWin::show_B_Width_Line_Chart(QVector<QPointF> data1, QVecto
     }
     chart->setBackgroundBrush(QBrush(QColor(50, 50, 50)));   // 整个绘图区域背景
     chart->setPlotAreaBackgroundBrush(QBrush(QColor(50, 50, 50))); // 坐标轴围成的矩形区域
-    chart->setPlotAreaBackgroundVisible(true); 
+    chart->setPlotAreaBackgroundVisible(true);
     m_chartView_B_Width = new ZoomChartView(chart);
     // 3. 塞进容器
     ly->addWidget(m_chartView_B_Width); // 注意，这里是 addWidget，不是 addLayout
+
+   /* lowerLimitSeries->deleteLater();
+    upperLimitSeries->deleteLater();
+    m_headerText->deleteLater();
+    chart->deleteLater();*/
 
 }
 void PolePieceMeasureWin::setHeaderText(QGraphicsTextItem* m_headerText, const QStringList& lines)//左上角显示平均值，标准差和Cpk
@@ -846,7 +928,8 @@ void PolePieceMeasureWin::setHeaderText(QGraphicsTextItem* m_headerText, const Q
 
 }
 void PolePieceMeasureWin::InitLineChartShow()
-{
+{ 
+
          series_A_Depth_Mean = new QLineSeries();
          series_A_Depth_Min = new QLineSeries();
          series_A_Depth_Max = new QLineSeries();
@@ -865,14 +948,103 @@ void PolePieceMeasureWin::InitLineChartShow()
          series_B_Width_Signma = new QLineSeries(); 
          upperSeries = new QLineSeries();
          lowerSeries = new QLineSeries();
+    /*if (series_A_Depth_Mean == nullptr)
+    {
+        series_A_Depth_Mean = new QLineSeries();
+    }
+    if (series_A_Depth_Min == nullptr)
+    {
+        series_A_Depth_Min = new QLineSeries();
+    }
+    if (series_A_Depth_Max == nullptr)
+    {
+        series_A_Depth_Max = new QLineSeries();
+    }
+    if (series_A_Depth_Signma == nullptr)
+    {
+        series_A_Depth_Signma = new QLineSeries();
+    }
+    if (series_A_Width_Mean == nullptr)
+    {
+        series_A_Width_Mean = new QLineSeries();
+    }
+    if (series_A_Width_Min == nullptr)
+    {
+        series_A_Width_Min = new QLineSeries();
+    }
+    if (series_A_Width_Max == nullptr)
+    {
+        series_A_Width_Max = new QLineSeries();
+    }
+    if (series_A_Width_Signma == nullptr)
+    {
+        series_A_Width_Signma = new QLineSeries();
+    }
+    if (series_B_Depth_Mean == nullptr)
+    {
+        series_B_Depth_Mean = new QLineSeries();
+    }
+    if (series_B_Depth_Min == nullptr)
+    {
+        series_B_Depth_Min = new QLineSeries();
+    }
+    if (series_B_Depth_Max == nullptr)
+    {
+        series_B_Depth_Max = new QLineSeries();
+    }
+    if (series_B_Depth_Signma == nullptr)
+    {
+        series_B_Depth_Signma = new QLineSeries();
+    }
+    if (series_B_Width_Mean == nullptr)
+    {
+        series_B_Width_Mean = new QLineSeries();
+    }
+    if (series_B_Width_Min == nullptr)
+    {
+        series_B_Width_Min = new QLineSeries();
+    }
+    if (series_B_Width_Max == nullptr)
+    {
+        series_B_Width_Max = new QLineSeries();
+    }
+    if (series_B_Width_Signma == nullptr)
+    {
+        series_B_Width_Signma = new QLineSeries();
+    }
+    if (upperSeries == nullptr)
+    {
+        upperSeries = new QLineSeries();
+    }
+    if (lowerSeries == nullptr)
+    {
+        lowerSeries = new QLineSeries();
+    }*/
 }
 
 void PolePieceMeasureWin::initIniSettingParam()//加载设置参数
 {
+    //通信界面参数设置
+    CommunicateDialog = new QDialog(this);//#include "ui_DataExcel.h" 
+    CommunicateUi = new Ui::CommunicateClass();
+    CommunicateUi->setupUi(CommunicateDialog);
+    connect(CommunicateUi->btnConnectServer, &QPushButton::clicked, this, [this]() {
+        iniSettingParam();
+        on_btnConnectServer_clicked();
+        });
+    connect(CommunicateUi->btnDisConnectServer, &QPushButton::clicked, this, [this]() {
+        iniSettingParam();
+        on_btnDisConnectServer_clicked();
+        });
+    connect(CommunicateUi->btnSendMessage, &QPushButton::clicked, this, [this]() {
+        iniSettingParam();
+        on_btnSendMessage_clicked();
+        });
+    //表格数据显示
     excelDialog = new QDialog(this);//#include "ui_DataExcel.h" 
     DataExcelUi = new Ui::DataExcelClass();
     DataExcelUi->setupUi(excelDialog);
-    /////////////////////////////
+    /////////////////////////////参数设置界面
     QSettings ini(iniPath, QSettings::IniFormat);
     ParametersDialog = new QDialog(this);
     ParamUi = new Ui::SubWindowClass();
@@ -906,6 +1078,29 @@ void PolePieceMeasureWin::initIniSettingParam()//加载设置参数
 
     DataExcelUi->editPath_A->setText(ini.value(QStringLiteral("SettingParam/editPath_A")).toString());
     DataExcelUi->editPath_B->setText(ini.value(QStringLiteral("SettingParam/editPath_B")).toString());
+    //通信界面INI参数设置
+    CommunicateUi->editServerIP->setText(ini.value(QStringLiteral("SettingParam/editServerIP")).toString());
+    CommunicateUi->editServerPort->setText(ini.value(QStringLiteral("SettingParam/editServerPort")).toString());
+    //保存天数
+    int day = ini.value(QStringLiteral("SettingParam/SaveCloudDays")).toInt();
+    if (day == 0)
+    {
+        SaveCloudDays = 2;//默认保存天数为2天
+    }
+    else
+    {
+        SaveCloudDays=ini.value(QStringLiteral("SettingParam/SaveCloudDays")).toInt();
+    }
+    int day_B = ini.value(QStringLiteral("SettingParam/SaveCloudDays_B")).toInt(); //= ini.value(QStringLiteral("SettingParam/SaveCloudDays_B")).toInt();
+    if (day_B == 0)
+    {
+        SaveCloudDays_B = 2;//默认保存天数为2天
+    }
+    else
+    {
+        SaveCloudDays_B = ini.value(QStringLiteral("SettingParam/SaveCloudDays_B")).toInt();
+    }
+   
       
 }
 void PolePieceMeasureWin::iniSettingParam()//加载设置参数
@@ -916,6 +1111,9 @@ void PolePieceMeasureWin::iniSettingParam()//加载设置参数
         InfoCamera.PointOutPath_B = ParamUi->editOutPath_Result->text();
         InfoCamera.CameraConnectState_A = ParamUi->CameraConnectState->text();
         InfoCamera.CameraConnectState_B = ParamUi->CameraConnectState_B->text();
+		InfoHMI.HMI_IP = CommunicateUi->editServerIP->text();//HMI服务器IP
+		InfoHMI.HMI_PORT = CommunicateUi->editServerPort->text();//HMI服务器IP
+
         InfoPLC.PLC_IP = ParamUi->editPLCIP->text();
         InfoPLC.PLC_PORT = ParamUi->editPLCPort->text();
         InfoPLC.PLCConnectState = ParamUi->PLCConnectState->text();
@@ -971,11 +1169,16 @@ void PolePieceMeasureWin::destroySettingParam()//保存设置参数
     ini.setValue(QStringLiteral("SettingParam/edit_Width_A_Coefficient"), ParamUi->edit_Width_A_Coefficient->text()); 
     ini.setValue(QStringLiteral("SettingParam/edit_Depth_B_Coefficient"), ParamUi->edit_Depth_B_Coefficient->text()); 
     ini.setValue(QStringLiteral("SettingParam/edit_Width_B_Coefficient"), ParamUi->edit_Width_B_Coefficient->text()); 
-    ini.setValue(QStringLiteral("SettingParam/editCloudShowDis"), ParamUi->editCloudShowDis->text());
-    ini.setValue(QStringLiteral("SettingParam/editPath_A"), DataExcelUi->editPath_A->text());
-    ini.setValue(QStringLiteral("SettingParam/editPath_B"), DataExcelUi->editPath_B->text());
+    ini.setValue(QStringLiteral("SettingParam/editCloudShowDis"), ParamUi->editCloudShowDis->text());    
     ini.setValue(QStringLiteral("SettingParam/editRadius"), ParamUi->editRadius->text());//左肩点斜率
     ini.setValue(QStringLiteral("SettingParam/editTorlance"), ParamUi->editTorlance->text());//右肩点斜率
+
+	//表格数据显示路径
+    ini.setValue(QStringLiteral("SettingParam/editPath_A"), DataExcelUi->editPath_A->text());
+    ini.setValue(QStringLiteral("SettingParam/editPath_B"), DataExcelUi->editPath_B->text());
+	//通信界面INI参数设置
+    ini.setValue(QStringLiteral("SettingParam/editServerIP"), CommunicateUi->editServerIP->text());
+    ini.setValue(QStringLiteral("SettingParam/editServerPort"), CommunicateUi->editServerPort->text());
 
     InfoSuanFa.editRadius = ParamUi->editRadius->text();
     InfoSuanFa.editTorlance = ParamUi->editTorlance->text();
@@ -989,6 +1192,9 @@ void PolePieceMeasureWin::destroySettingParam()//保存设置参数
     InfoPLC.PLC_IP = ParamUi->editPLCIP->text();
     InfoPLC.PLC_PORT = ParamUi->editPLCPort->text();
     InfoPLC.PLCConnectState = QStringLiteral("");
+    InfoHMI.HMI_IP = CommunicateUi->editServerIP->text();
+    InfoHMI.HMI_PORT = CommunicateUi->editServerPort->text();
+    InfoHMI.HMIConnectState = QStringLiteral("");
 
     InfoSuanFa.editEdge = ParamUi->editEdge->text();
     InfoSuanFa.editCheckThreshold = ParamUi->editCheckThreshold->text();
@@ -1012,7 +1218,6 @@ void PolePieceMeasureWin::destroySettingParam()//保存设置参数
 
     InfoExcel.excel_A_OutPath = DataExcelUi->editPath_A->text();
     InfoExcel.excel_B_OutPath = DataExcelUi->editPath_B->text();
-
 }
 void PolePieceMeasureWin::on_btnSetting_clicked()//设置
 { 
@@ -1063,6 +1268,13 @@ void PolePieceMeasureWin::on_btnSetting_clicked()//设置
     connect(ParamUi->btnParamSave, &QPushButton::clicked, [this]() {   
         iniSettingParam(); 
         destroySettingParam();
+        QMessageBox::information(this, "Save Settings", "Settings saved successfully.");
+
+        });
+    connect(ParamUi->btnParamRead, &QPushButton::clicked, [this]() {
+        initIniSettingParam();
+        QMessageBox::information(this, "Save Settings", "Settings read successfully.");
+
         });
     
     connect(ParamUi->btnStartCollectPoint, &QPushButton::clicked, [this]() {
@@ -1379,21 +1591,91 @@ void PolePieceMeasureWin::CalculateStatistics()//计算CPK值
 
 }
 
+
+
+void PolePieceMeasureWin::on_btnConnectServer_clicked()//连接HMI
+{
+
+   /* if (socketClient == nullptr)
+    {
+        socketClient = new  QTcpSocket();
+    }*/
+    //QTcpSocket* socketClient = nullptr;//socket客户端对象
+    QString ip = CommunicateUi->editServerIP->text();
+    quint16 port= CommunicateUi->editServerPort->text().toInt();
+    bool ret = connectSocketServer(ip,  port,  3000);//连接socket服务器
+    if (ret)
+    {
+        CommunicateUi->labelHMIConnectState->setText(QStringLiteral("connected"));
+    }
+    else
+    {
+        CommunicateUi->labelHMIConnectState->setText(QStringLiteral("unconnected"));
+    }
+  //  bool writeSocketServerData(const QByteArray & data);//给socket服务器写入数据
+ 
+   // void onSocketReadyRead();//接收socket服务器消息
+  //  void onSocketDisconnected();//socket与服务器断开连接
+  //  void onSocketError(QAbstractSocket::SocketError error);//socket错误
+
+}
+void PolePieceMeasureWin::on_btnDisConnectServer_clicked()//断开HMI
+{
+    socketAutoReconnect = false;//手动断开，不再自动重连
+    if (socketReconnectTimer != nullptr)
+    {
+        socketReconnectTimer->stop();
+    }
+    if (socketClient != nullptr && socketClient->state() != QAbstractSocket::UnconnectedState)
+    {
+        socketClient->abort();
+    }
+    CommunicateUi->labelHMIConnectState->setText(QStringLiteral("unconnected"));
+}
+void PolePieceMeasureWin::on_btnSendMessage_clicked()//发送消息
+{
+    QString message = CommunicateUi->txtEditContentTest->toPlainText(); //获取输入框内容
+    if (message.isEmpty())
+    {
+        return;
+    }
+
+    bool ret = writeSocketServerData(message.toUtf8());//给socket服务器写入数据
+    if (ret)
+    {
+        RecordData(QStringLiteral("发送消息：%1").arg(message), 0);
+    }
+    else
+    {
+        RecordData(QStringLiteral("发送消息失败：%1").arg(message), 2);
+    }
+}
 void PolePieceMeasureWin::on_btnCommunication_clicked()//通信窗口
 {
-    QDialog* CommunicationDialog = new QDialog(this);
-    Ui::CommunicateClass* CommunicationUi = new Ui::CommunicateClass();
-    CommunicationUi->setupUi(CommunicationDialog);
+    iniSettingParam(); 
     //基础配置
-    CommunicationDialog->setWindowTitle("Communication Setting");
-    CommunicationDialog->setWindowFlags(CommunicationDialog->windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
+    CommunicateDialog->setWindowTitle("Communication Setting");
+    CommunicateDialog->setWindowFlags(CommunicateDialog->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+   
+    connect(CommunicateUi->btnWriteReister, &QPushButton::clicked, [this]() {
+        iniSettingParam();
+        on_btnWritePLCReister_clicked();
+        });
+    connect(CommunicateUi->btnReadReister, &QPushButton::clicked, [this]() {
+        iniSettingParam();
+        on_btnReadPLCReister_clicked();
+        });
+    //btnConnectServer
     //执行对话框，结束后自动释放内存
-    if (CommunicationDialog->exec() == QDialog::Accepted) {
+    if (CommunicateDialog->exec() == QDialog::Accepted) {
         // 可扩展登录成功后的逻辑
     }
-    delete CommunicationUi;
-    delete CommunicationDialog;
+
+
+
+
+  // delete CommunicationUi;
+  //  delete CommunicationDialog;
 }
 /*#include <QVTKOpenGLNativeWidget.h>
 #include <vtkWindowToImageFilter.h>
@@ -1426,3 +1708,29 @@ void saveVTKSnapshot(QVTKOpenGLNativeWidget* vtkWidget, const QString& filename)
         writer->Write();
     }
 }*/
+// 通用 CpK 计算：返回 false 表示样本不足/σ≈0，调用方不要追加点
+ bool PolePieceMeasureWin::calcCpk(const QVector<QPointF>& data,
+    double usl, double lsl,
+    double& outMean, double& outSigma, double& outCpk)
+{
+    if (data.size() < CPK_MIN_SAMPLES)  return false; // 太短不做 SPC
+    int n = data.size();
+    double sum = 0, sq = 0;
+    for (const QPointF& p : data)      sum += p.y();
+    double mean = sum / n;
+    for (const QPointF& p : data)      sq += (p.y() - mean) * (p.y() - mean);
+    double sigma = std::sqrt(sq / (n - 1));
+    if (sigma < 1e-9)                  return false;
+
+    double cpu = (usl - mean) / (3.0 * sigma);
+    double cpl = (mean - lsl) / (3.0 * sigma);
+    outMean = mean;
+    outSigma = sigma;
+    outCpk = std::min(cpu, cpl);
+    return true;
+}
+
+QVector<QPointF> PolePieceMeasureWin::lastWindow(const QVector<QPointF>& v) const
+{
+    return v.mid(qMax(0, v.size() - CPK_WINDOW));
+}

@@ -11,6 +11,8 @@
 #include <numeric>
 #include <QtCharts/qsplineseries.h>
 #include <QtSerialPort/qserialport.h>
+#include <QTcpSocket>
+#include <QTimer>
 #include <QtCharts/QChartView >
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/point_types.h>
@@ -40,8 +42,10 @@
 #include <QCryptographicHash>
 #include "login.h"
 #include "ui_login.h"
- #include "Communicate.h"
+#include "Communicate.h"
 #include "ui_Communicate.h"
+#include "Communication.h"//通信与PLC通信
+
 //折线图显示窗口
 #include "ZoomChartView.h"
 #include <QtCharts/QLegend>
@@ -68,6 +72,22 @@ class PolePieceMeasureWin : public QMainWindow
 public:
     PolePieceMeasureWin(QWidget *parent = nullptr);
     ~PolePieceMeasureWin();
+    int SaveCloudDays = 2;
+    int SaveCloudDays_B = 2;
+     hgHMI_ProgressBar* m_ProgressBar = nullptr; 
+    hgHMI_labelLED* labelledCAM_A = nullptr;
+    hgHMI_labelLED* labelledCAM_B = nullptr;
+    hgHMI_labelLED* labelledHMI = nullptr;
+    hgHMI_labelLED* labelledPLC = nullptr;
+    Communication *plc = nullptr;
+
+    int CPK_WINDOW = 5;
+    int CPK_STATS_MAX = 20; //100;/*参与计算:n=最近 30~100个样本。满30个才开始计算第一个Cpk，之后每测一件用「截至当前的全部样本」重算，累计到100
+   // 后保持最近100 个样本滚动计算。
+       // 图上显示 : 只画最近5个cpk值(cPK_WINDow = 5)，显示数量和计算样本数是分开的。*/
+    int CPK_MIN_SAMPLES = 10; //30;
+    bool calcCpk(const QVector<QPointF>& data,double usl, double lsl,double& outMean, double& outSigma, double& outCpk);
+    QVector<QPointF> lastWindow(const QVector<QPointF>& v) const;
     void closeEvent(QCloseEvent* event);
     void  exportToCSV();//将表格数据导出为CSV文件
 
@@ -99,6 +119,8 @@ public:
 
     void   insertAtTop(QTextEdit* textEdit, const QString& text);//将文本插入到顶部
     void   CreateWorkDir(QString mainDir);//创建工作目录
+    QString CreateOkNgTimeDir(const QString& mainPath,bool isOK);//创建 年月日/OK|NG/时刻 目录
+    void deleteOldDateDir(const QString& mainPath, int daysToKeep);//删除主文件夹下超过保存天数的年月日文件夹
     void deleteOldFolders(const QString& basePath, int daysToKeep = 7);//删掉一星期以前的文件夹
 
     QString mainWorkDir = QStringLiteral("");
@@ -129,7 +151,6 @@ public:
         void on_btnDisConnectCamera_B_clicked();//断开轮廓仪B
         void on_btnStartCollectPoint_clicked();//开始采集
         void on_btnStopCollectPoint_clicked();//开始采集
-        void on_btnSavePoint_clicked();//开始采集
         void on_btnOutPutDirectory_clicked();//浏览
         void on_btnOutPutDirectory_Result_clicked();//浏览
         void on_btnSignIn_clicked();//登录
@@ -141,6 +162,8 @@ public:
         void on_btnBrowse_B_clicked();//浏览B
         void on_btnInput_B_clicked();//导出B
         void on_btnInput_A_clicked();//导出A        
+public:
+    void on_btnSavePoint_clicked();//开始采集
 
 #pragma region 点云识别  PYF 写目前不用了
 public:
@@ -167,11 +190,13 @@ public:
       bool  Reco_Protection(pcl::PointXYZRGB pt_left, pcl::PointXYZRGB pt_right, pcl::PointXYZRGB pt_down);
 #pragma endregion
 
+
 #pragma region 点云显示
 public:
     pcl::ModelCoefficients::Ptr coefficients; // 单帧的平面模型
     pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud;
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> separate_clouds; // 分离后的点云集
+    std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> source_separate_clouds; // 分离后的点云集
     std::vector<int> ID;  // 用来存储识别帧的索引
     std::vector<int> ID_NEW;  // 用来存储识别帧的索引
    
@@ -196,6 +221,8 @@ private Q_SLOTS:
     void  slotTableSelectionChanged();//表格显示和事件响应
     void  new_slotTableSelectionChanged();//表格显示和事件响应
     void  new_B_slotTableSelectionChanged();//表格显示和事件响应
+    void  TableFrame_Action(int idx_max);
+    void  TableFrame_Action_B(int idx_max);
 #pragma region 点云处理5
     public:
         struct sandian_suoyin
@@ -256,14 +283,41 @@ private Q_SLOTS:
 #pragma region PLC
  public:
 
- private Q_SLOTS:
+public:
      void on_btnDisConnectPLC_clicked();//PLC 断开
      void on_btnConnectPLC_clicked();//PLC 连接
-     void on_btnWriteReister_clicked();//写入值
-     void on_btnReadReister_clicked();//读取值
+     void on_btnWritePLCReister_clicked();//写入值
+     void on_btnReadPLCReister_clicked();//读取值
      void slotReceiveOuMoRon(QVector<quint16> val);
+ 
+private Q_SLOTS:
+     void receiveCommunicateMessage(QString& msg);
 #pragma endregion
 
+#pragma region Socket客户端通信
+ public:
+     static const int SOCKET_RECONNECT_INTERVAL = 5000;//自动重连间隔(ms)
+     QTcpSocket* socketClient = nullptr;//socket客户端对象
+     QTimer* socketReconnectTimer = nullptr;//socket自动重连定时器
+     bool socketAutoReconnect = true;//是否允许自动重连（手动断开时置false）
+     QString socketLastIp;//最近一次连接的服务器IP
+     quint16 socketLastPort = 0;//最近一次连接的服务器端口
+     bool connectSocketServer(const QString& ip, quint16 port, int timeoutMs = 3000);//连接socket服务器
+     bool writeSocketServerData(const QByteArray& data);//给socket服务器写入数据
+     void startSocketReconnect();//启动自动重连
+ private Q_SLOTS:
+     void onSocketReadyRead();//接收socket服务器消息
+     void onSocketDisconnected();//socket与服务器断开连接
+     void onSocketError(QAbstractSocket::SocketError error);//socket错误
+     void onSocketReconnectTimeout();//socket自动重连
+#pragma endregion
+#pragma region HMI通信显示和连接
+ public:
+     void on_btnConnectServer_clicked();//连接HMI
+     void on_btnDisConnectServer_clicked();//断开HMI
+     void on_btnSendMessage_clicked();;//断开HMI
+
+#pragma endregion
 #pragma region 数据图形化显示
  public:
        void Show_CurrentAB_Table_Show();
@@ -315,8 +369,10 @@ private Q_SLOTS:
 #pragma endregion
 private:
     Ui::PolePieceMeasureWinClass *ui;
+    Ui::CommunicateClass*  CommunicateUi;
     Ui::SubWindowClass* ParamUi; 
     Ui::DataExcelClass* DataExcelUi;//表格ui
+    QDialog* CommunicateDialog;
     QDialog* ParametersDialog;
     QDialog* excelDialog;//表格
     ZoomChartView* m_chartView_A_Depth;   // 用来放图
@@ -354,6 +410,11 @@ private:
          QString PLC_PORT;//PLC 端口号 
          QString PLCConnectState;  //PLC连接状态 
      }InfoPLC; 
+     struct {
+         QString HMI_IP;//HMI IP地址
+         QString HMI_PORT;//HMI 端口号 
+         QString HMIConnectState;  //HMI连接状态 
+     }InfoHMI; 
      struct {
          QString editRoiPercent;//ROI相对宽度(%)：
          QString editCentrePoint;//ROI焦点位置(%)：
@@ -399,6 +460,7 @@ private:
          pcl::ModelCoefficients::Ptr coefficients_B; // 单帧的平面模型
          pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud_B;//B面处理的原始点云
          std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> separate_clouds_B; // 原始ROI分离后的点云集
+         std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> source_separate_clouds_B; // 原始ROI分离后的点云集
           ThreePoint YIJie_B(pcl::PointCloud<pcl::PointXYZ>::Ptr  yijieCloud, int pinghuaxishu);//单独处理三节分成一节的情况
          PolePieceMeasureWin::ThreePoint singleRecongize_B(std::vector< pcl::PointCloud<pcl::PointXYZ>::Ptr>  threeJieCloud, int pinghuaxishu);//逐帧处理
          bool multifyRecognize_B(std::vector< pcl::PointCloud<pcl::PointXYZ>::Ptr>  multifyCloud, int pinghuaxishu = 10);//多帧处理
