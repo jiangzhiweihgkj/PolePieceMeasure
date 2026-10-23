@@ -1,5 +1,90 @@
 ﻿#include "PolePieceMeasureWin.h"
 
+namespace
+{
+template <typename CameraType>
+bool connectCameraBlocking(CameraType* camera, const QString& sensorIp, QString& errorMessage)
+{
+    if (camera == nullptr)
+    {
+        errorMessage = QStringLiteral("相机对象未初始化");
+        return false;
+    }
+    if (sensorIp.trimmed().isEmpty())
+    {
+        errorMessage = QStringLiteral("相机IP不能为空");
+        return false;
+    }
+    if (camera->CameraConnectFlag == kOK
+        && camera->sensor != kNULL
+        && GoSensor_IsConnected(camera->sensor))
+    {
+        return true;
+    }
+    if ((camera->status = GoSdk_Construct(&camera->api)) != kOK)
+    {
+        errorMessage = QStringLiteral("初始化Gocator SDK失败");
+        return false;
+    }
+    if ((camera->status = GoSystem_Construct(&camera->system, kNULL)) != kOK)
+    {
+        errorMessage = QStringLiteral("创建Gocator系统对象失败");
+        return false;
+    }
+
+    kIpAddress ipAddress;
+    if (kIpAddress_Parse(&ipAddress, sensorIp.toLocal8Bit().constData()) != kOK)
+    {
+        errorMessage = QStringLiteral("相机IP格式错误");
+        return false;
+    }
+    if ((camera->status = GoSystem_FindSensorByIpAddress(camera->system, &ipAddress, &camera->sensor)) != kOK)
+    {
+        errorMessage = QStringLiteral("未找到相机");
+        return false;
+    }
+    if ((camera->status = GoSensor_Connect(camera->sensor)) != kOK)
+    {
+        errorMessage = QStringLiteral("相机连接失败");
+        return false;
+    }
+
+    camera->CameraConnectFlag = kOK;
+    if ((camera->status = GoSystem_EnableData(camera->system, kTRUE)) != kOK)
+    {
+        GoSensor_Disconnect(camera->sensor);
+        camera->sensor = kNULL;
+        camera->CameraConnectFlag = kOK - 1;
+        errorMessage = QStringLiteral("启用相机数据通道失败");
+        return false;
+    }
+    return true;
+}
+
+template <typename CameraType>
+bool disconnectCameraBlocking(CameraType* camera, QString& errorMessage)
+{
+    if (camera == nullptr)
+    {
+        errorMessage = QStringLiteral("相机对象未初始化");
+        return false;
+    }
+    if (camera->sensor == kNULL)
+    {
+        camera->CameraConnectFlag = kOK - 1;
+        return true;
+    }
+    if ((camera->status = GoSensor_Disconnect(camera->sensor)) != kOK)
+    {
+        errorMessage = QStringLiteral("相机断开连接失败");
+        return false;
+    }
+    camera->sensor = kNULL;
+    camera->CameraConnectFlag = kOK - 1;
+    return true;
+}
+}
+
 void  PolePieceMeasureWin::InitScanTab()
 {
     QSettings ini(iniPath, QSettings::IniFormat);
@@ -17,6 +102,7 @@ void  PolePieceMeasureWin::InitScanTab()
     connect(_callOneTimes, SIGNAL(onsendStatus(QString)), this, SLOT(onReceiveStatus(QString)));
     connect(_callOneTimes_B, SIGNAL(onsendStatus(QString)), this, SLOT(onReceiveStatus_B(QString)));
     connect(plc, &Communication::sendCommunicateMessage, this, &PolePieceMeasureWin::receiveCommunicateMessage, Qt::UniqueConnection);
+    connect(plc, &Communication::plcSignalsUpdated, this, &PolePieceMeasureWin::onPlcSignalsUpdated, Qt::UniqueConnection);
     
 }
 void PolePieceMeasureWin::DestroyScanTab()
@@ -25,7 +111,196 @@ void PolePieceMeasureWin::DestroyScanTab()
     //ini.setValue(QStringLiteral("scan/editOutPath"), ui->editOutPath->text());
 
 }
- 
+
+void PolePieceMeasureWin::startCameraTask(bool isCameraA, bool isConnect)
+{
+    bool& taskRunning = isCameraA ? cameraTaskRunningA : cameraTaskRunningB;
+    if (taskRunning)
+    {
+        return;
+    }
+    taskRunning = true;
+
+    if (ParamUi != nullptr)
+    {
+        if (isCameraA)
+        {
+            ParamUi->btnConnectCamera->setEnabled(false);
+            ParamUi->btnDisConnectCamera->setEnabled(false);
+            if (isConnect)
+            {
+                ParamUi->CameraConnectState->setText(QStringLiteral("connecting..."));
+            }
+        }
+        else
+        {
+            ParamUi->btnConnectCamera_B->setEnabled(false);
+            ParamUi->btnDisConnectCamera_B->setEnabled(false);
+            if (isConnect)
+            {
+                ParamUi->CameraConnectState_B->setText(QStringLiteral("connecting..."));
+            }
+        }
+    }
+
+    const QString cameraName = isCameraA ? QStringLiteral("A") : QStringLiteral("B");
+    RecordData(cameraName + (isConnect ? QStringLiteral("相机连接中...") : QStringLiteral("相机断开中...")));
+
+    if (isConnect)
+    {
+        if (isCameraA && _callOneTimes != nullptr)
+        {
+            connect(_callOneTimes, SIGNAL(onsendCloudDeal()), this, SLOT(onslotReceiveCloud()), Qt::UniqueConnection);
+        }
+        else if (!isCameraA && _callOneTimes_B != nullptr)
+        {
+            connect(_callOneTimes_B, SIGNAL(onsendCloudDeal()), this, SLOT(onslotReceiveCloud_B()), Qt::UniqueConnection);
+        }
+    }
+
+    const QString sensorIp = isCameraA ? InfoCamera.Camra_A_IP : InfoCamera.Camra_B_IP;
+    CallOneTimes* cameraA = _callOneTimes;
+    CallOneTimes_B* cameraB = _callOneTimes_B;
+
+    QThread* taskThread = QThread::create([this, isCameraA, isConnect, sensorIp, cameraA, cameraB]() {
+        QString errorMessage;
+        bool success = false;
+
+        if (isCameraA)
+        {
+            if (cameraA == nullptr)
+            {
+                errorMessage = QStringLiteral("相机对象未初始化");
+            }
+            else if (isConnect)
+            {
+                success = connectCameraBlocking(cameraA, sensorIp, errorMessage);
+            }
+            else
+            {
+                success = disconnectCameraBlocking(cameraA, errorMessage);
+            }
+        }
+        else
+        {
+            if (cameraB == nullptr)
+            {
+                errorMessage = QStringLiteral("相机对象未初始化");
+            }
+            else if (isConnect)
+            {
+                success = connectCameraBlocking(cameraB, sensorIp, errorMessage);
+            }
+            else
+            {
+                success = disconnectCameraBlocking(cameraB, errorMessage);
+            }
+        }
+
+        QMetaObject::invokeMethod(this, [this, isCameraA, isConnect, success, errorMessage]() {
+            finishCameraTask(isCameraA, isConnect, success, errorMessage);
+        }, Qt::QueuedConnection);
+    });
+
+    if (taskThread == nullptr)
+    {
+        taskRunning = false;
+        finishCameraTask(isCameraA, isConnect, false, QStringLiteral("无法创建相机操作线程"));
+        return;
+    }
+
+    cameraTaskThreads.append(taskThread);
+    connect(taskThread, &QThread::finished, this, [this, taskThread]() {
+        cameraTaskThreads.removeOne(taskThread);
+        taskThread->deleteLater();
+    });
+    taskThread->start();
+}
+
+void PolePieceMeasureWin::finishCameraTask(bool isCameraA, bool isConnect, bool success, const QString& errorMessage)
+{
+    if (isCameraA)
+    {
+        cameraTaskRunningA = false;
+    }
+    else
+    {
+        cameraTaskRunningB = false;
+    }
+
+    const QString cameraName = isCameraA ? QStringLiteral("A") : QStringLiteral("B");
+    QLabel* stateLabel = nullptr;
+    QPushButton* btnConnect = nullptr;
+    QPushButton* btnDisconnect = nullptr;
+    hgHMI_labelLED* cameraLed = isCameraA ? labelledCAM_A : labelledCAM_B;
+
+    if (ParamUi != nullptr)
+    {
+        stateLabel = isCameraA ? ParamUi->CameraConnectState : ParamUi->CameraConnectState_B;
+        btnConnect = isCameraA ? ParamUi->btnConnectCamera : ParamUi->btnConnectCamera_B;
+        btnDisconnect = isCameraA ? ParamUi->btnDisConnectCamera : ParamUi->btnDisConnectCamera_B;
+        if (btnConnect != nullptr)
+        {
+            btnConnect->setEnabled(true);
+        }
+        if (btnDisconnect != nullptr)
+        {
+            btnDisconnect->setEnabled(true);
+        }
+    }
+
+    if (success)
+    {
+        const QString state = isConnect ? QStringLiteral("connected") : QStringLiteral("unconnected");
+        if (stateLabel != nullptr)
+        {
+            stateLabel->setText(state);
+        }
+        if (isCameraA)
+        {
+            InfoCamera.CameraConnectState_A = state;
+        }
+        else
+        {
+            InfoCamera.CameraConnectState_B = state;
+        }
+        if (cameraLed != nullptr)
+        {
+            cameraLed->setLedOn(isConnect);
+        }
+        RecordData(cameraName + (isConnect ? QStringLiteral("相机连接成功") : QStringLiteral("相机断开成功")));
+        return;
+    }
+
+    if (isConnect)
+    {
+        const QString state = QStringLiteral("unconnected");
+        if (stateLabel != nullptr)
+        {
+            stateLabel->setText(state);
+        }
+        if (isCameraA)
+        {
+            InfoCamera.CameraConnectState_A = state;
+        }
+        else
+        {
+            InfoCamera.CameraConnectState_B = state;
+        }
+        if (cameraLed != nullptr)
+        {
+            cameraLed->setLedOn(false);
+        }
+        RecordData(cameraName + QStringLiteral("相机连接失败：") + errorMessage, 2);
+        QMessageBox::warning(this, QStringLiteral("Tips"), cameraName + QStringLiteral("相机连接失败\n") + errorMessage);
+    }
+    else
+    {
+        RecordData(cameraName + QStringLiteral("相机断开连接失败：") + errorMessage, 2);
+        QMessageBox::warning(this, QStringLiteral("Tips"), cameraName + QStringLiteral("相机断开连接失败\n") + errorMessage);
+    }
+}
+
 void PolePieceMeasureWin::on_btnBrowse_A_clicked()//浏览A
 {
     QString  folderPath = QFileDialog::getExistingDirectory(this, tr("Select Folder"),
@@ -392,62 +667,8 @@ void PolePieceMeasureWin::on_btnSavePoint_clicked()//先暂时换成信息导入
   //  delete excelDialog; 
 }
 void PolePieceMeasureWin::on_btnConnectCamera_B_clicked()//连接轮廓仪B
-{ 
-   // disconnect(_callOneTimes_B, SIGNAL(onsendCloudDeal()), this, SLOT(onslotReceiveCloud_B()));
-    connect(_callOneTimes_B, SIGNAL(onsendCloudDeal()), this, SLOT(onslotReceiveCloud_B()));
-     // construct Gocator API Library
-    if ((_callOneTimes_B->status = GoSdk_Construct(&_callOneTimes_B->api)) != kOK)
-    {
-        return;
-    }
-    // construct GoSystem object
-    if ((_callOneTimes_B->status = GoSystem_Construct(&_callOneTimes_B->system, kNULL)) != kOK)
-    {
-        return;
-    }
-    //_callOneTimes->handle = 0;
-    char	abyIpAddress[4];	// The IP address of the controller to connect to.
-    kIpAddress ipAddress;
-
-    QString SENSOR_IP = InfoCamera.Camra_B_IP; //ui->editCameraIP->text(); //"192.168.1.10";
-    if (SENSOR_IP.isEmpty())
-    {
-        RecordData(QStringLiteral("B相机IP为空"),1);
-        QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("B相机IP不能为空"));
-    }
-    int nRet = kIpAddress_Parse(&ipAddress, SENSOR_IP.toLocal8Bit());
-    if ((_callOneTimes_B->status = GoSystem_FindSensorByIpAddress(_callOneTimes_B->system, &ipAddress, &_callOneTimes_B->sensor)) != kOK)
-    {
-        ParamUi->CameraConnectState_B->setText(QStringLiteral("unconnected"));
-        QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("B相机连接失败")); 
-        RecordData(QStringLiteral("B相机连接失败"),2);
-        labelledCAM_B->setLedOn(false); 
-        return;
-    }
-    // create connection to GoSensor object
-    if ((_callOneTimes_B->status = GoSensor_Connect(_callOneTimes_B->sensor)) == kOK)
-    {
-        _callOneTimes_B->CameraConnectFlag = kOK;
-        ParamUi->CameraConnectState_B->setText(QStringLiteral("connected"));
-        InfoCamera.CameraConnectState_B = QStringLiteral("connected");
-        RecordData(QStringLiteral("B相机连接成功"));
-        labelledCAM_B->setLedOn(true);
-
-    }
-    else
-    {
-        _callOneTimes->CameraConnectFlag = kOK - 1;
-        ParamUi->CameraConnectState_B->setText(QStringLiteral("unconnected"));
-        InfoCamera.CameraConnectState_B = QStringLiteral("unconnected");
-        RecordData(QStringLiteral("B相机连接失败"));
-        labelledCAM_B->setLedOn(false); 
-    }
-    // enable sensor data channel
-    if ((_callOneTimes_B->status = GoSystem_EnableData(_callOneTimes_B->system, kTRUE)) != kOK)
-    {
-        //  printf("Error: GoSensor_EnableData:%d\n", _callOneTimes->status);
-        return;
-    }
+{
+    startCameraTask(false, true);
     return;
 
     GoDataSet dataset = kNULL;
@@ -647,86 +868,15 @@ void PolePieceMeasureWin::on_btnConnectCamera_B_clicked()//连接轮廓仪B
 }
 void PolePieceMeasureWin::on_btnDisConnectCamera_B_clicked()//断开轮廓仪B
 {
-
+    startCameraTask(false, false);
 }
 void PolePieceMeasureWin::on_btnDisConnectCamera_clicked()
 {
-    if (_callOneTimes==nullptr)
-    {
-		_callOneTimes = new CallOneTimes();
-    }
- int nRet = GoSensor_Disconnect(_callOneTimes->sensor); //MV3D_LP_CloseDevice(&_callOneTimes->handle);
- if (kOK ==nRet)
- { 
-     InfoCamera.CameraConnectState_A = QStringLiteral("unconnected");
-     ParamUi->CameraConnectState->setText(QStringLiteral("unconnected"));
-     _callOneTimes->CameraConnectFlag = kOK - 1;
-     labelledCAM_A->setLedOn(false); 
- }
- else
- {
-      QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("相机断开连接失败")); 
- }
+    startCameraTask(true, false);
 }
 void PolePieceMeasureWin::on_btnConnectCamera_clicked()
 {
-   // disconnect(_callOneTimes, SIGNAL(onsendCloudDeal()), this, SLOT(onslotReceiveCloud())); 
-    connect(_callOneTimes, SIGNAL(onsendCloudDeal()), this, SLOT(onslotReceiveCloud())); 
-    // construct Gocator API Library
-    if ((_callOneTimes->status = GoSdk_Construct(&_callOneTimes->api)) != kOK)
-    {
-         return;
-    }
-    // construct GoSystem object
-    if ((_callOneTimes->status = GoSystem_Construct(&_callOneTimes->system, kNULL)) != kOK)
-    {
-         return;
-    }
-	//_callOneTimes->handle = 0;
-    char	abyIpAddress[4];	// The IP address of the controller to connect to.
-    kIpAddress ipAddress;
-
-    QString SENSOR_IP = InfoCamera.Camra_A_IP; //ui->editCameraIP->text(); //"192.168.1.10";
-    if (SENSOR_IP.isEmpty())
-    {
-        RecordData(QStringLiteral("相机IP不能为空"));
-        QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("相机IP不能为空")); 
-    } 
-     int nRet = kIpAddress_Parse(&ipAddress, SENSOR_IP.toLocal8Bit()); 
-    if ((_callOneTimes->status = GoSystem_FindSensorByIpAddress(_callOneTimes->system, &ipAddress, &_callOneTimes->sensor)) != kOK)
-    {
-        ParamUi->CameraConnectState->setText(QStringLiteral("unconnected")); 
-        QMessageBox::warning(this, QStringLiteral("Tips"), QStringLiteral("A相机连接失败"));
-        labelledCAM_A->setLedOn(false); 
-
-        RecordData(QStringLiteral("A相机连接失败"),2); 
-        return;
-    }
-    // create connection to GoSensor object
-    if ((_callOneTimes->status = GoSensor_Connect(_callOneTimes->sensor)) == kOK) 
-   {
-       _callOneTimes->CameraConnectFlag = kOK;
-       ParamUi->CameraConnectState->setText(QStringLiteral("connected"));
-       InfoCamera.CameraConnectState_A = QStringLiteral("connected"); 
-       RecordData(QStringLiteral("A相机连接成功")); 
-       labelledCAM_A->setLedOn(true);
-
-   }
-   else
-   {
-       _callOneTimes->CameraConnectFlag =kOK -1; 
-       ParamUi->CameraConnectState->setText(QStringLiteral("unconnected"));
-       InfoCamera.CameraConnectState_A = QStringLiteral("unconnected"); 
-       RecordData(QStringLiteral("A相机连接失败")); 
-       labelledCAM_A->setLedOn(false);
-
-   }
-    // enable sensor data channel
-    if ((_callOneTimes->status = GoSystem_EnableData(_callOneTimes->system, kTRUE)) != kOK)
-    {
-      //  printf("Error: GoSensor_EnableData:%d\n", _callOneTimes->status);
-        return;
-    } 
+    startCameraTask(true, true);
     return;
 
     GoDataSet dataset = kNULL;
@@ -971,6 +1121,7 @@ void PolePieceMeasureWin::on_btnDisConnectPLC_clicked()//PLC 断开
 {
     if (plc)
     {
+        plc->stopPlcPolling();   // 先停实时轮询线程，再断开，避免跨线程操作 socket
         plc->disconnectPLC();
     }
     ParamUi->PLCConnectState->setText(QStringLiteral("unconnected"));
@@ -986,30 +1137,19 @@ void PolePieceMeasureWin::on_btnConnectPLC_clicked()//PLC 连接
     if (!plc)
     {
         plc = new Communication();
-        //connect(plc, &Communication::sendCommunicateMessage, this, &PolePieceMeasureWin::receiveCommunicateMessage, Qt::UniqueConnection);
     }
-    plc->getConnectInfo(plcip, quint16(plcport)); //获取连接信息
-    bool state = plc->connectPLC(plcip, quint16(plcport));
-    if (state)
-    {
-        InfoPLC.PLCConnectState = QStringLiteral("connected");
-        ParamUi->PLCConnectState->setText(QStringLiteral("connected"));
-        ParamUi->PLCConnectState->setStyleSheet("color: green;"); //指示灯亮
+    // 信号只连一次：Qt::UniqueConnection 保证重复点击也不会重复连接
+    connect(plc, &Communication::sendCommunicateMessage, this, &PolePieceMeasureWin::receiveCommunicateMessage, Qt::UniqueConnection);
+    connect(plc, &Communication::plcSignalsUpdated, this, &PolePieceMeasureWin::onPlcSignalsUpdated, Qt::UniqueConnection);
 
-        RecordData(QStringLiteral("PLC连接成功")); //记录日志
-        labelledPLC->setLedOn(true); //指示灯亮
-		//plc->start(); //启动线程
-    }
-    else
-    {
-        ParamUi->PLCConnectState->setText(QStringLiteral("unconnected"));
-        ParamUi->PLCConnectState->setStyleSheet("color: red;"); //指示灯灭
-        InfoPLC.PLCConnectState = QStringLiteral("unconnected");
-        RecordData(QStringLiteral("PLC连接失败"), 2); //记录日志
-        labelledPLC->setLedOn(false); //指示灯灭
-    }
+    plc->getConnectInfo(plcip, quint16(plcport)); //获取连接信息
+    // 实时轮询：连接、读 PLC->CCD、写 CCD->PLC、断线重连都在 Communication::run() 里完成
+    plc->startPlcPolling(plcip, quint16(plcport), 100);
+
+    RecordData(QStringLiteral("PLC实时轮询启动中...")); //记录日志
 }
-void PolePieceMeasureWin::receiveCommunicateMessage(QString& msg)
+
+void PolePieceMeasureWin::receiveCommunicateMessage(const QString& msg)
 {
     RecordData(msg);
 }
@@ -1100,3 +1240,68 @@ void PolePieceMeasureWin::on_btnLoadPointsToExcel_clicked()
     //ui->widget_3DView->addCustomPoints(customPts, Qt::green, 6);
 
  }
+
+//通信新增
+// 每轮 PLC->CCD 读取完成后触发（Communication 在工作线程发信号，这里在 UI 线程执行）
+void PolePieceMeasureWin::onPlcSignalsUpdated()
+{
+    if (!plc)
+        return;
+
+    const Communication::PlcSignals sig = plc->lastSignals();
+    m_plcSignals = sig;
+
+    // 连接指示灯/状态：第一次收到数据即视为已连接
+    static bool firstData = true;
+    if (firstData)
+    {
+        firstData = false;
+        ParamUi->PLCConnectState->setText(QStringLiteral("connected"));
+        ParamUi->PLCConnectState->setStyleSheet("color: green;");
+        InfoPLC.PLCConnectState = QStringLiteral("connected");
+        labelledPLC->setLedOn(true);
+        RecordData(QStringLiteral("PLC连接成功（已收到PLC信号）"));
+    }
+
+    // 触发信号：0默认 / 10触发 / 11点检 / 20仅采图不判定
+    static float lastCam1Trigger = -1.0f;
+    static float lastCam2Trigger = -1.0f;
+    if (!qFuzzyCompare(sig.cam1Trigger + 1.0f, lastCam1Trigger + 1.0f))
+    {
+        lastCam1Trigger = sig.cam1Trigger;
+        RecordData(QStringLiteral("相机1触发信号=%1").arg(sig.cam1Trigger));
+    }
+    if (!qFuzzyCompare(sig.cam2Trigger + 1.0f, lastCam2Trigger + 1.0f))
+    {
+        lastCam2Trigger = sig.cam2Trigger;
+        RecordData(QStringLiteral("相机2触发信号=%1").arg(sig.cam2Trigger));
+    }
+
+    // 产品型号变化
+    static QString lastModel;
+    if (sig.productModel != lastModel)
+    {
+        lastModel = sig.productModel;
+        RecordData(QStringLiteral("产品型号=%1").arg(lastModel));
+    }
+
+    // TODO: 在这里按触发值接业务：
+    //   10 -> 开始采集/处理，处理完调用 plcWriteCamResult(1 或 2, 10.0f, 结果码) 回写
+    //   11 -> 点检
+    //   20 -> 只采图，不做数据判定
+    // 3D 出现 NG 时可用 sig.cacheEncoder1 / sig.cacheEncoder2 取缓存位实时编码值
+}
+
+// 相机结果回写 PLC（相机1：D2314/D2316，相机2：D2318/D2320）
+// startValue：启动信号，OK=10 / NG=11
+// resultValue：结果信号，OK=10 / 槽深槽宽均NG=11 / 单独槽深NG=12 / 单独槽宽NG=13
+void PolePieceMeasureWin::plcWriteCamResult(int cameraIndex, float startValue, float resultValue)
+{
+    if (!plc)
+        return;
+
+    if (cameraIndex == 1)
+        plc->setCamera1Command(startValue, resultValue);
+    else
+        plc->setCamera2Command(startValue, resultValue);
+}

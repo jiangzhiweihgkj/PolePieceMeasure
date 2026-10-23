@@ -1,4 +1,10 @@
 ﻿#pragma once
+// 新版 MSVC 对 Qt5 容器比较用到的 stdext::checked_array_iterator 报 STL4043(C4996)。
+// 这里在包含任何 Qt/STL 头之前定义安静宏，效果等同于在项目属性里加预处理器定义。
+#ifndef _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+#  define _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+#endif
+
 
 #include <QtWidgets/QMainWindow>
 #include "ui_PolePieceMeasureWin.h"
@@ -88,6 +94,7 @@ public:
     int CPK_MIN_SAMPLES = 10; //30;
     bool calcCpk(const QVector<QPointF>& data,double usl, double lsl,double& outMean, double& outSigma, double& outCpk);
     QVector<QPointF> lastWindow(const QVector<QPointF>& v) const;
+    void Zhuanmenyonglaiceshi();
     void closeEvent(QCloseEvent* event);
     void  exportToCSV();//将表格数据导出为CSV文件
 
@@ -302,9 +309,10 @@ public:
      void on_btnWritePLCReister_clicked();//写入值
      void on_btnReadPLCReister_clicked();//读取值
      void slotReceiveOuMoRon(QVector<quint16> val);
- 
 private Q_SLOTS:
-     void receiveCommunicateMessage(QString& msg);
+     void onPlcSignalsUpdated();//每轮 PLC 信号读取完成后调用
+     void plcWriteCamResult(int cameraIndex, float startValue, float resultValue);//相机结果回写PLC 
+     void receiveCommunicateMessage(const QString& msg);
 #pragma endregion
 
 #pragma region Socket客户端通信
@@ -381,6 +389,12 @@ private Q_SLOTS:
       void on_btnShort_A_Picture_clicked();
 #pragma endregion
 private:
+    void startCameraTask(bool isCameraA, bool isConnect);//在子线程中连接/断开相机
+    void finishCameraTask(bool isCameraA, bool isConnect, bool success, const QString& errorMessage);//回到UI线程更新状态
+    bool cameraTaskRunningA = false;
+    bool cameraTaskRunningB = false;
+    QVector<QThread*> cameraTaskThreads;
+
     Ui::PolePieceMeasureWinClass *ui;
     Ui::CommunicateClass*  CommunicateUi;
     Ui::SubWindowClass* ParamUi; 
@@ -423,6 +437,7 @@ private:
          QString PLC_PORT;//PLC 端口号 
          QString PLCConnectState;  //PLC连接状态 
      }InfoPLC; 
+     Communication::PlcSignals m_plcSignals;   // 最近一次 PLC->CCD 信号快照
      struct {
          QString HMI_IP;//HMI IP地址
          QString HMI_PORT;//HMI 端口号 

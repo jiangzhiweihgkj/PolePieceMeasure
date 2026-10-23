@@ -1762,3 +1762,8 @@ QVector<QPointF> PolePieceMeasureWin::lastWindow(const QVector<QPointF>& v) cons
 {
     return v.mid(qMax(0, v.size() - CPK_WINDOW));
 }
+
+void PolePieceMeasureWin::Zhuanmenyonglaiceshi()
+{
+
+}

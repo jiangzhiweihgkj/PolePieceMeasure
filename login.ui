@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>440</width>
+    <height>380</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,73 +18,131 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>300</height>
+    <width>440</width>
+    <height>380</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>300</height>
+    <width>440</width>
+    <height>380</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>NEXUS // LOGIN</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/* 登录窗口整体背景（假设窗口的 objectName 为 LogIn） */
+   <string notr="true">/* ============ 全局背景：深空渐变 ============ */
 QWidget#LogIn {
-    /* 浅色渐变：从浅蓝到浅紫（可根据喜好调整颜色） */
-    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                                stop:0 #cce5ff, stop:1 #e6d1ff); 
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #050a14,
+                                stop:0.45 #0a1b33,
+                                stop:1 #150a26);
 }
 
-/* 输入框通用样式 */
+QStackedWidget, QWidget#page1_2, QWidget#page2_2 {
+    background: transparent;
+}
+
+/* ============ 标题 ============ */
+QLabel#label, QLabel#label_2 {
+    color: #eaf9ff;
+    font-weight: 800;
+}
+
+/* ============ 输入框 ============ */
 QLineEdit {
-    background-color: white;
-    color: #333333;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    padding: 6px 8px;
+    background-color: rgba(6, 18, 34, 205);
+    color: #dcf3ff;
+    border: 1px solid rgba(70, 190, 255, 80);
+    border-radius: 6px;
+    padding: 4px 12px;
+    selection-background-color: #00cfff;
+    selection-color: #04101f;
 }
-
+QLineEdit:hover {
+    border: 1px solid rgba(70, 200, 255, 150);
+}
 QLineEdit:focus {
-    border: 1px solid #66a3ff;
-    outline: none;
+    border: 1px solid #00d9ff;
+    background-color: rgba(0, 45, 80, 225);
 }
 
-/* 按钮通用样式 - 蓝色背景、白色文字 */
+/* ============ 主按钮（登录 / 确认） ============ */
 QPushButton {
-    background-color: #1976d2; /* 蓝色，可调整为 #2196f3 等 */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 10px;
+    color: #f0ffff;
+    border: 1px solid rgba(140, 235, 255, 130);
+    border-radius: 6px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #1fb6ff, stop:1 #0b5ed7);
+    font-weight: 700;
+    padding: 4px 10px;
 }
-
 QPushButton:hover {
-    background-color: #1565c0; /* hover 时加深蓝色 */
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #4bd2ff, stop:1 #1478ff);
+    border: 1px solid rgba(200, 250, 255, 210);
 }
-
 QPushButton:pressed {
-    background-color: #0d47a1; /* 按下时进一步加深蓝色 */
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #0a86c9, stop:1 #06367c);
+}
+QPushButton:disabled {
+    color: rgba(220, 240, 255, 90);
+    background: rgba(40, 60, 90, 160);
+    border: 1px solid rgba(120, 160, 200, 60);
 }
 
-QToolButton {
-            border: none;
-            background: transparent;
-            font-size: 13px;
-            padding: 1px;
-            min-width: 20px;
+/* ============ 次要按钮：修改密码（描边风） ============ */
+QPushButton#btnChangePassword {
+    background: transparent;
+    color: #7fe0ff;
+    border: 1px solid rgba(90, 205, 255, 150);
 }
-/* 如果需要区分 “Change Password” 按钮（可选） 
-QPushButton#ChangePasswordBtn {
-    padding: 6px 10px;
-    font-size: 12px;
-}*/</string>
+QPushButton#btnChangePassword:hover {
+    background: rgba(0, 170, 255, 45);
+    border: 1px solid #63dcff;
+    color: #d6f7ff;
+}
+QPushButton#btnChangePassword:pressed {
+    background: rgba(0, 120, 200, 80);
+}
+
+/* ============ 密码可见按钮 ============ */
+QToolButton#toolBtnPassword {
+    background-color: rgba(6, 18, 34, 205);
+    border: 1px solid rgba(70, 190, 255, 80);
+    border-radius: 6px;
+    color: #7fe0ff;
+    font-size: 13px;
+}
+QToolButton#toolBtnPassword:hover {
+    border: 1px solid #00d9ff;
+    background-color: rgba(0, 55, 95, 225);
+    color: #eaffff;
+}
+QToolButton#toolBtnPassword:pressed {
+    background-color: rgba(0, 90, 150, 230);
+}
+/* 想换成图标时，把上面 QToolButton#toolBtnPassword 的三行 background 换成：
+   background-image: url(:/icons/eye.png);
+   background-repeat: no-repeat;
+   background-position: center;
+*/</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <property name="leftMargin">
+    <number>30</number>
+   </property>
+   <property name="topMargin">
+    <number>30</number>
+   </property>
+   <property name="rightMargin">
+    <number>30</number>
+   </property>
+   <property name="bottomMargin">
+    <number>30</number>
+   </property>
    <item row="0" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="sizePolicy">
@@ -95,14 +153,14 @@ QPushButton#ChangePasswordBtn {
      </property>
      <property name="minimumSize">
       <size>
-       <width>250</width>
-       <height>250</height>
+       <width>380</width>
+       <height>320</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>250</width>
-       <height>250</height>
+       <width>380</width>
+       <height>320</height>
       </size>
      </property>
      <property name="currentIndex">
@@ -110,10 +168,37 @@ QPushButton#ChangePasswordBtn {
      </property>
      <widget class="QWidget" name="page1_2">
       <layout class="QGridLayout" name="gridLayout_7">
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>14</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>10</number>
+       </property>
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
          <property name="rightMargin">
-          <number>30</number>
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
          </property>
          <item row="0" column="1">
           <widget class="QLabel" name="label">
@@ -126,23 +211,28 @@ QPushButton#ChangePasswordBtn {
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>30</height>
+             <height>34</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>30</height>
+             <height>34</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>Adobe Arabic</family>
-             <pointsize>20</pointsize>
+             <family>Microsoft YaHei UI</family>
+             <pointsize>18</pointsize>
+             <weight>99</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="text">
-            <string>Welcome</string>
+            <string>WELCOME</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -153,7 +243,7 @@ QPushButton#ChangePasswordBtn {
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>60</width>
+             <width>40</width>
              <height>20</height>
             </size>
            </property>
@@ -179,7 +269,7 @@ QPushButton#ChangePasswordBtn {
          <item>
           <widget class="QLineEdit" name="editUserName">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -187,14 +277,19 @@ QPushButton#ChangePasswordBtn {
            <property name="minimumSize">
             <size>
              <width>200</width>
-             <height>30</height>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>200</width>
-             <height>30</height>
+             <width>16777215</width>
+             <height>36</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="placeholderText">
             <string>UserName</string>
@@ -206,9 +301,12 @@ QPushButton#ChangePasswordBtn {
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>20</width>
+             <width>12</width>
              <height>20</height>
             </size>
            </property>
@@ -221,7 +319,7 @@ QPushButton#ChangePasswordBtn {
          <item>
           <widget class="QLineEdit" name="editPassword">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -229,14 +327,19 @@ QPushButton#ChangePasswordBtn {
            <property name="minimumSize">
             <size>
              <width>200</width>
-             <height>30</height>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>200</width>
-             <height>30</height>
+             <width>16777215</width>
+             <height>36</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
@@ -248,35 +351,6 @@ QPushButton#ChangePasswordBtn {
          </item>
          <item>
           <widget class="QToolButton" name="toolBtnPassword">
-           <property name="minimumSize">
-            <size>
-             <width>22</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>25</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="3" column="0">
-        <layout class="QGridLayout" name="gridLayout_3">
-         <property name="rightMargin">
-          <number>30</number>
-         </property>
-         <property name="horizontalSpacing">
-          <number>10</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="btnLogin">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -285,15 +359,66 @@ QPushButton#ChangePasswordBtn {
            </property>
            <property name="minimumSize">
             <size>
-             <width>90</width>
-             <height>25</height>
+             <width>36</width>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>90</width>
-             <height>25</height>
+             <width>36</width>
+             <height>36</height>
             </size>
+           </property>
+           <property name="text">
+            <string>👁</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <layout class="QGridLayout" name="gridLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="horizontalSpacing">
+          <number>12</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="btnLogin">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>110</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>87</weight>
+             <bold>true</bold>
+            </font>
            </property>
            <property name="text">
             <string>登录</string>
@@ -303,27 +428,29 @@ QPushButton#ChangePasswordBtn {
          <item row="0" column="1">
           <widget class="QPushButton" name="btnChangePassword">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>100</width>
-             <height>25</height>
+             <width>110</width>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>100</width>
-             <height>25</height>
+             <width>16777215</width>
+             <height>36</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>SimSun-ExtB</family>
-             <pointsize>-1</pointsize>
+             <family>Microsoft YaHei UI</family>
+             <pointsize>10</pointsize>
+             <weight>87</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="text">
@@ -337,10 +464,34 @@ QPushButton#ChangePasswordBtn {
      </widget>
      <widget class="QWidget" name="page2_2">
       <layout class="QGridLayout" name="gridLayout_6">
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_5">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <property name="verticalSpacing">
-          <number>15</number>
+          <number>10</number>
          </property>
          <item row="0" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -361,12 +512,14 @@ QPushButton#ChangePasswordBtn {
             <widget class="QLabel" name="label_2">
              <property name="font">
               <font>
-               <family>Adobe Arabic</family>
-               <pointsize>20</pointsize>
+               <family>Microsoft YaHei UI</family>
+               <pointsize>16</pointsize>
+               <weight>99</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="text">
-              <string>Change Password</string>
+              <string>CHANGE PASSWORD</string>
              </property>
             </widget>
            </item>
@@ -388,26 +541,26 @@ QPushButton#ChangePasswordBtn {
          <item row="1" column="0">
           <widget class="QLineEdit" name="editUserName2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>210</width>
-             <height>25</height>
+             <width>200</width>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>210</width>
-             <height>25</height>
+             <width>16777215</width>
+             <height>36</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <pointsize>7</pointsize>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="placeholderText">
@@ -418,26 +571,26 @@ QPushButton#ChangePasswordBtn {
          <item row="2" column="0">
           <widget class="QLineEdit" name="editPassword2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>210</width>
-             <height>25</height>
+             <width>200</width>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>210</width>
-             <height>25</height>
+             <width>16777215</width>
+             <height>36</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <pointsize>7</pointsize>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="echoMode">
@@ -451,26 +604,26 @@ QPushButton#ChangePasswordBtn {
          <item row="3" column="0">
           <widget class="QLineEdit" name="editPasswordNew">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>210</width>
-             <height>25</height>
+             <width>200</width>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>210</width>
-             <height>25</height>
+             <width>16777215</width>
+             <height>36</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <pointsize>7</pointsize>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="echoMode">
@@ -484,26 +637,26 @@ QPushButton#ChangePasswordBtn {
          <item row="4" column="0">
           <widget class="QLineEdit" name="editPasswordNewRepeat">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>210</width>
-             <height>25</height>
+             <width>200</width>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>210</width>
-             <height>25</height>
+             <width>16777215</width>
+             <height>36</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <pointsize>7</pointsize>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="echoMode">
@@ -516,6 +669,18 @@ QPushButton#ChangePasswordBtn {
          </item>
          <item row="5" column="0">
           <layout class="QGridLayout" name="gridLayout_4">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item row="0" column="0">
             <spacer name="horizontalSpacer_5">
              <property name="orientation">
@@ -552,15 +717,22 @@ QPushButton#ChangePasswordBtn {
              </property>
              <property name="minimumSize">
               <size>
-               <width>90</width>
-               <height>25</height>
+               <width>160</width>
+               <height>36</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>90</width>
-               <height>25</height>
+               <width>160</width>
+               <height>36</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <weight>87</weight>
+               <bold>true</bold>
+              </font>
              </property>
              <property name="text">
               <string>Confirm</string>

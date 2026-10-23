@@ -1776,6 +1776,18 @@ void PolePieceMeasureWin::slotTableSelectionChanged()
  
 PolePieceMeasureWin::~PolePieceMeasureWin()
 {
+    for (QThread* thread : cameraTaskThreads)
+    {
+        if (thread == nullptr)
+        {
+            continue;
+        }
+        disconnect(thread, nullptr, this, nullptr);
+        thread->wait();
+        delete thread;
+    }
+    cameraTaskThreads.clear();
+
     delete ui; delete ParamUi;
       delete DataExcelUi;
     delete excelDialog;
