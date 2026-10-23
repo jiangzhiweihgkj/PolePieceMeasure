@@ -3,734 +3,302 @@
  <class>PolePieceMeasureWinClass</class>
  <widget class="QMainWindow" name="PolePieceMeasureWinClass">
   <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>2256</width>
-    <height>1200</height>
-   </rect>
+   <rect><x>0</x><y>0</y><width>2256</width><height>1200</height></rect>
   </property>
   <property name="minimumSize">
-   <size>
-    <width>2200</width>
-    <height>1200</height>
-   </size>
+   <size><width>2200</width><height>1200</height></size>
   </property>
   <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>16777215</height>
-   </size>
+   <size><width>16777215</width><height>16777215</height></size>
   </property>
   <property name="windowTitle">
    <string>PolePieceMeasureWin</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"> 
-background-color: rgb(66, 66, 66);</string>
-  </property>
-  <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_13">
-    <item row="0" column="0">
-     <widget class="QPushButton" name="btnSignIn_3">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
+   <string notr="true">/* ========== 全局 ========== */
+QMainWindow#PolePieceMeasureWinClass,
+QWidget#centralWidget {
+    background-color: #1B1F27;
+    color: #E6EAF0;
+    font-family: &quot;Microsoft YaHei UI&quot;;
+    font-size: 15px;
 }
 
+/* ========== 顶部操作栏按钮（默认深色工业按钮） ========== */
+QPushButton {
+    color: #E6EAF0;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #2E3542, stop:1 #232833);
+    border: 1px solid #3A4252;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 20px;
+    font-weight: bold;
+    min-height: 28px;
+}
 QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #384152, stop:1 #2A3140);
+    border: 1px solid #4FC3DD;
+    color: #7FD4E8;
 }
-
 QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
+    background-color: #1A1E26;
+    border: 1px solid #2C7A8C;
+    color: #4FC3DD;
+}
+QPushButton:disabled {
+    background-color: #20242C;
+    color: #5A6270;
+    border: 1px solid #2A303A;
 }
 
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
+/* ========== 主按钮（开始 / 识别 / 导入） ========== */
+QPushButton#btnStartCollectPoint,
+QPushButton#btnRecoCloud,
+QPushButton#btnLoadCloud {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #2C8AA0, stop:1 #236E80);
+    border: 1px solid #4FC3DD;
+    color: #FFFFFF;
+}
+QPushButton#btnStartCollectPoint:hover,
+QPushButton#btnRecoCloud:hover,
+QPushButton#btnLoadCloud:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #37A4BF, stop:1 #2C8AA0);
+    border: 1px solid #7FD4E8;
+    color: #FFFFFF;
+}
+
+/* ========== 危险按钮（暂停 / 停止） ========== */
+QPushButton#btnSavePoint,
+QPushButton#btnStopCollectPoint {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #6B2E38, stop:1 #55232C);
+    border: 1px solid #C24A5A;
+    color: #FFD5DB;
+}
+QPushButton#btnSavePoint:hover,
+QPushButton#btnStopCollectPoint:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #8A3B47, stop:1 #6B2E38);
+    border: 1px solid #E86A7B;
+    color: #FFFFFF;
+}
+
+/* ========== 设置 / 登录（强调次按钮） ========== */
+QPushButton#btnSignIn_5,
+QPushButton#btnSignIn {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #3A4252, stop:1 #2B3240);
+    border: 1px solid #4FC3DD;
+    color: #7FD4E8;
+}
+QPushButton#btnSignIn_5:hover,
+QPushButton#btnSignIn:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #465066, stop:1 #333A4A);
+    border: 1px solid #7FD4E8;
+    color: #A8E6F5;
+}
+
+/* ========== CheckBox ========== */
+QCheckBox {
+    color: #C7CFDB;
+    spacing: 8px;
+    font-size: 15px;
+    font-weight: bold;
+}
+QCheckBox::indicator {
+    width: 20px; height: 20px;
+    border: 1px solid #3A4252;
+    border-radius: 4px;
+    background-color: #1A1E26;
+}
+QCheckBox::indicator:hover { border: 1px solid #4FC3DD; }
+QCheckBox::indicator:checked {
+    background-color: #2C8AA0;
+    border: 1px solid #4FC3DD;
+    image: none;
+}
+
+/* ========== 通用 GroupBox（浅色内容区不动，仅卡片外框统一） ========== */
+QGroupBox {
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 8px;
+}
+
+/* ========== QTableWidget 全局深色主题 ========== */
+QTableWidget {
+    background-color: #1A1E26;
+    alternate-background-color: #20252F;
+    gridline-color: #2F3644;
+    border: 1px solid #2F3644;
+    border-radius: 6px;
+    color: #E6EAF0;
+    selection-background-color: #2C7A8C;
+    selection-color: #FFFFFF;
+}
+QTableWidget::item {
+    padding: 6px 10px;
+    border: none;
+}
+QTableWidget::item:selected,
+QTableWidget::item:selected:focus,
+QTableWidget::item:selected:!focus {
+    background-color: #2C7A8C !important;
+    color: #FFFFFF !important;
+}
+QTableWidget::item:hover {
+    background-color: #2A313F;
+}
+QHeaderView::section {
+    background-color: #232833;
+    color: #7FD4E8;
+    padding: 6px 10px;
+    border: 1px solid #2F3644;
+    font-weight: bold;
+}
+
+/* ========== QTextEdit（日志） ========== */
+QTextEdit {
+    background-color: #1A1E26;
+    border: 1px solid #2F3644;
+    border-radius: 6px;
+    padding: 6px;
+    color: #C7CFDB;
+    font-family: &quot;Consolas&quot;, &quot;SimSun&quot;;
+}
+QTextEdit:focus { border: 1px solid #4FC3DD; }
+
+/* ========== 滚动条 ========== */
+QScrollBar:vertical {
+    background: #1A1E26; width: 10px; border-radius: 5px;
+}
+QScrollBar::handle:vertical {
+    background: #3A4252; border-radius: 5px; min-height: 30px;
+}
+QScrollBar::handle:vertical:hover { background: #4FC3DD; }
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical { height: 0; }
+
+/* ========== 顶部状态栏 OK/NG 大标签 ========== */
+QLabel#label_2, QLabel#label_3 {
+    color: #4ADE80;
+    font-size: 22px;
+    font-weight: bold;
+}
+QLabel#label, QLabel#label_4 {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
 }
 </string>
-      </property>
-      <property name="text">
-       <string>相机A</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/控制器.png</normaloff>x64/Debug/icon/控制器.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+  </property>
+
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_13">
+    <property name="spacing"><number>8</number></property>
+    <property name="leftMargin"><number>10</number></property>
+    <property name="topMargin"><number>10</number></property>
+    <property name="rightMargin"><number>10</number></property>
+    <property name="bottomMargin"><number>10</number></property>
+
+    <!-- ========== 顶部按钮行 ========== -->
+    <item row="0" column="0">
+     <widget class="QPushButton" name="btnSignIn_3">
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>相机A</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/控制器.png</normaloff>x64/Debug/icon/控制器.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="1">
      <widget class="QPushButton" name="btnSignIn_4">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>相机B</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/控制器.png</normaloff>x64/Debug/icon/控制器.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>相机B</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/控制器.png</normaloff>x64/Debug/icon/控制器.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="2">
      <widget class="QPushButton" name="btnSignIn_2">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>通信</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/通信设定.png</normaloff>x64/Debug/icon/通信设定.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>通信</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/通信设定.png</normaloff>x64/Debug/icon/通信设定.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="3" colspan="2">
      <widget class="QPushButton" name="btnSignIn_5">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>设置</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/参数设置.png</normaloff>x64/Debug/icon/参数设置.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>设置</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/参数设置.png</normaloff>x64/Debug/icon/参数设置.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="5">
      <widget class="QPushButton" name="btnStartCollectPoint">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>开始</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/开始2.png</normaloff>x64/Debug/icon/开始2.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>开始</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/开始2.png</normaloff>x64/Debug/icon/开始2.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="6">
      <widget class="QPushButton" name="btnSavePoint">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>暂停</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/暂停.png</normaloff>x64/Debug/icon/暂停.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>暂停</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/暂停.png</normaloff>x64/Debug/icon/暂停.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="7">
      <widget class="QPushButton" name="btnStopCollectPoint">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>停止</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/中止.png</normaloff>x64/Debug/icon/中止.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>停止</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/中止.png</normaloff>x64/Debug/icon/中止.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="8" colspan="2">
      <widget class="QPushButton" name="btnSignIn">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>登录</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/用户登录1.png</normaloff>x64/Debug/icon/用户登录1.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>登录</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/用户登录1.png</normaloff>x64/Debug/icon/用户登录1.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="10">
      <widget class="QPushButton" name="btnLoadCloud">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>144</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>导入</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/导入.png</normaloff>x64/Debug/icon/导入.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>144</width><height>80</height></size></property>
+      <property name="text"><string>导入</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/导入.png</normaloff>x64/Debug/icon/导入.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="11">
      <widget class="QPushButton" name="btnRecoCloud">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>144</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>识别</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/扫描识别.png</normaloff>x64/Debug/icon/扫描识别.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>144</width><height>80</height></size></property>
+      <property name="text"><string>识别</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/扫描识别.png</normaloff>x64/Debug/icon/扫描识别.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="12">
      <widget class="QPushButton" name="btnebug">
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);  
-    background-color: rgb(15, 15, 15); 
-    border: 1.5px solid rgba(37, 42, 50, 0.3);
-    border-radius: 4px; 
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);       /* 悬停时背景加深，工业感加强 */
-    border: 1.5px solid rgba(37, 42, 50, 0.5); /* 边框稍加深 */
-}
-
-QPushButton:pressed {
-    background-color: #252A32;       /* 按下时暗灰金属色 */
-    color: #C8CDD1;                  /* 字体变浅，反差适中 */
-    border: 1.5px solid rgba(200, 205, 209, 0.7);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;       /* 失活时浅灰蓝 */
-    color: #A0A6AC;                  /* 文字灰度较低 */
-    border: 1.5px solid rgba(37, 42, 50, 0.15);
-}
-</string>
-      </property>
-      <property name="text">
-       <string>Debug</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>x64/Debug/icon/调试.png</normaloff>x64/Debug/icon/调试.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>36</width>
-        <height>40</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>100</width><height>80</height></size></property>
+      <property name="text"><string>Debug</string></property>
+      <property name="icon"><iconset><normaloff>x64/Debug/icon/调试.png</normaloff>x64/Debug/icon/调试.png</iconset></property>
+      <property name="iconSize"><size><width>36</width><height>40</height></size></property>
      </widget>
     </item>
     <item row="0" column="13">
      <widget class="QCheckBox" name="checkbox_roi">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(105, 55, 255);
-color: rgb(0, 170, 0);</string>
-      </property>
-      <property name="text">
-       <string>ROI显示</string>
-      </property>
+      <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+      <property name="text"><string>ROI显示</string></property>
      </widget>
     </item>
     <item row="0" column="14">
@@ -739,56 +307,16 @@ color: rgb(0, 170, 0);</string>
        <layout class="QGridLayout" name="gridLayout">
         <item row="1" column="1">
          <widget class="QLabel" name="label_2">
-          <property name="minimumSize">
-           <size>
-            <width>90</width>
-            <height>45</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>22</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"> 
-color: rgb(0, 255, 0);</string>
-          </property>
-          <property name="text">
-           <string>OK</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
+          <property name="minimumSize"><size><width>90</width><height>45</height></size></property>
+          <property name="text"><string>OK</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label">
-          <property name="minimumSize">
-           <size>
-            <width>113</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>18</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);</string>
-          </property>
-          <property name="text">
-           <string>综合判定A</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
+          <property name="minimumSize"><size><width>113</width><height>30</height></size></property>
+          <property name="text"><string>综合判定A</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
          </widget>
         </item>
        </layout>
@@ -797,95 +325,50 @@ color: rgb(0, 255, 0);</string>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <widget class="QLabel" name="label_4">
-          <property name="minimumSize">
-           <size>
-            <width>113</width>
-            <height>80</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>18</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);</string>
-          </property>
-          <property name="text">
-           <string>综合判定B</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
+          <property name="minimumSize"><size><width>113</width><height>80</height></size></property>
+          <property name="text"><string>综合判定B</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
          </widget>
         </item>
         <item row="0" column="1">
          <widget class="QLabel" name="label_3">
-          <property name="minimumSize">
-           <size>
-            <width>90</width>
-            <height>45</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>22</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: rgb(0, 255, 0);</string>
-          </property>
-          <property name="text">
-           <string>OK</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
+          <property name="minimumSize"><size><width>90</width><height>45</height></size></property>
+          <property name="text"><string>OK</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
          </widget>
         </item>
        </layout>
       </item>
      </layout>
     </item>
+
+    <!-- ========== A 面 ========== -->
     <item row="1" column="0" rowspan="2" colspan="4">
      <widget class="QGroupBox" name="groupBox">
+      <property name="title"><string>A面</string></property>
       <property name="styleSheet">
        <string notr="true">QGroupBox {
     border: 2px solid qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                      stop:0 #5A81A8, stop:1 #274472); /* 工业蓝渐变 */
+                                      stop:0 #5A81A8, stop:1 #274472);
     border-radius: 10px;
-    background-color: rgba(230, 238, 245, 90%); /* 浅蓝灰，清爽专业 */
+    background-color: rgba(230, 238, 245, 0.92);
     margin-top: 20px;
 }
-
 QGroupBox::title {
     color: #FFFFFF;
-    background-color: #274472; /* 深钢蓝，科技感强 */
-    font: 75 12pt &quot;Microsoft YaHei UI&quot;;
+    background-color: #274472;
+    font: bold 12pt &quot;Microsoft YaHei UI&quot;;
     subcontrol-origin: margin;
     subcontrol-position: top left;
     padding: 4px 16px;
     border-radius: 6px;
 }
-
-/* 禁用状态 */
 QGroupBox:disabled {
-    border-color: #A5B7C6;  /* 工业蓝灰 */
+    border-color: #A5B7C6;
     color: #95A5A6;
 }
-
-QGroupBox QCheckBox {
-    color: #274472; /* 深钢蓝，与标题呼应 */
-}
+QGroupBox QCheckBox { color: #274472; }
 </string>
-      </property>
-      <property name="title">
-       <string>A面</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="0">
@@ -894,141 +377,49 @@ QGroupBox QCheckBox {
           <widget class="hgHMI_PCLViewerWidget" name="openGLWidget_Result">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
+             <horstretch>0</horstretch><verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="minimumSize">
-            <size>
-             <width>450</width>
-             <height>300</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
+           <property name="minimumSize"><size><width>450</width><height>300</height></size></property>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QTableWidget" name="tableFrame">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>507</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>15</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
+           <property name="minimumSize"><size><width>507</width><height>0</height></size></property>
            <property name="styleSheet">
             <string notr="true">QTableWidget {
-	background-color: rgb(49, 111, 62);
-    background-color: #f0f0f0;
-    gridline-color: #dcdcdc;
-    border: 1px solid #cccccc;
-    selection-color: white;
-    alternate-background-color: #dcdcdc;
-    selection-background-color: #555555;
+    background-color: #1A1E26;
+    alternate-background-color: #20252F;
+    gridline-color: #2F3644;
+    border: 1px solid #2F3644;
+    border-radius: 6px;
+    color: #E6EAF0;
+    selection-background-color: #2C7A8C;
+    selection-color: #FFFFFF;
 }
-
-QTableWidget::item {
-    padding: 6px 10px;
-    border: none;
-}
-
-/* 选中状态，无论是否有焦点，都使用深灰背景 */
-QTableWidget::item:selected,
-QTableWidget::item:selected:focus,
-QTableWidget::item:selected:!focus {
-    background-color: #555555 !important;
-    color: white !important;
-}
-
-/* 鼠标悬停时高亮 */
-QTableWidget::item:hover {
-    background-color:rgb(160, 185, 217);
-}
-
-/* 表头样式 */
+QTableWidget::item { padding: 6px 10px; border: none; }
+QTableWidget::item:hover { background-color: #2A313F; }
 QHeaderView::section {
-    background-color: #f0f0f0;
-    color: #3a3a3a;
+    background-color: #232833;
+    color: #7FD4E8;
     padding: 6px 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #2F3644;
     font-weight: bold;
 }
 </string>
            </property>
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>65</number>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>帧索引</string>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>宽度 (um)</string>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>深度 (um)</string>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>判断结果</string>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-           </column>
+           <attribute name="horizontalHeaderDefaultSectionSize"><number>65</number></attribute>
+           <column><property name="text"><string>帧索引</string></property></column>
+           <column><property name="text"><string>宽度 (um)</string></property></column>
+           <column><property name="text"><string>深度 (um)</string></property></column>
+           <column><property name="text"><string>判断结果</string></property></column>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QTableWidget" name="tb_Widget_A">
            <property name="styleSheet">
-            <string notr="true"> 
-color: rgb(255, 255, 255);
-background-color: rgb(226, 255, 208);</string>
+            <string notr="true">color: #E6EAF0;
+background-color: #1A1E26;</string>
            </property>
           </widget>
          </item>
@@ -1037,181 +428,85 @@ background-color: rgb(226, 255, 208);</string>
       </layout>
      </widget>
     </item>
+
+    <!-- ========== B 面 ========== -->
     <item row="1" column="4" rowspan="2" colspan="5">
      <widget class="QGroupBox" name="groupBox_2">
+      <property name="title"><string>B面</string></property>
       <property name="styleSheet">
        <string notr="true">QGroupBox {
     border: 2px solid qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                      stop:0 #9D4EDD, stop:1 #5A189A); /* 紫色渐变 */
+                                      stop:0 #9D4EDD, stop:1 #5A189A);
     border-radius: 10px;
-    background-color: rgba(245, 230, 250, 90%); /* 浅紫色，优雅专业 */
+    background-color: rgba(245, 230, 250, 0.92);
     margin-top: 20px;
 }
-
 QGroupBox::title {
     color: #FFFFFF;
-    background-color: #5A189A; /* 深紫色，典雅科技感 */
-    font: 75 12pt &quot;Microsoft YaHei UI&quot;;
+    background-color: #5A189A;
+    font: bold 12pt &quot;Microsoft YaHei UI&quot;;
     subcontrol-origin: margin;
     subcontrol-position: top left;
     padding: 4px 16px;
     border-radius: 6px;
 }
-
-/* 禁用状态 */
 QGroupBox:disabled {
-    border-color: #C77DFF;  /* 中等紫色 */
+    border-color: #C77DFF;
     color: #9D8CA6;
 }
-
-QGroupBox QCheckBox {
-    color: #5A189A; /* 深紫色，与标题呼应 */
-}</string>
-      </property>
-      <property name="title">
-       <string>B面</string>
+QGroupBox QCheckBox { color: #5A189A; }
+</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_11">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="1" column="0">
-          <widget class="QTableWidget" name="tableFrame_B">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>507</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>15</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QTableWidget {
-    background-color: #f0f0f0;
-    gridline-color: #dcdcdc;
-    border: 1px solid #cccccc;
-    selection-color: white;
-    alternate-background-color: #dcdcdc;
-    selection-background-color: #555555;
-}
-
-QTableWidget::item {
-    padding: 6px 10px;
-    border: none;
-}
-
-/* 选中状态，无论是否有焦点，都使用深灰背景 */
-QTableWidget::item:selected,
-QTableWidget::item:selected:focus,
-QTableWidget::item:selected:!focus {
-    background-color: #555555 !important;
-    color: white !important;
-}
-
-/* 鼠标悬停时高亮 */
-QTableWidget::item:hover {
-    background-color:rgb(160, 185, 217);
-}
-
-/* 表头样式 */
-QHeaderView::section {
-    background-color: #f0f0f0;
-    color: #3a3a3a;
-    padding: 6px 10px;
-    border: 1px solid #cccccc;
-    font-weight: bold;
-}
-</string>
-           </property>
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>65</number>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>帧索引</string>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>宽度 (um)</string>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>深度 (um)</string>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>判断结果</string>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-           </column>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="hgHMI_PCLViewerWidget" name="openGLWidget_Result_B">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
+             <horstretch>0</horstretch><verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="minimumSize">
-            <size>
-             <width>450</width>
-             <height>300</height>
-            </size>
+           <property name="minimumSize"><size><width>450</width><height>300</height></size></property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QTableWidget" name="tableFrame_B">
+           <property name="minimumSize"><size><width>507</width><height>0</height></size></property>
+           <property name="styleSheet">
+            <string notr="true">QTableWidget {
+    background-color: #1A1E26;
+    alternate-background-color: #20252F;
+    gridline-color: #2F3644;
+    border: 1px solid #2F3644;
+    border-radius: 6px;
+    color: #E6EAF0;
+    selection-background-color: #2C7A8C;
+    selection-color: #FFFFFF;
+}
+QTableWidget::item { padding: 6px 10px; border: none; }
+QTableWidget::item:hover { background-color: #2A313F; }
+QHeaderView::section {
+    background-color: #232833;
+    color: #7FD4E8;
+    padding: 6px 10px;
+    border: 1px solid #2F3644;
+    font-weight: bold;
+}
+</string>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
+           <attribute name="horizontalHeaderDefaultSectionSize"><number>65</number></attribute>
+           <column><property name="text"><string>帧索引</string></property></column>
+           <column><property name="text"><string>宽度 (um)</string></property></column>
+           <column><property name="text"><string>深度 (um)</string></property></column>
+           <column><property name="text"><string>判断结果</string></property></column>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QTableWidget" name="tb_Widget_B">
            <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);
- 
-background-color: rgb(224, 255, 198);</string>
+            <string notr="true">color: #E6EAF0;
+background-color: #1A1E26;</string>
            </property>
           </widget>
          </item>
@@ -1220,111 +515,61 @@ background-color: rgb(224, 255, 198);</string>
       </layout>
      </widget>
     </item>
+
+    <!-- ========== 测量折线图显示 ========== -->
     <item row="1" column="9" colspan="6">
      <widget class="QGroupBox" name="groupBox_3">
-      <property name="minimumSize">
-       <size>
-        <width>1090</width>
-        <height>0</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>1090</width><height>0</height></size></property>
+      <property name="title"><string>测量折线图显示</string></property>
       <property name="styleSheet">
        <string notr="true">QGroupBox {
     border: 2px solid qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                      stop:0 #38B000, stop:1 #006400); /* 绿色渐变 */
+                                      stop:0 #38B000, stop:1 #006400);
     border-radius: 10px;
-    background-color: rgba(235, 250, 235, 90%); /* 浅绿色，清新自然 */
+    background-color: rgba(235, 250, 235, 0.92);
     margin-top: 20px;
 }
-
 QGroupBox::title {
     color: #FFFFFF;
-    background-color: #006400; /* 深绿色，稳重专业 */
-    font: 75 12pt &quot;Microsoft YaHei UI&quot;;
+    background-color: #006400;
+    font: bold 12pt &quot;Microsoft YaHei UI&quot;;
     subcontrol-origin: margin;
     subcontrol-position: top left;
     padding: 4px 16px;
     border-radius: 6px;
 }
-
-/* 禁用状态 */
 QGroupBox:disabled {
-    border-color: #7CB518;  /* 中等绿色 */
+    border-color: #7CB518;
     color: #7A8C7A;
 }
-
-QGroupBox QCheckBox {
-    color: #006400; /* 深绿色，与标题呼应 */
-}</string>
-      </property>
-      <property name="title">
-       <string>测量折线图显示</string>
+QGroupBox QCheckBox { color: #006400; }
+</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="0">
           <widget class="QWidget" name="chartContainer_B_Depth" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>530</width>
-             <height>260</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>760</width>
-             <height>380</height>
-            </size>
-           </property>
+           <property name="minimumSize"><size><width>530</width><height>260</height></size></property>
+           <property name="maximumSize"><size><width>760</width><height>380</height></size></property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QWidget" name="chartContainer_B_Width" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>530</width>
-             <height>260</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>760</width>
-             <height>380</height>
-            </size>
-           </property>
+           <property name="minimumSize"><size><width>530</width><height>260</height></size></property>
+           <property name="maximumSize"><size><width>760</width><height>380</height></size></property>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QWidget" name="chartContainer_A_Depth" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>530</width>
-             <height>260</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>760</width>
-             <height>380</height>
-            </size>
-           </property>
+           <property name="minimumSize"><size><width>530</width><height>260</height></size></property>
+           <property name="maximumSize"><size><width>760</width><height>380</height></size></property>
           </widget>
          </item>
          <item row="1" column="1">
           <widget class="QWidget" name="chartContainer_A_Width" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>530</width>
-             <height>260</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>760</width>
-             <height>380</height>
-            </size>
-           </property>
+           <property name="minimumSize"><size><width>530</width><height>260</height></size></property>
+           <property name="maximumSize"><size><width>760</width><height>380</height></size></property>
           </widget>
          </item>
         </layout>
@@ -1332,1521 +577,314 @@ QGroupBox QCheckBox {
       </layout>
      </widget>
     </item>
+
+    <!-- ========== 综合判断 ========== -->
     <item row="2" column="9" rowspan="2" colspan="6">
      <widget class="QGroupBox" name="groupBox_10">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>400</width>
-        <height>120</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>999999</width>
-        <height>120</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
+      <property name="minimumSize"><size><width>400</width><height>120</height></size></property>
+      <property name="maximumSize"><size><width>999999</width><height>120</height></size></property>
+      <property name="title"><string>综合判断</string></property>
       <property name="styleSheet">
        <string notr="true">QGroupBox {
     border: 2px solid qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                      stop:0 #5A81A8, stop:1 #274472); /* 工业蓝渐变 */
+                                      stop:0 #5A81A8, stop:1 #274472);
     border-radius: 10px;
-    background-color: rgba(230, 238, 245, 90%); /* 浅蓝灰，清爽专业 */
+    background-color: rgba(230, 238, 245, 0.92);
     margin-top: 20px;
 }
-
 QGroupBox::title {
     color: #FFFFFF;
-    background-color: #274472; /* 深钢蓝，科技感强 */
-    font: 75 12pt &quot;Microsoft YaHei UI&quot;;
+    background-color: #274472;
+    font: bold 12pt &quot;Microsoft YaHei UI&quot;;
     subcontrol-origin: margin;
     subcontrol-position: top left;
     padding: 4px 16px;
     border-radius: 6px;
 }
-
-/* 禁用状态 */
-QGroupBox:disabled {
-    border-color: #A5B7C6;  /* 工业蓝灰 */
-    color: #95A5A6;
-}
-
-QGroupBox QCheckBox {
-    color: #274472; /* 深钢蓝，与标题呼应 */
-}
 </string>
-      </property>
-      <property name="title">
-       <string>综合判断</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_16">
        <item row="0" column="0">
         <widget class="QTableWidget" name="tableAB_Show_OK_NG">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>100</height>
-          </size>
-         </property>
+         <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+         <property name="maximumSize"><size><width>16777215</width><height>100</height></size></property>
          <property name="styleSheet">
           <string notr="true">QTableWidget {
-    background-color: #f0f0f0;
-    gridline-color: #dcdcdc;
-    border: 1px solid #cccccc;
-    selection-color: white;
-    alternate-background-color: #dcdddc;
-    selection-background-color: #555555;
+    background-color: #1A1E26;
+    alternate-background-color: #20252F;
+    gridline-color: #2F3644;
+    border: 1px solid #2F3644;
+    color: #E6EAF0;
+    selection-background-color: #2C7A8C;
 }
-
-QTableWidget::item {
-    padding: 6px 6px;
-    border: none;
-}
-
-/* 选中状态，无论是否有焦点，都使用深灰背景 */
-QTableWidget::item:selected,
-QTableWidget::item:selected:focus,
-QTableWidget::item:selected:!focus {
-    background-color: #555555 !important;
-    color: white !important;
-}
-
-/* 鼠标悬停时高亮 */
-QTableWidget::item:hover {
-    background-color:rgb(160, 185, 217);
-}
-
-/* 表头样式 */
+QTableWidget::item { padding: 6px; }
 QHeaderView::section {
-    background-color: #f0f0f0;
-    color: #3a3a3a;
+    background-color: #232833;
+    color: #7FD4E8;
     padding: 6px 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #2F3644;
     font-weight: bold;
 }
 </string>
          </property>
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <row>
-          <property name="text">
-           <string>判断结果</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string>综合判断A面</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>综合判断B面</string>
-          </property>
-         </column>
+         <row><property name="text"><string>判断结果</string></property></row>
+         <column><property name="text"><string>综合判断A面</string></property></column>
+         <column><property name="text"><string>综合判断B面</string></property></column>
         </widget>
        </item>
        <item row="0" column="1">
         <widget class="QPushButton" name="btnTestShow">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>测试</string>
-         </property>
+         <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+         <property name="text"><string>测试</string></property>
         </widget>
        </item>
       </layout>
      </widget>
     </item>
+
+    <!-- ========== 数据显示 ========== -->
     <item row="3" column="0" rowspan="2" colspan="9">
      <widget class="QGroupBox" name="groupBox_4">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>1080</width>
-        <height>150</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>99999</width>
-        <height>150</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
+      <property name="minimumSize"><size><width>1080</width><height>150</height></size></property>
+      <property name="maximumSize"><size><width>99999</width><height>150</height></size></property>
+      <property name="title"><string>数据显示</string></property>
       <property name="styleSheet">
        <string notr="true">QGroupBox {
     border: 2px solid qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                      stop:0 #5A81A8, stop:1 #274472); /* 工业蓝渐变 */
+                                      stop:0 #5A81A8, stop:1 #274472);
     border-radius: 10px;
-    background-color: rgba(230, 238, 245, 90%); /* 浅蓝灰，清爽专业 */
+    background-color: rgba(230, 238, 245, 0.92);
     margin-top: 20px;
 }
-
 QGroupBox::title {
     color: #FFFFFF;
-    background-color: #274472; /* 深钢蓝，科技感强 */
-    font: 75 12pt &quot;Microsoft YaHei UI&quot;;
+    background-color: #274472;
+    font: bold 12pt &quot;Microsoft YaHei UI&quot;;
     subcontrol-origin: margin;
     subcontrol-position: top left;
     padding: 4px 16px;
     border-radius: 6px;
 }
-
-/* 禁用状态 */
-QGroupBox:disabled {
-    border-color: #A5B7C6;  /* 工业蓝灰 */
-    color: #95A5A6;
-}
-
-QGroupBox QCheckBox {
-    color: #274472; /* 深钢蓝，与标题呼应 */
-}
 </string>
-      </property>
-      <property name="title">
-       <string>数据显示</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_9">
        <item row="0" column="0">
         <widget class="QTableWidget" name="tableAB_Show_Data">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>999</height>
-          </size>
-         </property>
+         <property name="maximumSize"><size><width>16777215</width><height>999</height></size></property>
          <property name="styleSheet">
-          <string notr="true">QTableWidget::item[hHeader=&quot;1&quot;] {
-    background-color: #f0f0f0;   /* 浅灰 */
+          <string notr="true">QTableWidget {
+    background-color: #1A1E26;
+    alternate-background-color: #20252F;
+    gridline-color: #2F3644;
+    border: 1px solid #2F3644;
+    color: #E6EAF0;
+    selection-background-color: #2C7A8C;
 }
-QTableWidget {
-    /* 普通单元格 */
-    background-color: white;
-    gridline-color: #d0d0d0;
-}
-QTableWidget {
-    background-color: #f0f0f0;
-    gridline-color: #dcdcdc;
-    border: 1px solid #cccccc;
-    selection-color: white;
-    alternate-background-color: #dcdcdc;
-    selection-background-color: #555555;
-}
-
-QTableWidget::item {
-    padding: 6px 10px;
-    border: none;
-}
-
-/* 选中状态，无论是否有焦点，都使用深灰背景 */
-QTableWidget::item:selected,
-QTableWidget::item:selected:focus,
-QTableWidget::item:selected:!focus {
-    background-color: #555555 !important;
-    color: white !important;
-}
-
-/* 鼠标悬停时高亮 */
-QTableWidget::item:hover {
-    background-color:rgb(160, 185, 217);
-}
-
-/* 表头样式 */
+QTableWidget::item { padding: 6px 10px; }
 QHeaderView::section {
-    background-color: #f0f0f0;
-    color: #3a3a3a;
+    background-color: #232833;
+    color: #7FD4E8;
     padding: 6px 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #2F3644;
     font-weight: bold;
 }
 </string>
          </property>
-         <row>
-          <property name="text">
-           <string>A面</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>B面</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string>OK</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>NG</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>总数</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>良率</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>槽深NG</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>槽宽NG</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>槽深测量值</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>槽深规格</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>槽宽测量值</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>槽宽规格</string>
-          </property>
-         </column>
-         <item row="0" column="0">
-          <property name="text">
-           <string/>
-          </property>
-         </item>
-         <item row="0" column="9">
-          <property name="text">
-           <string/>
-          </property>
-         </item>
-         <item row="1" column="9">
-          <property name="text">
-           <string/>
-          </property>
-         </item>
+         <row><property name="text"><string>A面</string></property></row>
+         <row><property name="text"><string>B面</string></property></row>
+         <column><property name="text"><string>OK</string></property></column>
+         <column><property name="text"><string>NG</string></property></column>
+         <column><property name="text"><string>总数</string></property></column>
+         <column><property name="text"><string>良率</string></property></column>
+         <column><property name="text"><string>槽深NG</string></property></column>
+         <column><property name="text"><string>槽宽NG</string></property></column>
+         <column><property name="text"><string>槽深测量值</string></property></column>
+         <column><property name="text"><string>槽深规格</string></property></column>
+         <column><property name="text"><string>槽宽测量值</string></property></column>
+         <column><property name="text"><string>槽宽规格</string></property></column>
+         <item row="0" column="0"><property name="text"><string/></property></item>
+         <item row="0" column="9"><property name="text"><string/></property></item>
+         <item row="1" column="9"><property name="text"><string/></property></item>
         </widget>
        </item>
       </layout>
      </widget>
     </item>
+
+    <!-- ========== 测量值显示 ========== -->
     <item row="4" column="9" rowspan="2" colspan="6">
      <widget class="QGroupBox" name="groupBox_6">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>880</width>
-        <height>145</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>999999</width>
-        <height>145</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
+      <property name="minimumSize"><size><width>880</width><height>145</height></size></property>
+      <property name="maximumSize"><size><width>999999</width><height>145</height></size></property>
+      <property name="title"><string>测量值显示</string></property>
       <property name="styleSheet">
        <string notr="true">QGroupBox {
     border: 2px solid qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                      stop:0 #5A81A8, stop:1 #274472); /* 工业蓝渐变 */
+                                      stop:0 #5A81A8, stop:1 #274472);
     border-radius: 10px;
-    background-color: rgba(230, 238, 245, 90%); /* 浅蓝灰，清爽专业 */
+    background-color: rgba(230, 238, 245, 0.92);
     margin-top: 20px;
 }
-
 QGroupBox::title {
     color: #FFFFFF;
-    background-color: #274472; /* 深钢蓝，科技感强 */
-    font: 75 12pt &quot;Microsoft YaHei UI&quot;;
+    background-color: #274472;
+    font: bold 12pt &quot;Microsoft YaHei UI&quot;;
     subcontrol-origin: margin;
     subcontrol-position: top left;
     padding: 4px 16px;
     border-radius: 6px;
 }
-
-/* 禁用状态 */
-QGroupBox:disabled {
-    border-color: #A5B7C6;  /* 工业蓝灰 */
-    color: #95A5A6;
-}
-
-QGroupBox QCheckBox {
-    color: #274472; /* 深钢蓝，与标题呼应 */
-}
 </string>
-      </property>
-      <property name="title">
-       <string>测量值显示</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_18">
        <item row="0" column="0">
         <widget class="QTableWidget" name="tableAB_Show">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>9999</height>
-          </size>
-         </property>
+         <property name="maximumSize"><size><width>16777215</width><height>9999</height></size></property>
          <property name="styleSheet">
-          <string notr="true">QTableWidget::item[hHeader=&quot;1&quot;] {
-    background-color: #f0f0f0;   /* 浅灰 */
+          <string notr="true">QTableWidget {
+    background-color: #1A1E26;
+    alternate-background-color: #20252F;
+    gridline-color: #2F3644;
+    border: 1px solid #2F3644;
+    color: #E6EAF0;
+    selection-background-color: #2C7A8C;
 }
-QTableWidget {
-    /* 普通单元格 */
-    background-color: white;
-    gridline-color: #d0d0d0;
-}
-QTableWidget {
-    background-color: #f0f0f0;
-    gridline-color: #dcdcdc;
-    border: 1px solid #cccccc;
-    selection-color: white;
-    alternate-background-color: #dcdcdc;
-    selection-background-color: #555555;
-}
-
-QTableWidget::item {
-    padding: 6px 10px;
-    border: none;
-}
-
-/* 选中状态，无论是否有焦点，都使用深灰背景 */
-QTableWidget::item:selected,
-QTableWidget::item:selected:focus,
-QTableWidget::item:selected:!focus {
-    background-color: #555555 !important;
-    color: white !important;
-}
-
-/* 鼠标悬停时高亮 */
-QTableWidget::item:hover {
-    background-color:rgb(160, 185, 217);
-}
-
-/* 表头样式 */
+QTableWidget::item { padding: 6px 10px; }
 QHeaderView::section {
-    background-color: #f0f0f0;
-    color: #3a3a3a;
+    background-color: #232833;
+    color: #7FD4E8;
     padding: 6px 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #2F3644;
     font-weight: bold;
 }
 </string>
          </property>
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <row>
-          <property name="text">
-           <string>槽深</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>槽宽</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string>A面（微米）</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>A1</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>A2</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>A3</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>B面（微米）</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>B1</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>B2</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>B3</string>
-          </property>
-         </column>
+         <row><property name="text"><string>槽深</string></property></row>
+         <row><property name="text"><string>槽宽</string></property></row>
+         <column><property name="text"><string>A面（微米）</string></property></column>
+         <column><property name="text"><string>A1</string></property></column>
+         <column><property name="text"><string>A2</string></property></column>
+         <column><property name="text"><string>A3</string></property></column>
+         <column><property name="text"><string>B面（微米）</string></property></column>
+         <column><property name="text"><string>B1</string></property></column>
+         <column><property name="text"><string>B2</string></property></column>
+         <column><property name="text"><string>B3</string></property></column>
         </widget>
        </item>
       </layout>
      </widget>
     </item>
+
+    <!-- ========== 日志 + 清空 ========== -->
     <item row="5" column="0" rowspan="2" colspan="9">
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <widget class="QTextEdit" name="txtShowRecord">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>9</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
+        <property name="font"><font><pointsize>9</pointsize></font></property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btnClearRecord">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>清空日志</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+        <property name="maximumSize"><size><width>16777215</width><height>40</height></size></property>
+        <property name="text"><string>清空日志</string></property>
        </widget>
       </item>
      </layout>
     </item>
+
+    <!-- ========== A 面测量统计（无标题灰卡） ========== -->
     <item row="6" column="9" colspan="4">
      <widget class="QGroupBox" name="groupBox_5">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>451</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>480</width>
-        <height>150</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>451</width><height>0</height></size></property>
+      <property name="maximumSize"><size><width>480</width><height>150</height></size></property>
       <property name="styleSheet">
        <string notr="true">QGroupBox {
-    background-color: rgb(207, 207, 207); /* 浅灰主色 */
-    border: 1.5px solid rgb(207, 207, 207); /* 和背景色相同的边框 */
-    padding-top: 15px; 
-    margin-top: -15px;
+    background-color: #232833;
+    border: 1px solid #2F3644;
+    border-radius: 10px;
+    padding: 10px;
 }
-
-/* 标题区域高度为0，即不可见 */
 QGroupBox::title {
-    subcontrol-origin: padding;
-    subcontrol-position: top left;
-    padding: 0 0 0 0;
-    margin: 0 0 0 0;
-    height: 0px;
-    color: transparent;
-    background: transparent;
-    border: none;
+    height: 0; color: transparent; background: transparent; border: none;
 }
-
-
-/* 禁用状态边框变浅，内容变淡 */
-QGroupBox:disabled {
-    border-color: #D3D4D6;
-    color: #A0A0A0;
-}
-
-QGroupBox QCheckBox, QGroupBox QLabel, QGroupBox QPushButton {
-    color: rgb(0, 0, 0); /* 深灰内容字体，突出可用性 */
+QGroupBox QLabel { color: #C7CFDB; font-weight: bold; }
+QGroupBox QLabel#labelMeanWidth, QGroupBox QLabel#labelMeanDepth,
+QGroupBox QLabel#labelMaxWidth, QGroupBox QLabel#labelMaxDepth,
+QGroupBox QLabel#labelMinWidth, QGroupBox QLabel#labelMinDepth {
+    color: #4FC3DD;
 }
 </string>
       </property>
-      <property name="title">
-       <string>GroupBox</string>
-      </property>
       <layout class="QGridLayout" name="gridLayout_8">
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelResult">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>平均宽度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="labelMeanWidth">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>90</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="labelResult_3">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>平均深度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLabel" name="labelMeanDepth">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>90</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="labelResult_4">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>最大宽度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="labelMaxWidth">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QLabel" name="labelResult_9">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>最大深度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QLabel" name="labelMaxDepth">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="labelResult_6">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>最小宽度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="labelMinWidth">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLabel" name="labelResult_11">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>最小深度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QLabel" name="labelMinDepth">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
+       <item row="0" column="0"><widget class="QLabel" name="labelResult"><property name="text"><string>平均宽度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="0" column="1"><widget class="QLabel" name="labelMeanWidth"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="0" column="2"><widget class="QLabel" name="labelResult_3"><property name="text"><string>平均深度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="0" column="3"><widget class="QLabel" name="labelMeanDepth"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="1" column="0"><widget class="QLabel" name="labelResult_4"><property name="text"><string>最大宽度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="1" column="1"><widget class="QLabel" name="labelMaxWidth"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="1" column="2"><widget class="QLabel" name="labelResult_9"><property name="text"><string>最大深度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="1" column="3"><widget class="QLabel" name="labelMaxDepth"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="2" column="0"><widget class="QLabel" name="labelResult_6"><property name="text"><string>最小宽度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="2" column="1"><widget class="QLabel" name="labelMinWidth"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="2" column="2"><widget class="QLabel" name="labelResult_11"><property name="text"><string>最小深度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="2" column="3"><widget class="QLabel" name="labelMinDepth"><property name="text"><string>0.00um</string></property></widget></item>
       </layout>
      </widget>
     </item>
+
+    <!-- ========== B 面测量统计（无标题灰卡） ========== -->
     <item row="6" column="13" colspan="2">
      <widget class="QGroupBox" name="groupBox_7">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>451</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>480</width>
-        <height>150</height>
-       </size>
-      </property>
+      <property name="minimumSize"><size><width>451</width><height>0</height></size></property>
+      <property name="maximumSize"><size><width>480</width><height>150</height></size></property>
       <property name="styleSheet">
        <string notr="true">QGroupBox {
-    background-color: rgb(207, 207, 207); /* 浅灰主色 */
-    border: 1.5px solid rgb(207, 207, 207); /* 和背景色相同的边框 */
-    padding-top: 15px; 
-    margin-top: -15px;
+    background-color: #232833;
+    border: 1px solid #2F3644;
+    border-radius: 10px;
+    padding: 10px;
 }
-
-/* 标题区域高度为0，即不可见 */
 QGroupBox::title {
-    subcontrol-origin: padding;
-    subcontrol-position: top left;
-    padding: 0 0 0 0;
-    margin: 0 0 0 0;
-    height: 0px;
-    color: transparent;
-    background: transparent;
-    border: none;
+    height: 0; color: transparent; background: transparent; border: none;
 }
-
-
-/* 禁用状态边框变浅，内容变淡 */
-QGroupBox:disabled {
-    border-color: #D3D4D6;
-    color: #A0A0A0;
-}
-
-QGroupBox QCheckBox, QGroupBox QLabel, QGroupBox QPushButton {
-    color: rgb(0, 0, 0); /* 深灰内容字体，突出可用性 */
+QGroupBox QLabel { color: #C7CFDB; font-weight: bold; }
+QGroupBox QLabel#labelMeanWidth_2, QGroupBox QLabel#labelMeanDepth_2,
+QGroupBox QLabel#labelMaxWidth_2, QGroupBox QLabel#labelMaxDepth_2,
+QGroupBox QLabel#labelMinWidth_2, QGroupBox QLabel#labelMinDepth_2 {
+    color: #C77DFF;
 }
 </string>
       </property>
-      <property name="title">
-       <string>GroupBox</string>
-      </property>
       <layout class="QGridLayout" name="gridLayout_10">
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelResult_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>平均宽度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="labelMeanWidth_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>90</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="labelResult_5">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>平均深度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLabel" name="labelMeanDepth_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>90</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="labelResult_7">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>最大宽度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="labelMaxWidth_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QLabel" name="labelResult_10">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>最大深度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QLabel" name="labelMaxDepth_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="labelResult_8">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>最小宽度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="labelMinWidth_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLabel" name="labelResult_12">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>最小深度：</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QLabel" name="labelMinDepth_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>15</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>0.00um</string>
-         </property>
-        </widget>
-       </item>
+       <item row="0" column="0"><widget class="QLabel" name="labelResult_2"><property name="text"><string>平均宽度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="0" column="1"><widget class="QLabel" name="labelMeanWidth_2"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="0" column="2"><widget class="QLabel" name="labelResult_5"><property name="text"><string>平均深度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="0" column="3"><widget class="QLabel" name="labelMeanDepth_2"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="1" column="0"><widget class="QLabel" name="labelResult_7"><property name="text"><string>最大宽度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="1" column="1"><widget class="QLabel" name="labelMaxWidth_2"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="1" column="2"><widget class="QLabel" name="labelResult_10"><property name="text"><string>最大深度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="1" column="3"><widget class="QLabel" name="labelMaxDepth_2"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="2" column="0"><widget class="QLabel" name="labelResult_8"><property name="text"><string>最小宽度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="2" column="1"><widget class="QLabel" name="labelMinWidth_2"><property name="text"><string>0.00um</string></property></widget></item>
+       <item row="2" column="2"><widget class="QLabel" name="labelResult_12"><property name="text"><string>最小深度：</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property></widget></item>
+       <item row="2" column="3"><widget class="QLabel" name="labelMinDepth_2"><property name="text"><string>0.00um</string></property></widget></item>
       </layout>
      </widget>
     </item>
    </layout>
   </widget>
+
   <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>2256</width>
-     <height>23</height>
-    </rect>
-   </property>
+   <property name="geometry"><rect><x>0</x><y>0</y><width>2256</width><height>23</height></rect></property>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
+   <attribute name="toolBarArea"><enum>TopToolBarArea</enum></attribute>
+   <attribute name="toolBarBreak"><bool>false</bool></attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
+
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>

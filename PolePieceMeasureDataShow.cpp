@@ -1227,76 +1227,104 @@ void PolePieceMeasureWin::on_btnSetting_clicked()//设置
     ParametersDialog->setWindowFlags(ParametersDialog->windowFlags() & ~Qt::WindowContextHelpButtonHint); 
    
      //信号与槽
-    connect(ParamUi->btnConnectCamera, &QPushButton::clicked, [this]() { 
-        iniSettingParam(); 
-        on_btnConnectCamera_clicked(); 
-        }); 
-    connect(ParamUi->btnDisConnectCamera, &QPushButton::clicked, [this]() {   
-        iniSettingParam(); 
-        on_btnDisConnectCamera_clicked(); 
-        });
+	connect(ParamUi->btnConnectCamera, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnConnectCameraClicked, Qt::UniqueConnection);
+    connect(ParamUi->btnDisConnectCamera, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnDisConnectCameraClicked, Qt::UniqueConnection);
     
-    connect(ParamUi->btnConnectCamera_B, &QPushButton::clicked, [this]() {   
-        iniSettingParam(); 
-        on_btnConnectCamera_B_clicked(); 
-        }); 
-    connect(ParamUi->btnDisConnectCamera_B, &QPushButton::clicked, [this]() {    
-        iniSettingParam(); 
-        on_btnDisConnectCamera_B_clicked(); 
-        });
+    connect(ParamUi->btnConnectCamera_B, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnConnectCamera_BClicked, Qt::UniqueConnection);
+	connect(ParamUi->btnDisConnectCamera_B, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnDisConnectCamera_BClicked, Qt::UniqueConnection);
     
-    connect(ParamUi->btnConnectPLC, &QPushButton::clicked, [this]() {   
-        iniSettingParam(); 
-        on_btnConnectPLC_clicked(); 
-        });
+	connect(ParamUi->btnConnectPLC, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnConnectPLCClicked, Qt::UniqueConnection);
     
     //connect(ParamUi->btnDisConnectPLC, &QPushButton::clicked, [this, ParametersDialog, ParamUi]() {
-    connect(ParamUi->btnDisConnectPLC, &QPushButton::clicked, [this]() {   
-        iniSettingParam(); 
-        on_btnDisConnectPLC_clicked(); 
-        });
+	connect(ParamUi->btnDisConnectPLC, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnDisConnectPLCClicked, Qt::UniqueConnection);
     
-    connect(ParamUi->btnOutPutDirectory, &QPushButton::clicked, [this]() {  
-        iniSettingParam(); 
-        on_btnOutPutDirectory_clicked();
-        });
-    connect(ParamUi->btnOutPutDirectory_Result, &QPushButton::clicked, [this]() {
-        iniSettingParam(); 
-        on_btnOutPutDirectory_Result_clicked();
-        });
-    
-    connect(ParamUi->btnParamSave, &QPushButton::clicked, [this]() {   
-        iniSettingParam(); 
-        destroySettingParam();
-        QMessageBox::information(this, "Save Settings", "Settings saved successfully.");
+    connect(ParamUi->btnOutPutDirectory, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnOutPutDirectoryClicked, Qt::UniqueConnection);
+    connect(ParamUi->btnOutPutDirectory_Result, &QPushButton::clicked,  this, &PolePieceMeasureWin::onbtnOutPutDirectory_ResultClicked, Qt::UniqueConnection);
 
-        });
-    connect(ParamUi->btnParamRead, &QPushButton::clicked, [this]() {
-        initIniSettingParam();
-        QMessageBox::information(this, "Save Settings", "Settings read successfully.");
-
-        });
+    // cpp
+    connect(ParamUi->btnParamSave, &QPushButton::clicked,this, &PolePieceMeasureWin::onBtnParamSaveClicked, Qt::UniqueConnection);
+    connect(ParamUi->btnParamRead, &QPushButton::clicked,this, &PolePieceMeasureWin::onBtnParamReadClicked, Qt::UniqueConnection); 
     
-    connect(ParamUi->btnStartCollectPoint, &QPushButton::clicked, [this]() {
-        iniSettingParam();
-        on_btnStartCollectPoint_clicked();
-          });
-    connect(ParamUi->btnStopCollectPoint, &QPushButton::clicked, [this]() {
-        iniSettingParam();
-        on_btnStopCollectPoint_clicked();
-          });
+	connect(ParamUi->btnStartCollectPoint, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnStartCollectPointClicked, Qt::UniqueConnection);
+	connect(ParamUi->btnStopCollectPoint, &QPushButton::clicked, this, &PolePieceMeasureWin::onbtnStopCollectPointClicked, Qt::UniqueConnection);
     
-    connect(ParamUi->btnSavePoint, &QPushButton::clicked, [this]() {
-        iniSettingParam();
-        on_btnSavePoint_clicked();
-          }); 
+    connect(ParamUi->btnSavePoint, &QPushButton::clicked,  this, &PolePieceMeasureWin::onbtnSavePointClicked, Qt::UniqueConnection);
+         
 
     //执行对话框，结束后自动释放内存
     if (ParametersDialog->exec() == QDialog::Accepted) {
         // 可扩展登录成功后的逻辑
 
-    }
-    
+    }    
+}
+ 
+void PolePieceMeasureWin::onbtnStopCollectPointClicked()
+{
+    iniSettingParam();
+    on_btnStopCollectPoint_clicked();
+}
+void PolePieceMeasureWin::onbtnStartCollectPointClicked()
+{
+    iniSettingParam();
+    on_btnStartCollectPoint_clicked();
+}
+void PolePieceMeasureWin::onbtnDisConnectPLCClicked()
+{
+    iniSettingParam();
+    on_btnDisConnectPLC_clicked();
+
+}
+void PolePieceMeasureWin::onbtnConnectPLCClicked()
+{
+    iniSettingParam();
+    on_btnConnectPLC_clicked();
+
+}
+void PolePieceMeasureWin::onbtnDisConnectCamera_BClicked()
+{
+    iniSettingParam();
+    on_btnDisConnectCamera_B_clicked();
+}
+void PolePieceMeasureWin::onbtnConnectCamera_BClicked()
+{
+    iniSettingParam();
+    on_btnConnectCamera_B_clicked();
+}
+void PolePieceMeasureWin::onbtnDisConnectCameraClicked()
+{
+    iniSettingParam();
+    on_btnDisConnectCamera_clicked();
+}
+void PolePieceMeasureWin::onbtnConnectCameraClicked()
+{
+    iniSettingParam();
+    on_btnConnectCamera_clicked();
+}
+void PolePieceMeasureWin::onbtnOutPutDirectoryClicked()
+{
+    iniSettingParam();
+    on_btnOutPutDirectory_clicked();
+}
+void PolePieceMeasureWin::onbtnOutPutDirectory_ResultClicked()
+{
+    iniSettingParam();
+    on_btnOutPutDirectory_Result_clicked();
+}
+void PolePieceMeasureWin::onbtnSavePointClicked()
+{
+    iniSettingParam();
+    on_btnSavePoint_clicked();
+}
+void PolePieceMeasureWin::onBtnParamReadClicked()
+{
+    initIniSettingParam();
+	QMessageBox::information(this, "Read Settings", "Settings read successfully.");
+}
+void PolePieceMeasureWin::onBtnParamSaveClicked()
+{
+    iniSettingParam();
+    destroySettingParam();
+    QMessageBox::information(this, "Save Settings", "Settings saved successfully.");
 }
 void PolePieceMeasureWin::on_btnSignIn_clicked()//登录
 { 

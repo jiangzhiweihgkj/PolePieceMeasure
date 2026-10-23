@@ -14,10 +14,194 @@
    <string>Communicate</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(21, 21, 21);
-color: rgb(255, 255, 255);</string>
+   <string notr="true">/* ========== 全局 ========== */
+QWidget#CommunicateClass {
+    background-color: #1B1F27;
+    color: #E6EAF0;
+    font-family: &quot;Microsoft YaHei&quot;;
+    font-size: 15px;
+}
+
+/* ========== GroupBox 卡片 ========== */
+QGroupBox {
+    background-color: #232833;
+    border: 1px solid #2F3644;
+    border-radius: 10px;
+    margin-top: 18px;
+    padding: 14px 12px 12px 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #7FD4E8;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 14px;
+    padding: 2px 8px;
+    background-color: #232833;
+    border-radius: 4px;
+}
+
+/* ========== Label ========== */
+QLabel {
+    color: #C7CFDB;
+    background: transparent;
+    font-size: 15px;
+}
+
+/* ========== LineEdit ========== */
+QLineEdit {
+    background-color: #1A1E26;
+    border: 1px solid #323A48;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #E6EAF0;
+    selection-background-color: #2C7A8C;
+    selection-color: #FFFFFF;
+}
+QLineEdit:hover {
+    border: 1px solid #3D4759;
+}
+QLineEdit:focus {
+    border: 1px solid #4FC3DD;
+    background-color: #1F2530;
+}
+
+/* ========== TextEdit ========== */
+QTextEdit {
+    background-color: #1A1E26;
+    border: 1px solid #323A48;
+    border-radius: 6px;
+    padding: 6px;
+    color: #E6EAF0;
+    selection-background-color: #2C7A8C;
+}
+QTextEdit:focus {
+    border: 1px solid #4FC3DD;
+}
+
+/* ========== 按钮 - 基础样式 ========== */
+QPushButton {
+    color: #E6EAF0;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #2E3542, stop:1 #232833);
+    border: 1px solid #3A4252;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 15px;
+    font-weight: bold;
+    min-height: 28px;
+}
+QPushButton:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #384152, stop:1 #2A3140);
+    border: 1px solid #4FC3DD;
+    color: #7FD4E8;
+}
+QPushButton:pressed {
+    background-color: #1A1E26;
+    border: 1px solid #2C7A8C;
+    color: #4FC3DD;
+}
+QPushButton:disabled {
+    background-color: #20242C;
+    color: #5A6270;
+    border: 1px solid #2A303A;
+}
+
+/* ========== 主按钮（连接服务器 / 写入） ========== */
+QPushButton#btnConnectServer,
+QPushButton#btnWriteReister {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #2C8AA0, stop:1 #236E80);
+    border: 1px solid #4FC3DD;
+    color: #FFFFFF;
+}
+QPushButton#btnConnectServer:hover,
+QPushButton#btnWriteReister:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #37A4BF, stop:1 #2C8AA0);
+    border: 1px solid #7FD4E8;
+    color: #FFFFFF;
+}
+QPushButton#btnConnectServer:pressed,
+QPushButton#btnWriteReister:pressed {
+    background-color: #1E5C6B;
+    border: 1px solid #2C7A8C;
+    color: #C9F0F8;
+}
+
+/* ========== 次按钮（读取 / 发送） ========== */
+QPushButton#btnReadReister,
+QPushButton#btnSendMessage {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #3A4252, stop:1 #2B3240);
+    border: 1px solid #4FC3DD;
+    color: #7FD4E8;
+}
+QPushButton#btnReadReister:hover,
+QPushButton#btnSendMessage:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #465066, stop:1 #333A4A);
+    border: 1px solid #7FD4E8;
+    color: #A8E6F5;
+}
+
+/* ========== 危险按钮（断开服务器） ========== */
+QPushButton#btnDisConnectServer {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #6B2E38, stop:1 #55232C);
+    border: 1px solid #C24A5A;
+    color: #FFD5DB;
+}
+QPushButton#btnDisConnectServer:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #8A3B47, stop:1 #6B2E38);
+    border: 1px solid #E86A7B;
+    color: #FFFFFF;
+}
+QPushButton#btnDisConnectServer:pressed {
+    background-color: #44191F;
+    border: 1px solid #A33A48;
+}
+
+/* ========== 滚动条（通用美化） ========== */
+QScrollBar:vertical {
+    background: #1A1E26;
+    width: 10px;
+    margin: 0;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical {
+    background: #3A4252;
+    border-radius: 5px;
+    min-height: 30px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #4FC3DD;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0;
+}
+</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_6">
+   <property name="spacing">
+    <number>12</number>
+   </property>
+   <property name="leftMargin">
+    <number>14</number>
+   </property>
+   <property name="topMargin">
+    <number>14</number>
+   </property>
+   <property name="rightMargin">
+    <number>14</number>
+   </property>
+   <property name="bottomMargin">
+    <number>14</number>
+   </property>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox_8">
      <property name="sizePolicy">
@@ -26,1328 +210,378 @@ color: rgb(255, 255, 255);</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>40</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>15</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
      <property name="title">
       <string>多保持寄存器读</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
+      <property name="horizontalSpacing">
+       <number>10</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>8</number>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label_29">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机1触发信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机1触发信号</string></property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="editReadRegisterValue1">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2300(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2300(REAL)</string></property>
        </widget>
       </item>
       <item row="0" column="2">
        <widget class="QLabel" name="label_39">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>心跳信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>心跳信号</string></property>
        </widget>
       </item>
       <item row="0" column="3">
        <widget class="QLineEdit" name="editReadRegisterValue9">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2312(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2312(REAL)</string></property>
        </widget>
       </item>
       <item row="0" column="4">
        <widget class="QLabel" name="label_63">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>平均宽度42</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>平均宽度42</string></property>
        </widget>
       </item>
       <item row="0" column="5">
        <widget class="QLineEdit" name="editReadRegisterValue17">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
+
       <item row="1" column="0">
        <widget class="QLabel" name="label_28">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机2触发信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机2触发信号</string></property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="editReadRegisterValue2">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2302(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2302(REAL)</string></property>
        </widget>
       </item>
       <item row="1" column="2">
        <widget class="QLabel" name="label_40">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机1启动信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机1启动信号</string></property>
        </widget>
       </item>
       <item row="1" column="3">
        <widget class="QLineEdit" name="editReadRegisterValue10">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2314(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2314(REAL)</string></property>
        </widget>
       </item>
       <item row="1" column="4">
        <widget class="QLabel" name="label_64">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>深度结果43</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>深度结果43</string></property>
        </widget>
       </item>
       <item row="1" column="5">
        <widget class="QLineEdit" name="editReadRegisterValue18">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
+
       <item row="2" column="0">
        <widget class="QLabel" name="label_33">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机1完成信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机1完成信号</string></property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="editReadRegisterValue3">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2304(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2304(REAL)</string></property>
        </widget>
       </item>
       <item row="2" column="2">
        <widget class="QLabel" name="label_41">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机1结果信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机1结果信号</string></property>
        </widget>
       </item>
       <item row="2" column="3">
        <widget class="QLineEdit" name="editReadRegisterValue11">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2316(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2316(REAL)</string></property>
        </widget>
       </item>
       <item row="2" column="4">
        <widget class="QLabel" name="label_67">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>宽度结果44</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>宽度结果44</string></property>
        </widget>
       </item>
       <item row="2" column="5">
        <widget class="QLineEdit" name="editReadRegisterValue19">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
+
       <item row="3" column="0">
        <widget class="QLabel" name="label_34">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机2完成信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机2完成信号</string></property>
        </widget>
       </item>
       <item row="3" column="1">
        <widget class="QLineEdit" name="editReadRegisterValue4">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2306(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2306(REAL)</string></property>
        </widget>
       </item>
       <item row="3" column="2">
        <widget class="QLabel" name="label_42">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机2启动信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机2启动信号</string></property>
        </widget>
       </item>
       <item row="3" column="3">
        <widget class="QLineEdit" name="editReadRegisterValue12">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2318(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2318(REAL)</string></property>
        </widget>
       </item>
       <item row="3" column="4">
        <widget class="QLabel" name="label_66">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>备用45</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>备用45</string></property>
        </widget>
       </item>
       <item row="3" column="5">
        <widget class="QLineEdit" name="editReadRegisterValue20">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
+
       <item row="4" column="0">
        <widget class="QLabel" name="label_35">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>产品型号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>产品型号</string></property>
        </widget>
       </item>
       <item row="4" column="1">
        <widget class="QLineEdit" name="editReadRegisterValue5">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D10000(String）</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D10000(String）</string></property>
        </widget>
       </item>
       <item row="4" column="2">
        <widget class="QLabel" name="label_43">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机2启动信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机2启动信号</string></property>
        </widget>
       </item>
       <item row="4" column="3">
        <widget class="QLineEdit" name="editReadRegisterValue13">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2318(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2318(REAL)</string></property>
        </widget>
       </item>
       <item row="4" column="4">
        <widget class="QLabel" name="label_65">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>备用46</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>备用46</string></property>
        </widget>
       </item>
       <item row="4" column="5">
        <widget class="QLineEdit" name="editReadRegisterValue21">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
+
       <item row="5" column="0">
        <widget class="QLabel" name="label_36">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>缓存位1实时编码值</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>缓存位1实时编码值</string></property>
        </widget>
       </item>
       <item row="5" column="1">
        <widget class="QLineEdit" name="editReadRegisterValue6">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2330(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2330(REAL)</string></property>
        </widget>
       </item>
       <item row="5" column="2">
        <widget class="QLabel" name="label_44">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>相机2结果信号</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>相机2结果信号</string></property>
        </widget>
       </item>
       <item row="5" column="3">
        <widget class="QLineEdit" name="editReadRegisterValue14">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2320(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2320(REAL)</string></property>
        </widget>
       </item>
       <item row="5" column="4">
        <widget class="QLabel" name="label_68">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>备用47</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>备用47</string></property>
        </widget>
       </item>
       <item row="5" column="5">
        <widget class="QLineEdit" name="editReadRegisterValue22">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
+
       <item row="6" column="0">
        <widget class="QLabel" name="label_37">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>缓存位2实时编码值</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>缓存位2实时编码值</string></property>
        </widget>
       </item>
       <item row="6" column="1">
        <widget class="QLineEdit" name="editReadRegisterValue7">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>D2332(REAL)</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>D2332(REAL)</string></property>
        </widget>
       </item>
       <item row="6" column="2">
        <widget class="QLabel" name="label_45">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>最大宽度40</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>最大宽度40</string></property>
        </widget>
       </item>
       <item row="6" column="3">
        <widget class="QLineEdit" name="editReadRegisterValue15">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
       <item row="6" column="4">
        <widget class="QLabel" name="label_69">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>备用48</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>备用48</string></property>
        </widget>
       </item>
       <item row="6" column="5">
        <widget class="QLineEdit" name="editReadRegisterValue23">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
+
       <item row="7" column="0">
        <widget class="QLabel" name="label_38">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>       扫描角度33</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>扫描角度33</string></property>
        </widget>
       </item>
       <item row="7" column="1">
        <widget class="QLineEdit" name="editReadRegisterValue8">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
       <item row="7" column="2">
        <widget class="QLabel" name="label_46">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>最小宽度41</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>最小宽度41</string></property>
        </widget>
       </item>
       <item row="7" column="3">
        <widget class="QLineEdit" name="editReadRegisterValue16">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
       <item row="7" column="4">
        <widget class="QLabel" name="label_70">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>备用49</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>备用49</string></property>
        </widget>
       </item>
       <item row="7" column="5">
        <widget class="QLineEdit" name="editReadRegisterValue24">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
        </widget>
       </item>
+
+      <!-- 写入行 -->
       <item row="8" column="0">
        <widget class="QPushButton" name="btnWriteReister">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);
-    background-color: rgb(15, 15, 15);
-    border-radius: 4px;
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-    /* 双层边框实现立体效果 */
-    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
-    border-top: 4px solid rgba(120, 120, 120, 0.9);
-    border-left: 4px solid rgba(120, 120, 120, 0.9);
-    /* 内层边框效果 */
-    background-clip: padding-box;
-    position: relative;
-}
-
-QPushButton::before {
-    content: &quot;&quot;;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    right: 1px;
-    bottom: 1px;
-    border: 1px solid rgba(30, 30, 30, 0.9);
-    border-radius: 3px;
-    pointer-events: none;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);
-    border-color: rgba(100, 100, 100, 0.9);
-    border-top-color: rgba(140, 140, 140, 0.9);
-    border-left-color: rgba(140, 140, 140, 0.9);
-}
-
-QPushButton:pressed {
-    background-color: #252A32;
-    color: #C8CDD1;
-    /* 按下时反转边框明暗 */
-    border: 1px solid rgba(60, 60, 60, 0.9);
-    border-bottom-color: rgba(100, 100, 100, 0.9);
-    border-right-color: rgba(100, 100, 100, 0.9);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;
-    color: #A0A6AC;
-    border: 1px solid rgba(150, 150, 150, 0.6);
-}</string>
-        </property>
-        <property name="text">
-         <string>写入</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+        <property name="text"><string>写 入</string></property>
        </widget>
       </item>
       <item row="8" column="2">
        <widget class="QLabel" name="label_12">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>写地址</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>写地址</string></property>
        </widget>
       </item>
       <item row="8" column="3">
        <widget class="QLineEdit" name="editWriteAdress">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>0</string></property>
        </widget>
       </item>
       <item row="8" column="4">
        <widget class="QLabel" name="label_13">
-        <property name="minimumSize">
-         <size>
-          <width>96</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>写入值</string>
-        </property>
+        <property name="minimumSize"><size><width>96</width><height>36</height></size></property>
+        <property name="text"><string>写入值</string></property>
        </widget>
       </item>
       <item row="8" column="5">
        <widget class="QLineEdit" name="editWriteValue">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>0</string></property>
        </widget>
       </item>
+
+      <!-- 读取行 -->
       <item row="9" column="0">
        <widget class="QPushButton" name="btnReadReister">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);
-    background-color: rgb(15, 15, 15);
-    border-radius: 4px;
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-    /* 双层边框实现立体效果 */
-    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
-    border-top: 4px solid rgba(120, 120, 120, 0.9);
-    border-left: 4px solid rgba(120, 120, 120, 0.9);
-    /* 内层边框效果 */
-    background-clip: padding-box;
-    position: relative;
-}
-
-QPushButton::before {
-    content: &quot;&quot;;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    right: 1px;
-    bottom: 1px;
-    border: 1px solid rgba(30, 30, 30, 0.9);
-    border-radius: 3px;
-    pointer-events: none;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);
-    border-color: rgba(100, 100, 100, 0.9);
-    border-top-color: rgba(140, 140, 140, 0.9);
-    border-left-color: rgba(140, 140, 140, 0.9);
-}
-
-QPushButton:pressed {
-    background-color: #252A32;
-    color: #C8CDD1;
-    /* 按下时反转边框明暗 */
-    border: 1px solid rgba(60, 60, 60, 0.9);
-    border-bottom-color: rgba(100, 100, 100, 0.9);
-    border-right-color: rgba(100, 100, 100, 0.9);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;
-    color: #A0A6AC;
-    border: 1px solid rgba(150, 150, 150, 0.6);
-}</string>
-        </property>
-        <property name="text">
-         <string>读取</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+        <property name="text"><string>读 取</string></property>
        </widget>
       </item>
       <item row="9" column="2">
        <widget class="QLabel" name="label_14">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>读地址</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>读地址</string></property>
        </widget>
       </item>
       <item row="9" column="3">
        <widget class="QLineEdit" name="editReadAdress">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>0</string></property>
        </widget>
       </item>
       <item row="9" column="4">
        <widget class="QLabel" name="label_15">
-        <property name="minimumSize">
-         <size>
-          <width>96</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>读取值</string>
-        </property>
+        <property name="minimumSize"><size><width>96</width><height>36</height></size></property>
+        <property name="text"><string>读取值</string></property>
        </widget>
       </item>
       <item row="9" column="5">
        <widget class="QLineEdit" name="editReadValue">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>15</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
+        <property name="minimumSize"><size><width>0</width><height>36</height></size></property>
+        <property name="text"><string>0</string></property>
        </widget>
       </item>
+
       <item row="10" column="0">
        <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
+        <property name="orientation"><enum>Qt::Vertical</enum></property>
         <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
+         <size><width>20</width><height>10</height></size>
         </property>
        </spacer>
       </item>
      </layout>
     </widget>
    </item>
+
+   <!-- HMI 区域 -->
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="sizePolicy">
@@ -1360,328 +594,85 @@ QPushButton:disabled {
       <string>HMI</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
+      <property name="horizontalSpacing">
+       <number>12</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>10</number>
+      </property>
+
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout_2">
+        <property name="horizontalSpacing"><number>10</number></property>
+        <property name="verticalSpacing"><number>8</number></property>
         <item row="0" column="0">
          <widget class="QPushButton" name="btnConnectServer">
-          <property name="font">
-           <font>
-            <pointsize>15</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);
-    background-color: rgb(15, 15, 15);
-    border-radius: 4px;
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-    /* 双层边框实现立体效果 */
-    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
-    border-top: 4px solid rgba(120, 120, 120, 0.9);
-    border-left: 4px solid rgba(120, 120, 120, 0.9);
-    /* 内层边框效果 */
-    background-clip: padding-box;
-    position: relative;
-}
-
-QPushButton::before {
-    content: &quot;&quot;;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    right: 1px;
-    bottom: 1px;
-    border: 1px solid rgba(30, 30, 30, 0.9);
-    border-radius: 3px;
-    pointer-events: none;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);
-    border-color: rgba(100, 100, 100, 0.9);
-    border-top-color: rgba(140, 140, 140, 0.9);
-    border-left-color: rgba(140, 140, 140, 0.9);
-}
-
-QPushButton:pressed {
-    background-color: #252A32;
-    color: #C8CDD1;
-    /* 按下时反转边框明暗 */
-    border: 1px solid rgba(60, 60, 60, 0.9);
-    border-bottom-color: rgba(100, 100, 100, 0.9);
-    border-right-color: rgba(100, 100, 100, 0.9);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;
-    color: #A0A6AC;
-    border: 1px solid rgba(150, 150, 150, 0.6);
-}</string>
-          </property>
-          <property name="text">
-           <string>连接服务器</string>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+          <property name="text"><string>连接服务器</string></property>
          </widget>
         </item>
         <item row="0" column="1">
          <widget class="QPushButton" name="btnDisConnectServer">
-          <property name="font">
-           <font>
-            <pointsize>15</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);
-    background-color: rgb(15, 15, 15);
-    border-radius: 4px;
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-    /* 双层边框实现立体效果 */
-    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
-    border-top: 4px solid rgba(120, 120, 120, 0.9);
-    border-left: 4px solid rgba(120, 120, 120, 0.9);
-    /* 内层边框效果 */
-    background-clip: padding-box;
-    position: relative;
-}
-
-QPushButton::before {
-    content: &quot;&quot;;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    right: 1px;
-    bottom: 1px;
-    border: 1px solid rgba(30, 30, 30, 0.9);
-    border-radius: 3px;
-    pointer-events: none;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);
-    border-color: rgba(100, 100, 100, 0.9);
-    border-top-color: rgba(140, 140, 140, 0.9);
-    border-left-color: rgba(140, 140, 140, 0.9);
-}
-
-QPushButton:pressed {
-    background-color: #252A32;
-    color: #C8CDD1;
-    /* 按下时反转边框明暗 */
-    border: 1px solid rgba(60, 60, 60, 0.9);
-    border-bottom-color: rgba(100, 100, 100, 0.9);
-    border-right-color: rgba(100, 100, 100, 0.9);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;
-    color: #A0A6AC;
-    border: 1px solid rgba(150, 150, 150, 0.6);
-}</string>
-          </property>
-          <property name="text">
-           <string>断开服务器</string>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+          <property name="text"><string>断开服务器</string></property>
          </widget>
         </item>
         <item row="0" column="2">
          <widget class="QLabel" name="labelHMIConnectState">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>15</pointsize>
-            <weight>50</weight>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>None</string>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+          <property name="text"><string>None</string></property>
          </widget>
         </item>
        </layout>
       </item>
+
       <item row="0" column="1" rowspan="2">
        <layout class="QGridLayout" name="gridLayout_4">
+        <property name="horizontalSpacing"><number>10</number></property>
+        <property name="verticalSpacing"><number>8</number></property>
         <item row="0" column="0">
          <widget class="QPushButton" name="btnSendMessage">
-          <property name="font">
-           <font>
-            <pointsize>15</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton {
-    color: rgb(240, 240, 240);
-    background-color: rgb(15, 15, 15);
-    border-radius: 4px;
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    padding: 6px 14px;
-    /* 双层边框实现立体效果 */
-    border: 4px solid rgba(80, 80, 80, 0.8); /* 外层深灰色边框 */
-    border-top: 4px solid rgba(120, 120, 120, 0.9);
-    border-left: 4px solid rgba(120, 120, 120, 0.9);
-    /* 内层边框效果 */
-    background-clip: padding-box;
-    position: relative;
-}
-
-QPushButton::before {
-    content: &quot;&quot;;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    right: 1px;
-    bottom: 1px;
-    border: 1px solid rgba(30, 30, 30, 0.9);
-    border-radius: 3px;
-    pointer-events: none;
-}
-
-QPushButton:hover {
-    background-color: rgb(162, 162, 162);
-    border-color: rgba(100, 100, 100, 0.9);
-    border-top-color: rgba(140, 140, 140, 0.9);
-    border-left-color: rgba(140, 140, 140, 0.9);
-}
-
-QPushButton:pressed {
-    background-color: #252A32;
-    color: #C8CDD1;
-    /* 按下时反转边框明暗 */
-    border: 1px solid rgba(60, 60, 60, 0.9);
-    border-bottom-color: rgba(100, 100, 100, 0.9);
-    border-right-color: rgba(100, 100, 100, 0.9);
-}
-
-QPushButton:disabled {
-    background-color: #E3E7EB;
-    color: #A0A6AC;
-    border: 1px solid rgba(150, 150, 150, 0.6);
-}</string>
-          </property>
-          <property name="text">
-           <string>发送消息</string>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+          <property name="text"><string>发送消息</string></property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_17">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>15</pointsize>
-            <weight>50</weight>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>通信文本测试：</string>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+          <property name="text"><string>通信文本测试：</string></property>
          </widget>
         </item>
        </layout>
       </item>
+
       <item row="0" column="2" rowspan="2">
        <widget class="QTextEdit" name="txtEditContentTest"/>
       </item>
+
       <item row="1" column="0">
        <layout class="QGridLayout" name="gridLayout">
+        <property name="horizontalSpacing"><number>10</number></property>
+        <property name="verticalSpacing"><number>8</number></property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_16">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>15</pointsize>
-            <weight>50</weight>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>IP:</string>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+          <property name="text"><string>IP:</string></property>
          </widget>
         </item>
         <item row="0" column="1">
          <widget class="QLineEdit" name="editServerIP">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>15</pointsize>
-           </font>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
          </widget>
         </item>
         <item row="0" column="2">
          <widget class="QLabel" name="label_18">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>15</pointsize>
-            <weight>50</weight>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Port:</string>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
+          <property name="text"><string>Port:</string></property>
          </widget>
         </item>
         <item row="0" column="3">
          <widget class="QLineEdit" name="editServerPort">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>15</pointsize>
-           </font>
-          </property>
+          <property name="minimumSize"><size><width>0</width><height>40</height></size></property>
          </widget>
         </item>
        </layout>

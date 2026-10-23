@@ -144,6 +144,19 @@ public:
  private Q_SLOTS :
      void  onReceiveStatus(QString);
      void  onslotReceiveCloud();
+     void onBtnParamSaveClicked();
+     void onBtnParamReadClicked();
+     void onbtnSavePointClicked();
+     void onbtnOutPutDirectory_ResultClicked();
+     void onbtnOutPutDirectoryClicked();
+     void onbtnDisConnectPLCClicked();
+     void onbtnConnectPLCClicked();
+     void onbtnDisConnectCamera_BClicked();
+     void onbtnConnectCamera_BClicked();
+     void onbtnDisConnectCameraClicked();
+     void onbtnConnectCameraClicked();
+     void onbtnStopCollectPointClicked();     
+     void onbtnStartCollectPointClicked();
  private Q_SLOTS :
         void on_btnConnectCamera_clicked();//连接轮廓仪A
         void on_btnDisConnectCamera_clicked();//断开轮廓仪A
